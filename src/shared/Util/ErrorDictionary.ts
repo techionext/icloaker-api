@@ -83,4 +83,11 @@ export const ErrorDictionary = {
       message: 'An email has been sent to you to recover your password',
     },
   },
+
+  SYSTEM: {
+    unknownError: {
+      codeIntern: 'SYS001',
+      message: 'Unknown error',
+    },
+  },
 };

@@ -11,6 +11,7 @@ import swaggerUi from 'swagger-ui-express';
 import { AppError } from '@shared/Util/AppError/AppError';
 import { logger } from '@shared/Util/configLogger';
 import { env } from '@shared/Util/Env/Env';
+import { ErrorDictionary } from '@shared/Util/ErrorDictionary';
 
 import { routerIndex } from './Routes';
 import swaggerDocument from './shared/Swagger/swagger.json';
@@ -34,10 +35,10 @@ app.use(async (err: Error, request: Request, response: Response, next: NextFunct
   // logger.error(err);
 
   if (err instanceof AppError) {
-    return response.status(err.statusCode).json({ message: err.message });
+    return response.status(err.statusCode).json({ message: err.message, codeIntern: err.codeIntern });
   }
 
-  response.status(500).json({ message: 'Erro desconhecido!' });
+  response.status(500).json({ message: ErrorDictionary.SYSTEM.unknownError.message, codeIntern: ErrorDictionary.SYSTEM.unknownError.codeIntern });
   return next();
 });
 
