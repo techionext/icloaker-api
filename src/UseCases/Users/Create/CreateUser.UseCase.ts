@@ -4,6 +4,7 @@ import { inject, injectable } from 'tsyringe';
 import { handleGenerateUuid } from '@shared/features/handleGenerateUuid/handleGenerateUuid';
 import { AppError } from '@shared/Util/AppError/AppError';
 import { handleCreateHash } from '@shared/Util/configHashPassword/handleCreatehash';
+import { ErrorDictionary } from '@shared/Util/ErrorDictionary';
 import { ZODVerifyParse } from '@shared/Util/ZOD/zod';
 
 import { CreateUserSchema } from './CreateUser.Schema';
@@ -24,7 +25,7 @@ export class CreateUserUseCase {
     const { isExists } = await this.RepositoryUsers.FindUserByEmail({
       email,
     });
-    if (isExists) throw new AppError('Já existe um usuário com este email !');
+    if (isExists) throw new AppError(ErrorDictionary.USER.emailAlreadyExists.message, 400, ErrorDictionary.USER.emailAlreadyExists.codeIntern);
 
     const hashPassword = handleCreateHash(password);
 
@@ -37,7 +38,7 @@ export class CreateUserUseCase {
     });
 
     const returnResponse = {
-      message: 'Usuário criado com sucesso !',
+      ...ErrorDictionary.USER.createdSuccessfully,
     };
 
     return returnResponse;

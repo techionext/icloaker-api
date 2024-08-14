@@ -3,6 +3,7 @@ import { inject, injectable } from 'tsyringe';
 
 import { AppError } from '@shared/Util/AppError/AppError';
 import { generateToken } from '@shared/Util/configToken/generateToken';
+import { ErrorDictionary } from '@shared/Util/ErrorDictionary';
 
 import { ISessionUserDTO } from './DTO/ISessionDTO';
 
@@ -12,7 +13,8 @@ export class SessionUseCase {
 
   async execute({ idUser }: ISessionUserDTO) {
     const { data: resDataUser, isExists } = await this.RepositoryUsers.FindUserById({ id: idUser });
-    if (!isExists || !resDataUser) throw new AppError('Email/Senha incorreto', 401);
+    if (!isExists || !resDataUser)
+      throw new AppError(ErrorDictionary.AUTH.invalidEmailOrPassword.message, 401, ErrorDictionary.AUTH.invalidEmailOrPassword.codeIntern);
 
     const token = generateToken({
       email: resDataUser.email,

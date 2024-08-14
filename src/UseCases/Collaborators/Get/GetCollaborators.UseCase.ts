@@ -3,6 +3,7 @@ import { inject, injectable } from 'tsyringe';
 
 import { getUserPermissions } from '@shared/permissions/getUserPermissions';
 import { AppError } from '@shared/Util/AppError/AppError';
+import { ErrorDictionary } from '@shared/Util/ErrorDictionary';
 import { ZODVerifyParse } from '@shared/Util/ZOD/zod';
 
 import { IGetCollaboratorsDTO } from './DTO/IGetCollaboratorsDTO';
@@ -19,11 +20,12 @@ export class GetCollaboratorsUseCase {
     });
 
     const { data: dataAuth } = await this.RepositoryUsers.FindUserById({ id: token.id });
-    if (!dataAuth) throw new AppError('Dados do usuário não encontrado !');
+    if (!dataAuth) throw new AppError(ErrorDictionary.USER.dataNotFound.message, 401, ErrorDictionary.USER.dataNotFound.codeIntern);
 
     const { cannot } = getUserPermissions({ role: dataAuth.role, userId: dataAuth.id });
 
-    if (cannot('get', 'User')) throw new AppError('Sem permissão para listar os colaboradores !');
+    if (cannot('get', 'User'))
+      throw new AppError(ErrorDictionary.COLLABORATOR.noPermissionToList.message, 400, ErrorDictionary.COLLABORATOR.noPermissionToList.codeIntern);
 
     const { data, meta } = await this.RepositoryUsers.Get({ page, pageSize, filter, onlyCollaborators: true });
 

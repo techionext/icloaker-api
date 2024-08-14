@@ -20,10 +20,6 @@ const envSchema = z.object({
 
   LINK_LOGIN: z.string(),
 
-  WPP_API_URL: z.string(),
-
-  WPP_API_SECRET_KEY: z.string(),
-
   RECOVERY_PASSWORD_EXPIRATION_LIMIT_IN_MINUTES: z.string(),
 
   LINK_RECOVER_PASSWORD: z.string(),

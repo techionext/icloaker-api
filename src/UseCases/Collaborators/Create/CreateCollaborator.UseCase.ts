@@ -7,6 +7,7 @@ import { getUserPermissions } from '@shared/permissions/getUserPermissions';
 import { userPermissions } from '@shared/permissions/models/user';
 import { AppError } from '@shared/Util/AppError/AppError';
 import { handleCreateHash } from '@shared/Util/configHashPassword/handleCreatehash';
+import { ErrorDictionary } from '@shared/Util/ErrorDictionary';
 import { ZODVerifyParse } from '@shared/Util/ZOD/zod';
 
 import { CreateCollaboratorSchema } from './CreateCollaborator.Schema';
@@ -23,14 +24,19 @@ export class CreateCollaboratorUseCase {
     });
 
     const { data: dataUser } = await this.RepositoryUsers.FindUserById({ id: token.id });
-    if (!dataUser) throw new AppError('Dados do usuário não encontrado !');
+    if (!dataUser) throw new AppError(ErrorDictionary.USER.dataNotFound.message, 401, ErrorDictionary.USER.dataNotFound.codeIntern);
 
     const userId = handleGenerateUuid();
 
     const { cannot } = getUserPermissions({ role: dataUser.role, userId: dataUser.id });
     const user = userPermissions({ id: userId, role: 'COLLABORATOR' });
 
-    if (cannot('create', user)) throw new AppError('Sem permissão para criar um colaborador !');
+    if (cannot('create', user))
+      throw new AppError(
+        ErrorDictionary.COLLABORATOR.noPermissionToCreate.message,
+        401,
+        ErrorDictionary.COLLABORATOR.noPermissionToCreate.codeIntern,
+      );
 
     const { data: dataAlreadyUser } = await this.RepositoryUsers.FindUserByEmail({ email });
     if (!dataAlreadyUser) {
@@ -48,7 +54,7 @@ export class CreateCollaboratorUseCase {
     }
 
     const returnResponse = {
-      message: 'Colaborador criado com sucesso !',
+      ...ErrorDictionary.COLLABORATOR.createdSuccessfully,
     };
 
     return returnResponse;
