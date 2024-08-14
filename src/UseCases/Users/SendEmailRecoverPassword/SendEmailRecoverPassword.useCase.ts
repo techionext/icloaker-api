@@ -8,6 +8,7 @@ import { sendMailNodemailer } from '@shared/providers/SendEmail';
 import { TemplateForgotPassword } from '@shared/providers/templatesSendEmail/TemplateForgotPassword';
 import { AppError } from '@shared/Util/AppError/AppError';
 import { env } from '@shared/Util/Env/Env';
+import { ErrorDictionary } from '@shared/Util/ErrorDictionary';
 
 import { ISendEmailRecoverPasswordDTO } from './DTO/ISendEmailRecoverPasswordDTO';
 
@@ -20,7 +21,7 @@ export class SendEmailRecoverPasswordUseCase {
 
   async execute({ email }: ISendEmailRecoverPasswordDTO.Params) {
     const { data: userData, isExists } = await this.RepositoryUsers.FindUserByEmail({ email });
-    if (!isExists || !userData?.id) throw new AppError('Não existe usuário com este email !');
+    if (!isExists || !userData?.id) throw new AppError(ErrorDictionary.USER.dataNotFound.message, 401, ErrorDictionary.USER.dataNotFound.codeIntern);
 
     const { data: dataRecoverPassword } = await this.RepositoryRecoverPassword.FindByUserId({ userId: userData.id });
 
@@ -43,7 +44,7 @@ export class SendEmailRecoverPasswordUseCase {
     });
 
     const responseReturn = {
-      message: 'Foi enviado um email para você recuperar sua senha !',
+      ...ErrorDictionary.USER.passwordRecoveryEmailSent,
     };
 
     return responseReturn;

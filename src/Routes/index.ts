@@ -8,7 +8,7 @@ import { routerUsers } from './Users/RouterUsers';
 
 const routerIndex = Router();
 
-routerIndex.use(routerAuthentication);
+routerIndex.use('/auth', routerAuthentication);
 routerIndex.use(routerUsers);
 
 routerIndex.use(verifyToken);

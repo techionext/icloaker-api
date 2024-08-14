@@ -26,7 +26,7 @@ export class RecoverPasswordUseCase {
     if (!isExists || !dataRecoverPassword) {
       const errorReturn = {
         isValid: false,
-        messagE: 'Link não existe !',
+        message: 'Link não existe !',
       };
 
       return errorReturn;
