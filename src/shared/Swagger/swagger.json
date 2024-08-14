@@ -63,7 +63,7 @@
         }
       }
     },
-    "/forgot-password": {
+    "/auth/forgot-password": {
       "post": {
         "tags": [
           "User"
@@ -96,7 +96,7 @@
         }
       }
     },
-    "/redefine-password/{id}": {
+    "/auth/redefine-password/{id}": {
       "post": {
         "tags": [
           "User"
@@ -145,7 +145,7 @@
         }
       }
     },
-    "/validate-forgot-password/{id}": {
+    "/auth/validate-forgot-password/{id}": {
       "get": {
         "tags": [
           "User"
@@ -178,7 +178,7 @@
         }
       }
     },
-    "/login": {
+    "/auth/login": {
       "post": {
         "tags": [
           "Auth"
@@ -238,7 +238,7 @@
         }
       }
     },
-    "/sessions": {
+    "/auth/sessions": {
       "post": {
         "tags": [
           "Auth"
