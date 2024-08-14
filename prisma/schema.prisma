@@ -1,0 +1,35 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum userRole {
+  USER
+  COLLABORATOR
+  ADMIN
+  ROOT
+}
+
+model Users {
+  id        String   @id
+  name      String
+  phone     String
+  email     String   @unique
+  password  String
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  role userRole @default(USER)
+}
+
+model recoverPassword {
+  id           String   @id
+  userId       String
+  createdAt    DateTime @default(now())
+  expirationAt DateTime
+}

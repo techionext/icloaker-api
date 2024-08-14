@@ -1,0 +1,7 @@
+/*.js
+node_modules
+dist
+coverage
+bashCopy code
+.eslintrc.js
+.prettierrc.js

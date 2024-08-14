@@ -1,0 +1,507 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Unilead",
+    "description": "Está api tem objetivo de informar como utilizar este servidor.",
+    "version": "1.0.0",
+    "contact": {
+      "email": ""
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3333",
+      "description": "API LOCAL"
+    }
+  ],
+  "paths": {
+    "/users/create": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Criação de usuário",
+        "description": "Endpoint para criar um novo usuário",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "josé victor"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "johndoe2@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "aA123456"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "example": "5521979022754"
+                  }
+                },
+                "required": [
+                  "name",
+                  "email",
+                  "password",
+                  "phone"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Usuário criado com sucesso"
+          }
+        }
+      }
+    },
+    "/forgot-password": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Recuperação de senha",
+        "description": "Endpoint para solicitar a recuperação de senha",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "johndoe@acme.com"
+                  }
+                },
+                "required": [
+                  "email"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Foi enviado um email para você recuperar sua senha!"
+          }
+        }
+      }
+    },
+    "/redefine-password/{id}": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Redefinição de senha",
+        "description": "Endpoint para redefinir a senha de um usuário",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do usuário"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "password": {
+                    "type": "string",
+                    "example": "aA123456"
+                  },
+                  "verifyPassword": {
+                    "type": "string",
+                    "example": "aA123456"
+                  }
+                },
+                "required": [
+                  "password",
+                  "verifyPassword"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Senha redefinida com sucesso"
+          }
+        }
+      }
+    },
+    "/validate-forgot-password/{id}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Validação de link de recuperação de senha",
+        "description": "Endpoint para validar o link de recuperação de senha",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do link de recuperação"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Link de recuperação de senha válido",
+            "content": {
+              "application/json": {
+                "example": {
+                  "isValid": true,
+                  "message": "Link Válido !"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Login de usuário",
+        "description": "Endpoint para realizar login de um usuário",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "johndoe2@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "aA123456"
+                  }
+                },
+                "required": [
+                  "email",
+                  "password"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login realizado com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": "9c82df71-0d9e-4c41-8de4-18089866fdf1",
+                  "name": "josé victor",
+                  "phone": "5521979022754",
+                  "email": "johndoe2@gmail.com",
+                  "active": true,
+                  "createdAt": "2024-07-15T19:08:51.205Z",
+                  "tenantId": "empty",
+                  "members": [
+                    {
+                      "tenant": {
+                        "companyName": "acme inc 44",
+                        "id": "9e7a31f9-120c-4221-bf9d-f1c640934b8f"
+                      }
+                    }
+                  ],
+                  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5kb2UyQGdtYWlsLmNvbSIsImlkIjoiOWM4MmRmNzEtMGQ5ZS00YzQxLThkZTQtMTgwODk4NjZmZGYxIiwidGVuYW50IjoiZW1wdHkiLCJpYXQiOjE3MjEwNzA1ODMsImV4cCI6MTcyMTE1Njk4M30.Untm0syNotZpDERUD0_eQT3U-AJjI-ZQshrcbrGLvgU"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sessions": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Obter informações da sessão",
+        "description": "Endpoint para obter informações sobre a sessão do usuário autenticado",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Informações da sessão retornadas com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": "8e054844-d063-4c7b-b602-06ea515db97c",
+                  "name": "josé victor",
+                  "phone": "5521979022754",
+                  "email": "johndoe2@gmail.com",
+                  "active": true,
+                  "createdAt": "2024-07-16T02:05:43.241Z",
+                  "tenantId": "3c59a491-6140-45cd-a545-b7c7d28aac56",
+                  "members": [
+                    {
+                      "tenant": {
+                        "companyName": "acme inc 44",
+                        "id": "3c59a491-6140-45cd-a545-b7c7d28aac56"
+                      }
+                    }
+                  ],
+                  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5kb2UyQGdtYWlsLmNvbSIsImlkIjoiOGUwNTQ4NDQtZDA2My00YzdiLWI2MDItMDZlYTUxNWRiOTdjIiwidGVuYW50IjoiM2M1OWE0OTEtNjE0MC00NWNkLWE1NDUtYjdjN2QyOGFhYzU2IiwiaWF0IjoxNzIxMDk3OTQwLCJleHAiOjE3MjExODQzNDB9.J9yXbInVBx9Kf-Cd5BToOT3sslGuMeWVbsZO9LzoBGY"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/collaborators": {
+      "post": {
+        "tags": [
+          "collaborators"
+        ],
+        "summary": "Criar colaborador",
+        "description": "Endpoint para criar um novo colaborador",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "jane doe"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "giwox83913@cutxsew.com"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "example": "552199787654321"
+                  }
+                },
+                "required": [
+                  "name",
+                  "email",
+                  "phone"
+                ]
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Colaborador criado com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Colaborador criado com sucesso !"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "collaborators"
+        ],
+        "summary": "Obter lista de colaboradores",
+        "description": "Endpoint para obter uma lista de colaboradores com suporte a paginação e filtragem",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "description": "Número da página para paginação (padrão: 1)"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "description": "Número de itens por página (padrão: 10)"
+            }
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Filtro para busca de colaboradores"
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de colaboradores retornada com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": [
+                    {
+                      "userId": "00f1b340-2d27-446e-8c39-b44225518003",
+                      "role": "COLLABORATOR",
+                      "user": {
+                        "name": "jane doe",
+                        "email": "giwox83913@cutxsew.com"
+                      }
+                    }
+                  ],
+                  "meta": {
+                    "page": 1,
+                    "pageSize": 10,
+                    "total": 1,
+                    "totalPages": 1
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/collaborators/{id}": {
+      "put": {
+        "tags": [
+          "collaborators"
+        ],
+        "summary": "Atualizar colaborador",
+        "description": "Endpoint para atualizar as informações de um colaborador existente",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do colaborador a ser atualizado"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "john doe"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "joh@doe.com"
+                  }
+                },
+                "required": [
+                  "name",
+                  "email"
+                ]
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Colaborador atualizado com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Colaborador atualizado com sucesso !"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "collaborators"
+        ],
+        "summary": "Deletar colaborador",
+        "description": "Endpoint para deletar um colaborador existente",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do colaborador a ser deletado"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Colaborador deletado com sucesso"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {},
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

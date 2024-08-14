@@ -1,0 +1,8 @@
+node_modules/
+
+# production
+/build
+/dist
+/.env
+/src/UseCases/@template
+pnpm-lock.yaml
