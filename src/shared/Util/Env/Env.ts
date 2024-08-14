@@ -24,6 +24,9 @@ const envSchema = z.object({
 
   LINK_RECOVER_PASSWORD: z.string(),
 
+  NEW_RELIC_APP_NAME: z.string(),
+  NEW_RELIC_LICENSE_KEY: z.string(),
+
   DATABASE_URL: z.string({ required_error: 'Colocar env DATABASE_URL' }),
 
   SECRET_TOKEN: z.string(),
