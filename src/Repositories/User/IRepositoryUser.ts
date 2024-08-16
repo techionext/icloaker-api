@@ -1,4 +1,4 @@
-import { $Enums, Users } from '@prisma/client';
+import { $Enums, Profiles, Users } from '@prisma/client';
 
 export namespace IFindUserByEmailDTO {
   export type Params = {
@@ -73,6 +73,45 @@ export namespace IUpdateDTO {
     role?: $Enums.userRole;
   };
 }
+export namespace IGetUserByProviderDTO {
+  export type Params = {
+    provider: $Enums.profileProviders;
+    providerId: string;
+  };
+  export type Result = {
+    data: Users | null;
+    isExists: boolean;
+  };
+}
+export namespace ICreateWithProviderDTO {
+  export type Params = {
+    id: string;
+    name: string;
+    provider: $Enums.profileProviders;
+    providerId: string;
+    providerEmail: string;
+  };
+  export type Result = {
+    data: Users;
+  };
+}
+export namespace IGetWithProfilesDTO {
+  export type Params = {
+    id: string;
+  };
+  export type Result = {
+    isExists: boolean;
+    data: (Users & { profiles: Profiles[] }) | null;
+  };
+}
+export namespace ICreateProviderDTO {
+  export type Params = {
+    id: string;
+    provider: $Enums.profileProviders;
+    providerId: string;
+    providerEmail: string;
+  };
+}
 
 export interface IRepositoryUsers {
   Create(data: ICreateUserDTO.Params): Promise<void>;
@@ -88,4 +127,12 @@ export interface IRepositoryUsers {
   Get(data: IGetDTO.Params): Promise<IGetDTO.Result>;
 
   Update(data: IUpdateDTO.Params): Promise<void>;
+
+  GetUserByProvider(data: IGetUserByProviderDTO.Params): Promise<IGetUserByProviderDTO.Result>;
+
+  CreateWithProvider(data: ICreateWithProviderDTO.Params): Promise<ICreateWithProviderDTO.Result>;
+
+  GetWithProfiles(data: IGetWithProfilesDTO.Params): Promise<IGetWithProfilesDTO.Result>;
+
+  CreateProvider(data: ICreateProviderDTO.Params): Promise<void>;
 }

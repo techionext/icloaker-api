@@ -15,7 +15,7 @@
     }
   ],
   "paths": {
-    "/users/create": {
+    "/users": {
       "post": {
         "tags": [
           "User"
@@ -489,6 +489,257 @@
         "responses": {
           "204": {
             "description": "Colaborador deletado com sucesso"
+          }
+        }
+      }
+    },
+    "/domains": {
+      "post": {
+        "summary": "Criar um novo domínio",
+        "description": "Esta rota é responsável por criar um novo domínio.",
+        "tags": [
+          "domains"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "example": "https://example.com"
+                  }
+                },
+                "required": [
+                  "url"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Domínio criado com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": "17dc28d8-9e1b-43e5-9194-91d91f626c7f",
+                  "codeIntern": "DOM002",
+                  "message": "Domain registered successfully"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Listar domínios",
+        "description": "Esta rota é responsável por listar os domínios com paginação e filtros opcionais.",
+        "tags": [
+          "domains"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            },
+            "description": "Número da página para a listagem."
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 10
+            },
+            "description": "Número de itens por página."
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "example"
+            },
+            "description": "Filtro de pesquisa para domínios."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Listagem de domínios realizada com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": [
+                    {
+                      "id": "17dc28d8-9e1b-43e5-9194-91d91f626c7f",
+                      "url": "https://example.com",
+                      "status": "INACTIVE",
+                      "userId": "f6ab34c0-bfc1-4bfd-9fa8-f80517a1d0f0",
+                      "createdAt": "2024-08-16T21:42:03.919Z"
+                    }
+                  ],
+                  "meta": {
+                    "page": 1,
+                    "pageSize": 10,
+                    "total": 1,
+                    "totalPages": 1
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/domains/{id}": {
+      "put": {
+        "summary": "Atualizar domínio",
+        "description": "Esta rota é responsável por atualizar o domínio pelo seu ID.",
+        "tags": [
+          "domains"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do domínio a ser atualizado."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "example": "https://example.com"
+                  }
+                },
+                "required": [
+                  "url"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Domínio atualizado com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "codeIntern": "DOM005",
+                  "message": "Domain updated successfully"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletar domínio",
+        "description": "Esta rota é responsável por deletar um domínio pelo seu ID.",
+        "tags": [
+          "domains"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do domínio a ser deletado."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Domínio deletado com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "codeIntern": "DOM007",
+                  "message": "The domain was deleted successfully"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Obter domínio por ID",
+        "description": "Esta rota é responsável por recuperar as informações de um domínio pelo seu ID.",
+        "tags": [
+          "domains"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do domínio a ser recuperado."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Domínio recuperado com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "id": "17dc28d8-9e1b-43e5-9194-91d91f626c7f",
+                    "url": "https://example.com",
+                    "status": "INACTIVE",
+                    "userId": "f6ab34c0-bfc1-4bfd-9fa8-f80517a1d0f0",
+                    "createdAt": "2024-08-16T21:42:03.919Z"
+                  }
+                }
+              }
+            }
           }
         }
       }

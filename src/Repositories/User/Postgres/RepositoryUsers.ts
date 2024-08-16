@@ -9,9 +9,72 @@ import {
   IDisableByIdDTO,
   IGetDTO,
   IUpdateDTO,
+  IGetUserByProviderDTO,
+  ICreateWithProviderDTO,
+  IGetWithProfilesDTO,
+  ICreateProviderDTO,
 } from '../IRepositoryUser';
 
 export class RepositoryUsers implements IRepositoryUsers {
+  async CreateProvider({ id, provider, providerEmail, providerId }: ICreateProviderDTO.Params): Promise<void> {
+    await prisma.profiles.create({
+      data: {
+        userId: id,
+        provider,
+        providerId,
+        providerEmail,
+      },
+    });
+  }
+  async GetWithProfiles({ id }: IGetWithProfilesDTO.Params) {
+    const data = await prisma.users.findFirst({
+      where: { id },
+      include: {
+        profiles: true,
+      },
+    });
+
+    return {
+      data,
+      isExists: !!data,
+    };
+  }
+  async CreateWithProvider({ id, name, provider, providerEmail, providerId }: ICreateWithProviderDTO.Params) {
+    const data = await prisma.users.create({
+      data: {
+        id,
+        name,
+        profiles: {
+          create: {
+            provider,
+            providerId,
+            providerEmail,
+          },
+        },
+      },
+    });
+
+    return {
+      data,
+    };
+  }
+  async GetUserByProvider({ provider, providerId }: IGetUserByProviderDTO.Params) {
+    const data = await prisma.users.findFirst({
+      where: {
+        profiles: {
+          some: {
+            provider,
+            providerId,
+          },
+        },
+      },
+    });
+
+    return {
+      data,
+      isExists: !!data,
+    };
+  }
   async Update({ id, email, name, role }: IUpdateDTO.Params) {
     await prisma.users.update({
       where: {

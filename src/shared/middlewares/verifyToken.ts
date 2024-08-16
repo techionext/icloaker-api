@@ -9,7 +9,8 @@ import { env } from '@shared/Util/Env/Env';
 import { ErrorDictionary } from '@shared/Util/ErrorDictionary';
 
 export const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
-  const authToken = req.headers.authorization;
+  const queryToken = 'Bearer ' + req.query.token;
+  const authToken = req.headers.authorization ?? queryToken;
   const SECRET = env.SECRET_TOKEN;
 
   if (!authToken) throw new AppError(ErrorDictionary.AUTH.tokenNotSent.message, 401, ErrorDictionary.AUTH.tokenNotSent.codeIntern);
@@ -35,8 +36,6 @@ export const verifyToken = async (req: Request, res: Response, next: NextFunctio
     const decodedToken = decoded as IGenerateToken;
 
     if (!decodedToken.id)
-      throw new AppError(ErrorDictionary.AUTH.invalidTokenFormat.message, 401, ErrorDictionary.AUTH.invalidTokenFormat.codeIntern);
-    if (!decodedToken.email)
       throw new AppError(ErrorDictionary.AUTH.invalidTokenFormat.message, 401, ErrorDictionary.AUTH.invalidTokenFormat.codeIntern);
 
     req.body = {

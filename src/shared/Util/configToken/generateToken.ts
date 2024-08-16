@@ -5,7 +5,7 @@ import { env } from '../Env/Env';
 
 export type IGenerateToken = {
   id: string;
-  email: string;
+  email: string | null;
 };
 
 export const generateToken = ({ email, id }: IGenerateToken) =>
