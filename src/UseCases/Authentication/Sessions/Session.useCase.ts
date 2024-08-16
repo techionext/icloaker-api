@@ -17,8 +17,9 @@ export class SessionUseCase {
       throw new AppError(ErrorDictionary.AUTH.invalidEmailOrPassword.message, 401, ErrorDictionary.AUTH.invalidEmailOrPassword.codeIntern);
 
     const token = generateToken({
-      email: resDataUser.email,
       id: resDataUser.id,
+      email: resDataUser.email,
+      googleEmail: resDataUser.googleEmail,
     });
 
     const { password: passNotUser, ...restDataUser } = resDataUser;

@@ -82,12 +82,66 @@ export const ErrorDictionary = {
       codeIntern: 'USR004',
       message: 'An email has been sent to you to recover your password',
     },
+    passwordCreatedSuccessfully: {
+      codeIntern: 'USR005',
+      message: 'Password created successfully',
+    },
+    passwordAlreadyExists: {
+      codeIntern: 'USR006',
+      message: 'The user already has a password set',
+    },
   },
 
   SYSTEM: {
     unknownError: {
       codeIntern: 'SYS001',
       message: 'Unknown error',
+    },
+  },
+
+  GOOGLE: {
+    accountAlreadyLinked: {
+      codeIntern: 'GOOG001',
+      message: 'You already have a Google account linked',
+    },
+    errorLinkingAccount: {
+      codeIntern: 'GOOG002',
+      message: 'Error linking the Google account',
+    },
+    userNotFound: {
+      codeIntern: 'GOOG003',
+      message: 'User not found',
+    },
+  },
+
+  DOMAINS: {
+    domainAlreadyRegistered: {
+      codeIntern: 'DOM001',
+      message: 'This domain has already been registered',
+    },
+    domainRegisteredSuccessfully: {
+      codeIntern: 'DOM002',
+      message: 'Domain registered successfully',
+    },
+    domainNotFoundWithUrl: {
+      codeIntern: 'DOM003',
+      message: 'No domain registered with this URL',
+    },
+    domainAlreadyActivated: {
+      codeIntern: 'DOM004',
+      message: 'The domain has already been activated and cannot be updated',
+    },
+    domainUpdatedSuccessfully: {
+      codeIntern: 'DOM005',
+      message: 'Domain updated successfully',
+    },
+    domainNotFoundWithId: {
+      codeIntern: 'DOM006',
+      message: 'No domain found with this ID',
+    },
+    domainDeletedSuccessfully: {
+      codeIntern: 'DOM007',
+      message: 'The domain was deleted successfully',
     },
   },
 };

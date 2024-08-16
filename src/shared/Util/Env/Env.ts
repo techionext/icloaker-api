@@ -28,6 +28,14 @@ const envSchema = z.object({
 
   SECRET_TOKEN: z.string(),
 
+  GOOGLE_CLIENT_ID: z.string({ required_error: 'Colocar env GOOGLE_CLIENT_ID' }),
+  GOOGLE_CLIENT_SECRET: z.string({ required_error: 'Colocar env GOOGLE_CLIENT_SECRET' }),
+  GOOGLE_CALLBACK_URL_LOGIN: z.string({ required_error: 'Colocar env GOOGLE_CALLBACK_URL_LOGIN' }).url(),
+  GOOGLE_REDIRECT_URL_LOGIN: z.string({ required_error: 'Colocar env GOOGLE_REDIRECT_URL_LOGIN' }).url(),
+
+  GOOGLE_CALLBACK_URL_LINK: z.string({ required_error: 'Colocar env GOOGLE_CALLBACK_URL_LINK' }).url(),
+  GOOGLE_REDIRECT_URL_LINK: z.string({ required_error: 'Colocar env GOOGLE_REDIRECT_URL_LINK' }).url(),
+
   AWS_SECRET_ACCESS_KEY: z.string(),
   AWS_DEFAULT_REGION: z.string(),
   AWS_ACCESS_KEY_ID: z.string(),

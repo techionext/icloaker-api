@@ -15,16 +15,34 @@ enum userRole {
   ROOT
 }
 
+enum profileProviders {
+  GOOGLE
+}
+
+model Profiles {
+  id            String           @id @default(uuid())
+  userId        String
+  provider      profileProviders
+  providerId    String
+  providerEmail String
+
+  user Users @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerId])
+}
+
 model Users {
   id        String   @id
   name      String
-  phone     String
-  email     String   @unique
-  password  String
+  phone     String?
+  email     String?  @unique
+  password  String?
   active    Boolean  @default(true)
   createdAt DateTime @default(now())
 
-  role userRole @default(USER)
+  role     userRole   @default(USER)
+  profiles Profiles[]
+  domains  Domains[]
 }
 
 model recoverPassword {
@@ -32,4 +50,21 @@ model recoverPassword {
   userId       String
   createdAt    DateTime @default(now())
   expirationAt DateTime
+}
+
+enum domainStatus {
+  PENDING
+  ACTIVE
+  INACTIVE
+}
+
+model Domains {
+  id     String       @id
+  url    String
+  status domainStatus @default(INACTIVE)
+  userId String
+
+  createdAt DateTime @default(now())
+
+  user Users @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

@@ -18,6 +18,8 @@ export class LoginUseCase {
 
     const { isExists: isExistsUser, data: resDataUser } = await this.repositoryUser.FindUserByEmail({ email, onlyActive: true });
 
+    if (!resDataUser?.password) throw new AppError('Esse email foi registrado pelo google, tente fazer login pelo google');
+
     if (!isExistsUser || !resDataUser?.id)
       throw new AppError(ErrorDictionary.AUTH.invalidEmailOrPassword.message, 401, ErrorDictionary.AUTH.invalidEmailOrPassword.codeIntern);
 
@@ -25,7 +27,7 @@ export class LoginUseCase {
     if (hashPassoWord !== resDataUser.password)
       throw new AppError(ErrorDictionary.AUTH.invalidEmailOrPassword.message, 401, ErrorDictionary.AUTH.invalidEmailOrPassword.codeIntern);
 
-    const token = generateToken({ email, id: resDataUser.id });
+    const token = generateToken({ email, id: resDataUser.id, googleEmail: resDataUser.googleEmail });
 
     const { password: passNotUser, ...restDataUser } = resDataUser;
 

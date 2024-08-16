@@ -8,7 +8,7 @@ export const CreateUserSchema = z.object({
     invalid_type_error: 'Enviar name como string !',
   }),
 
-  phone: z.string({ required_error: 'Enviar o campo phone !', invalid_type_error: 'Enviar phone como string !' }).trim(),
+  phone: z.string({ required_error: 'Enviar o campo phone !', invalid_type_error: 'Enviar phone como string !' }).trim().optional(),
 
   email: z
     .string({
