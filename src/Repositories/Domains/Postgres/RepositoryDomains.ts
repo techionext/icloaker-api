@@ -25,6 +25,7 @@ export class RepositoryDomains implements IRepositoryDomains {
           createdAt: 'desc',
         },
       }),
+
       prisma.domains.count({
         where: {
           userId,

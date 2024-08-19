@@ -43,6 +43,7 @@ model Users {
   role     userRole   @default(USER)
   profiles Profiles[]
   domains  Domains[]
+  Campaign Campaign[]
 }
 
 model recoverPassword {
@@ -67,4 +68,79 @@ model Domains {
   createdAt DateTime @default(now())
 
   user Users @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum CampaignDevices {
+  IPHONE
+  ANDROID
+  WINDOWS
+  MACBOOK
+  LINUX
+}
+
+enum CampaignAntiSpy {
+  VPN
+  PROXY
+  TOR
+  RELAY
+  BOT
+}
+
+model Campaign {
+  id     String @id
+  userId String
+
+  // basic infos
+  origin       String[]
+  name         String
+  domain       String
+  safePage     String?
+  offerPage    String?
+  languages    String[]
+  countries    String[]
+  devices      CampaignDevices[]
+  domainStatus domainStatus      @default(PENDING)
+  manualReview Boolean           @default(false)
+
+  // allow list
+  allowIsps           String[]
+  allowRefererOrigins String[]
+  allowQueries        String[]
+  allowIps            String[]
+
+  // deny list
+  antiSpy            CampaignAntiSpy[]
+  denyLanguages      String[]
+  denyCountries      String[]
+  denyIps            String[]
+  denyIsps           String[]
+  denyQueries        String[]
+  denyRefererOrigins String[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+
+  user Users @relation(fields: [userId], references: [id])
+  log  Log[]
+
+  @@index([userId])
+}
+
+model Log {
+  id         String @id @unique @default(uuid())
+  campaignId String
+
+  ip          String?
+  redirectTo  String?  @map("redirectTo")
+  page        String?
+  referer     String?
+  userAgent   String?  @map("userAgent")
+  language    String?
+  ipinfo      Json?
+  deviceInfo  Json?
+  apiresponse String?  @map("apiresponse")
+  created     DateTime @default(now())
+  campaign    Campaign @relation(fields: [campaignId], references: [id])
+
+  @@index([campaignId])
 }
