@@ -743,6 +743,745 @@
           }
         }
       }
+    },
+    "/campaign": {
+      "post": {
+        "summary": "Criar nova campanha",
+        "description": "Esta rota é responsável por criar uma nova campanha.",
+        "tags": [
+          "campaign"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "origin": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "domain": {
+                    "type": "string",
+                    "format": "url"
+                  },
+                  "safePage": {
+                    "type": "string",
+                    "format": "url"
+                  },
+                  "offerPage": {
+                    "type": "string",
+                    "format": "url"
+                  },
+                  "languages": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "countries": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "devices": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "manualReview": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "origin",
+                  "name",
+                  "domain",
+                  "devices"
+                ]
+              },
+              "examples": {
+                "Nova campanha": {
+                  "value": {
+                    "origin": [
+                      "FACEBOOK",
+                      "INSTAGRAM"
+                    ],
+                    "name": "Campanha de exemplo",
+                    "domain": "https://exemplo.com",
+                    "safePage": "https://exemplo.com/safe",
+                    "offerPage": "https://exemplo.com/offer",
+                    "languages": [
+                      "pt",
+                      "en"
+                    ],
+                    "countries": [
+                      "BR",
+                      "US"
+                    ],
+                    "devices": [
+                      "IPHONE",
+                      "ANDROID"
+                    ],
+                    "manualReview": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Campanha criada com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": "037e419b-2677-4eed-ad9d-02306f01d2c5",
+                  "codeIntern": "CMP001",
+                  "message": "Campaign created successfully"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Listar campanhas",
+        "description": "Esta rota é responsável por listar campanhas com paginação e filtros opcionais.",
+        "tags": [
+          "campaign"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "minimum": 1
+            },
+            "description": "Número da página para paginação (por padrão 1)."
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "minimum": 1
+            },
+            "description": "Quantidade de itens por página (por padrão 10)."
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filtro opcional para busca de campanhas."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de campanhas retornada com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": [
+                    {
+                      "id": "037e419b-2677-4eed-ad9d-02306f01d2c5",
+                      "userId": "8e562b91-4d67-44b4-ad22-b9e307c0cf7e",
+                      "origin": [
+                        "FACEBOOK"
+                      ],
+                      "name": "campanha de teste",
+                      "domain": "https://teste.online",
+                      "safePage": "https://example.com",
+                      "offerPage": "https://example.com/offer",
+                      "languages": [],
+                      "countries": [
+                        "EUA",
+                        "BR",
+                        "CH"
+                      ],
+                      "devices": [
+                        "MACBOOK",
+                        "ANDROID",
+                        "WINDOWS"
+                      ],
+                      "domainStatus": "PENDING",
+                      "manualReview": true,
+                      "allowIsps": [
+                        "AS15169 Google LLC"
+                      ],
+                      "allowRefererOrigins": [
+                        "FACEBOOK",
+                        "GOOGLE"
+                      ],
+                      "allowQueries": [
+                        "facebook",
+                        "google"
+                      ],
+                      "allowIps": [
+                        "187.103.119.205",
+                        "18.206.2.213",
+                        "94.14.117.131"
+                      ],
+                      "antiSpy": [
+                        "VPN"
+                      ],
+                      "denyLanguages": [
+                        "FR",
+                        "CZ"
+                      ],
+                      "denyCountries": [
+                        "IR"
+                      ],
+                      "denyIps": [
+                        "45.123.456.123"
+                      ],
+                      "denyIsps": [],
+                      "denyQueries": [
+                        "youtube"
+                      ],
+                      "denyRefererOrigins": [
+                        "YOUTUBE"
+                      ],
+                      "createdAt": "2024-08-19T15:35:38.628Z",
+                      "updatedAt": "2024-08-19T16:31:08.203Z"
+                    },
+                    {
+                      "id": "612cde41-85d0-4a53-85d6-c09584915569",
+                      "userId": "8e562b91-4d67-44b4-ad22-b9e307c0cf7e",
+                      "origin": [],
+                      "name": "campanha de teste",
+                      "domain": "https://teste.online",
+                      "safePage": "https://example.com",
+                      "offerPage": "https://example.com/offer",
+                      "languages": [],
+                      "countries": [],
+                      "devices": [
+                        "MACBOOK",
+                        "ANDROID",
+                        "WINDOWS"
+                      ],
+                      "domainStatus": "PENDING",
+                      "manualReview": true,
+                      "allowIsps": [],
+                      "allowRefererOrigins": [],
+                      "allowQueries": [],
+                      "allowIps": [],
+                      "antiSpy": [],
+                      "denyLanguages": [],
+                      "denyCountries": [],
+                      "denyIps": [],
+                      "denyIsps": [],
+                      "denyQueries": [],
+                      "denyRefererOrigins": [],
+                      "createdAt": "2024-08-18T00:03:35.245Z",
+                      "updatedAt": "2024-08-18T00:03:35.245Z"
+                    }
+                  ],
+                  "meta": {
+                    "page": 1,
+                    "pageSize": 2,
+                    "total": 5,
+                    "totalPages": 3
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/campaign/{id}": {
+      "put": {
+        "summary": "Atualizar campanha",
+        "description": "Esta rota é responsável por atualizar os dados de uma campanha existente.",
+        "tags": [
+          "campaign"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID da campanha a ser atualizada"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "origin": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "domain": {
+                    "type": "string",
+                    "format": "url"
+                  },
+                  "safePage": {
+                    "type": "string",
+                    "format": "url"
+                  },
+                  "offerPage": {
+                    "type": "string",
+                    "format": "url"
+                  },
+                  "languages": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "countries": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "devices": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "manualReview": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "examples": {
+                "Atualizar campanha": {
+                  "value": {
+                    "origin": [
+                      "https://exemplo.com",
+                      "https://outroexemplo.com"
+                    ],
+                    "name": "Campanha Atualizada",
+                    "domain": "https://dominioatualizado.com",
+                    "safePage": "https://pagina-segura.com",
+                    "offerPage": "https://pagina-oferta.com",
+                    "languages": [
+                      "pt",
+                      "en"
+                    ],
+                    "countries": [
+                      "BR",
+                      "US"
+                    ],
+                    "devices": [
+                      "IPHONE",
+                      "ANDROID"
+                    ],
+                    "manualReview": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Campanha atualizada com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "codeIntern": "CMP007",
+                  "message": "Campaign updated successfully"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Obter detalhes da campanha",
+        "description": "Esta rota é responsável por obter os detalhes de uma campanha específica pelo ID.",
+        "tags": [
+          "campaign"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID da campanha a ser obtida"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalhes da campanha obtidos com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "id": "037e419b-2677-4eed-ad9d-02306f01d2c5",
+                    "userId": "8e562b91-4d67-44b4-ad22-b9e307c0cf7e",
+                    "origin": [
+                      "FACEBOOK"
+                    ],
+                    "name": "campanha de teste",
+                    "domain": "https://teste.online",
+                    "safePage": "https://example.com",
+                    "offerPage": "https://example.com/offer",
+                    "languages": [],
+                    "countries": [
+                      "EUA",
+                      "BR",
+                      "CH"
+                    ],
+                    "devices": [
+                      "MACBOOK",
+                      "ANDROID",
+                      "WINDOWS"
+                    ],
+                    "domainStatus": "PENDING",
+                    "manualReview": true,
+                    "allowIsps": [
+                      "AS15169 Google LLC"
+                    ],
+                    "allowRefererOrigins": [
+                      "FACEBOOK",
+                      "GOOGLE"
+                    ],
+                    "allowQueries": [
+                      "facebook",
+                      "google"
+                    ],
+                    "allowIps": [
+                      "187.103.119.205",
+                      "18.206.2.213",
+                      "94.14.117.131"
+                    ],
+                    "antiSpy": [
+                      "VPN"
+                    ],
+                    "denyLanguages": [
+                      "FR",
+                      "CZ"
+                    ],
+                    "denyCountries": [
+                      "IR",
+                      ""
+                    ],
+                    "denyIps": [
+                      "45.123.456.123"
+                    ],
+                    "denyIsps": [],
+                    "denyQueries": [
+                      "youtube"
+                    ],
+                    "denyRefererOrigins": [
+                      "YOUTUBE"
+                    ],
+                    "createdAt": "2024-08-19T15:35:38.628Z",
+                    "updatedAt": "2024-08-19T16:31:08.203Z"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletar campanha",
+        "description": "Esta rota é responsável por deletar uma campanha específica pelo ID.",
+        "tags": [
+          "campaign"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID da campanha a ser deletada"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Campanha deletada com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "codeIntern": "CMP004",
+                  "message": "Campaign deleted successfully"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/campaign/allow/{id}": {
+      "put": {
+        "summary": "Atualizar permissões da campanha",
+        "description": "Esta rota é responsável por atualizar as permissões de ISPs, origens de referenciadores, consultas e IPs permitidos de uma campanha específica pelo ID.",
+        "tags": [
+          "campaign"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID da campanha a ser atualizada"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "allowIsps": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "allowRefererOrigins": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "allowQueries": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "allowIps": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "ipv4 or ipv6"
+                    }
+                  }
+                }
+              },
+              "example": {
+                "allowIsps": [
+                  "isp1",
+                  "isp2"
+                ],
+                "allowRefererOrigins": [
+                  "https://example.com"
+                ],
+                "allowQueries": [
+                  "query1",
+                  "query2"
+                ],
+                "allowIps": [
+                  "192.168.1.1",
+                  "2001:db8::ff00:42:8329"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Permissões da campanha atualizadas com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "codeIntern": "CMP003",
+                  "message": "Campaign allow settings updated successfully"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/campaign/deny/{id}": {
+      "put": {
+        "summary": "Atualizar restrições da campanha",
+        "description": "Esta rota é responsável por atualizar as restrições anti-spy, linguagens, países, IPs, ISPs, consultas e origens de referenciadores negados de uma campanha específica pelo ID.",
+        "tags": [
+          "campaign"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID da campanha a ser atualizada"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "antiSpy": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "denyLanguages": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "denyCountries": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "denyIps": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "ipv4 or ipv6"
+                    }
+                  },
+                  "denyIsps": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "denyQueries": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "denyRefererOrigins": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "example": {
+                "antiSpy": [
+                  "METHOD_A",
+                  "METHOD_B"
+                ],
+                "denyLanguages": [
+                  "en",
+                  "es"
+                ],
+                "denyCountries": [
+                  "US",
+                  "CA"
+                ],
+                "denyIps": [
+                  "192.168.1.100",
+                  "2001:db8::ff00:42:8329"
+                ],
+                "denyIsps": [
+                  "isp1",
+                  "isp2"
+                ],
+                "denyQueries": [
+                  "query1",
+                  "query2"
+                ],
+                "denyRefererOrigins": [
+                  "https://example1.com",
+                  "https://example2.com"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Restrições da campanha atualizadas com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "codeIntern": "CMP005",
+                  "message": "Campaign deny settings updated successfully"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {

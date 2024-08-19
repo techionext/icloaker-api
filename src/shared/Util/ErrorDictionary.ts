@@ -144,4 +144,35 @@ export const ErrorDictionary = {
       message: 'The domain was deleted successfully',
     },
   },
+
+  CAMPAIGN: {
+    campaignCreatedSuccessfully: {
+      codeIntern: 'CMP001',
+      message: 'Campaign created successfully',
+    },
+    campaignNotFoundWithId: {
+      codeIntern: 'CMP002',
+      message: 'No campaign found with this ID',
+    },
+    campaignAllowSettingsUpdatedSuccessfully: {
+      codeIntern: 'CMP003',
+      message: 'Campaign allow settings updated successfully',
+    },
+    campaignDeletedSuccessfully: {
+      codeIntern: 'CMP004',
+      message: 'Campaign deleted successfully',
+    },
+    campaignDenySettingsUpdatedSuccessfully: {
+      codeIntern: 'CMP005',
+      message: 'Campaign deny settings updated successfully',
+    },
+    domainCannotBeUpdatedAfterActivation: {
+      codeIntern: 'CMP006',
+      message: 'The domain cannot be updated after activation',
+    },
+    campaignUpdatedSuccessfully: {
+      codeIntern: 'CMP007',
+      message: 'Campaign updated successfully',
+    },
+  },
 };
