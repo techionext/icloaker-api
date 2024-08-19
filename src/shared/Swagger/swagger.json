@@ -1482,6 +1482,48 @@
           }
         }
       }
+    },
+    "/users/{id}": {
+      "get": {
+        "summary": "Obter informações do usuário",
+        "description": "Esta rota retorna as informações de um usuário específico pelo ID.",
+        "tags": [
+          "users"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do usuário a ser consultado"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Informações do usuário obtidas com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": "123456",
+                  "name": "Nome do Usuário",
+                  "email": "usuario@example.com",
+                  "avatarUrl": "https://example.com/avatar.jpg",
+                  "createdAt": "2024-08-19T12:34:56Z",
+                  "updatedAt": "2024-08-19T12:34:56Z"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1495,3 +1537,4 @@
     }
   }
 }
+
