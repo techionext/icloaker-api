@@ -71,6 +71,7 @@ export namespace IUpdateDTO {
     name?: string;
     email?: string;
     role?: $Enums.userRole;
+    phone?: string;
   };
 }
 export namespace IGetUserByProviderDTO {

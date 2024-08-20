@@ -90,6 +90,18 @@ export const ErrorDictionary = {
       codeIntern: 'USR006',
       message: 'The user already has a password set',
     },
+    userNotFoundWithId: {
+      codeIntern: 'USR007',
+      message: 'No user found with this ID',
+    },
+    noPermissionToUpdateUser: {
+      codeIntern: 'USR008',
+      message: 'No permission to update the user',
+    },
+    userUpdatedSuccessfully: {
+      codeIntern: 'USR009',
+      message: 'User updated successfully',
+    },
   },
 
   SYSTEM: {
