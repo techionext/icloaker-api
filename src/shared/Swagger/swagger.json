@@ -744,7 +744,7 @@
         }
       }
     },
-    "/campaign": {
+    "/campaigns": {
       "post": {
         "summary": "Criar nova campanha",
         "description": "Esta rota é responsável por criar uma nova campanha.",
@@ -1016,7 +1016,7 @@
         }
       }
     },
-    "/campaign/{id}": {
+    "/campaigns/{id}": {
       "put": {
         "summary": "Atualizar campanha",
         "description": "Esta rota é responsável por atualizar os dados de uma campanha existente.",
@@ -1268,7 +1268,7 @@
         }
       }
     },
-    "/campaign/allow/{id}": {
+    "/campaigns/allow/{id}": {
       "put": {
         "summary": "Atualizar permissões da campanha",
         "description": "Esta rota é responsável por atualizar as permissões de ISPs, origens de referenciadores, consultas e IPs permitidos de uma campanha específica pelo ID.",
@@ -1360,7 +1360,7 @@
         }
       }
     },
-    "/campaign/deny/{id}": {
+    "/campaigns/deny/{id}": {
       "put": {
         "summary": "Atualizar restrições da campanha",
         "description": "Esta rota é responsável por atualizar as restrições anti-spy, linguagens, países, IPs, ISPs, consultas e origens de referenciadores negados de uma campanha específica pelo ID.",
@@ -1587,6 +1587,230 @@
                 "example": {
                   "codeIntern": "USR009",
                   "message": "User updated successfully"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/campaignLogs": {
+      "post": {
+        "summary": "Criar log de campanha",
+        "description": "Esta rota permite criar um log para uma campanha específica.",
+        "tags": [
+          "campaignLogs"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "campaignId": {
+                    "type": "string",
+                    "description": "ID da campanha"
+                  },
+                  "ip": {
+                    "type": "string",
+                    "description": "Endereço IP do usuário"
+                  },
+                  "redirectTo": {
+                    "type": "string",
+                    "description": "URL de redirecionamento"
+                  },
+                  "page": {
+                    "type": "string",
+                    "description": "Página acessada"
+                  },
+                  "referer": {
+                    "type": "string",
+                    "description": "Referência da página anterior"
+                  },
+                  "userAgent": {
+                    "type": "string",
+                    "description": "Agente do usuário"
+                  },
+                  "language": {
+                    "type": "string",
+                    "description": "Idioma do navegador"
+                  },
+                  "ipInfo": {
+                    "type": "object",
+                    "description": "Informações adicionais sobre o IP"
+                  },
+                  "deviceInfo": {
+                    "type": "object",
+                    "description": "Informações sobre o dispositivo"
+                  },
+                  "apiResponse": {
+                    "type": "string",
+                    "description": "Resposta da API"
+                  }
+                }
+              },
+              "example": {
+                "campaignId": "abc123",
+                "ip": "192.168.0.1",
+                "redirectTo": "https://exemplo.com/destino",
+                "page": "/oferta",
+                "referer": "https://google.com",
+                "userAgent": "Mozilla/5.0",
+                "language": "pt-BR",
+                "ipInfo": {
+                  "country": "Brazil",
+                  "city": "São Paulo"
+                },
+                "deviceInfo": {
+                  "type": "Mobile",
+                  "os": "Android"
+                },
+                "apiResponse": "200 OK"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Log de campanha criado com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "codeIntern": "CMP008",
+                  "message": "Campaign log created successfully"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/campaignLogs/{campaignId}": {
+      "get": {
+        "summary": "Listar logs de campanha",
+        "description": "Esta rota permite listar os logs de uma campanha específica, com paginação.",
+        "tags": [
+          "campaignLogs"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "campaignId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID da campanha"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "description": "Número da página"
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "description": "Quantidade de logs por página"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de logs de campanha",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": [
+                    {
+                      "id": "67b0c0f1-af03-480b-a00e-48dc3703cd4b",
+                      "campaignId": "a76802ed-31d9-43d7-8b21-a191c380a65e",
+                      "ip": "192.168.0.1",
+                      "redirectTo": "https://exemplo.com/destino",
+                      "page": "/oferta",
+                      "referer": "https://google.com",
+                      "userAgent": "Mozilla/5.0",
+                      "language": "pt-BR",
+                      "ipInfo": {
+                        "country": "Brazil",
+                        "city": "São Paulo"
+                      },
+                      "deviceInfo": {
+                        "type": "Mobile",
+                        "os": "Android"
+                      },
+                      "apiResponse": "200 OK",
+                      "createdAt": "2024-08-20T16:52:31.070Z"
+                    },
+                    {
+                      "id": "58d2fa00-7abc-42f4-8dfe-db2120022f07",
+                      "campaignId": "a76802ed-31d9-43d7-8b21-a191c380a65e",
+                      "ip": "192.168.0.1",
+                      "redirectTo": "https://exemplo.com/destino",
+                      "page": "/oferta",
+                      "referer": "https://google.com",
+                      "userAgent": "Mozilla/5.0",
+                      "language": "pt-BR",
+                      "ipInfo": {
+                        "country": "Brazil",
+                        "city": "São Paulo"
+                      },
+                      "deviceInfo": {
+                        "type": "Mobile",
+                        "os": "Android"
+                      },
+                      "apiResponse": "200 OK",
+                      "createdAt": "2024-08-20T16:52:27.573Z"
+                    },
+                    {
+                      "id": "9dc73328-62ed-45a6-b067-961960132bd4",
+                      "campaignId": "a76802ed-31d9-43d7-8b21-a191c380a65e",
+                      "ip": null,
+                      "redirectTo": null,
+                      "page": null,
+                      "referer": null,
+                      "userAgent": null,
+                      "language": null,
+                      "ipInfo": null,
+                      "deviceInfo": null,
+                      "apiResponse": null,
+                      "createdAt": "2024-08-20T16:48:08.054Z"
+                    },
+                    {
+                      "id": "778b4094-45cf-4ba4-b592-1349e1729d46",
+                      "campaignId": "a76802ed-31d9-43d7-8b21-a191c380a65e",
+                      "ip": null,
+                      "redirectTo": null,
+                      "page": null,
+                      "referer": null,
+                      "userAgent": null,
+                      "language": null,
+                      "ipInfo": null,
+                      "deviceInfo": null,
+                      "apiResponse": null,
+                      "createdAt": "2024-08-20T16:47:41.697Z"
+                    }
+                  ],
+                  "meta": {
+                    "page": 1,
+                    "pageSize": 10,
+                    "total": 4,
+                    "totalPages": 1
+                  }
                 }
               }
             }

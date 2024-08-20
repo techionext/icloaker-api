@@ -120,27 +120,28 @@ model Campaign {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
 
-  user Users @relation(fields: [userId], references: [id])
-  log  Log[]
+  user Users         @relation(fields: [userId], references: [id])
+  log  CampaignLog[]
 
   @@index([userId])
 }
 
-model Log {
+model CampaignLog {
   id         String @id @unique @default(uuid())
   campaignId String
 
   ip          String?
-  redirectTo  String?  @map("redirectTo")
+  redirectTo  String?
   page        String?
   referer     String?
-  userAgent   String?  @map("userAgent")
+  userAgent   String?
   language    String?
-  ipinfo      Json?
+  ipInfo      Json?
   deviceInfo  Json?
-  apiresponse String?  @map("apiresponse")
-  created     DateTime @default(now())
+  apiResponse String?
+  createdAt   DateTime @default(now())
   campaign    Campaign @relation(fields: [campaignId], references: [id])
 
   @@index([campaignId])
+  @@map("CampaignLogs")
 }

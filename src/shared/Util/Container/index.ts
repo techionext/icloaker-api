@@ -1,3 +1,4 @@
+import { RepositoryCampaignLogs } from 'Repositories/CampaignLogs/Postgres/RepositoryCampaignLogs';
 import { RepositoryCampaigns } from 'Repositories/Campaigns/Postgres/RepositoryCampaigns';
 import { RepositoryDomains } from 'Repositories/Domains/Postgres/RepositoryDomains';
 import { RepositoryRecoverPassword } from 'Repositories/RecoverPassword/Postgres/RepositoryRecoverPassword';
@@ -8,3 +9,4 @@ container.registerSingleton<RepositoryUsers>('RepositoryUsers', RepositoryUsers)
 container.registerSingleton<RepositoryRecoverPassword>('RepositoryRecoverPassword', RepositoryRecoverPassword);
 container.registerSingleton<RepositoryDomains>('RepositoryDomains', RepositoryDomains);
 container.registerSingleton<RepositoryCampaigns>('RepositoryCampaigns', RepositoryCampaigns);
+container.registerSingleton<RepositoryCampaignLogs>('RepositoryCampaignLogs', RepositoryCampaignLogs);

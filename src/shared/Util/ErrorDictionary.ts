@@ -186,5 +186,9 @@ export const ErrorDictionary = {
       codeIntern: 'CMP007',
       message: 'Campaign updated successfully',
     },
+    campaignLogCreatedSuccessfully: {
+      codeIntern: 'CMP008',
+      message: 'Campaign log created successfully',
+    },
   },
 };
