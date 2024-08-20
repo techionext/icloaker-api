@@ -75,7 +75,7 @@ export class RepositoryUsers implements IRepositoryUsers {
       isExists: !!data,
     };
   }
-  async Update({ id, email, name, role }: IUpdateDTO.Params) {
+  async Update({ id, email, name, role, phone }: IUpdateDTO.Params) {
     await prisma.users.update({
       where: {
         id,
@@ -84,6 +84,7 @@ export class RepositoryUsers implements IRepositoryUsers {
         email,
         name,
         role,
+        phone,
       },
     });
   }

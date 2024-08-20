@@ -1523,6 +1523,75 @@
             }
           }
         }
+      },
+      "put": {
+        "summary": "Atualizar informações do usuário",
+        "description": "Esta rota permite atualizar as informações de um usuário específico pelo ID.",
+        "tags": [
+          "users"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do usuário a ser atualizado"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "Novo email do usuário"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "Novo nome do usuário"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "description": "Novo telefone do usuário"
+                  },
+                  "role": {
+                    "type": "string",
+                    "description": "Novo papel do usuário"
+                  }
+                }
+              },
+              "example": {
+                "email": "novoemail@example.com",
+                "name": "Novo Nome",
+                "phone": "5521987654321",
+                "role": "ADMIN"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Usuário atualizado com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "codeIntern": "USR009",
+                  "message": "User updated successfully"
+                }
+              }
+            }
+          }
+        }
       }
     }
   },
@@ -1537,4 +1606,3 @@
     }
   }
 }
-
