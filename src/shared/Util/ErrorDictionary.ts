@@ -222,5 +222,9 @@ export const ErrorDictionary = {
       codeIntern: 'SYS001',
       message: 'Unknown error!',
     },
+    zodError: {
+      codeIntern: 'SYS002',
+      message: 'Request body error!',
+    },
   },
 };

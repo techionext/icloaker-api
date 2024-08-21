@@ -3,16 +3,28 @@ import { $Enums, Campaign } from '@prisma/client';
 export namespace ICreateDTO {
   export type Params = {
     id: string;
-    origin: string[];
+    slug: string;
+    origin: $Enums.origins[];
+    googleSources?: $Enums.googleTrafficSource[];
     name: string;
     domain: string;
     safePage?: string;
-    offerPage?: string;
+    safePageMethod: $Enums.safePageMethods;
+    offerPage: string[];
+    offerPageMethod: $Enums.offerPageMethods;
     languages?: string[];
     countries?: string[];
     devices: $Enums.campaignDevices[];
     domainStatus?: $Enums.domainStatus;
     manualReview?: boolean;
+    pageType: $Enums.pageTypes;
+    disclaimer: string;
+    companyName: string;
+    address: string;
+    vat: string;
+    supportPhone: string;
+    supportEmail: string;
+    logo?: string;
     userId: string;
   };
 }
@@ -70,16 +82,26 @@ export namespace IUpdateDenyConfigDTO {
 export namespace IUpdateDTO {
   export type Params = {
     id: string;
-    origin?: string[];
+    origin?: $Enums.origins[];
+    googleSources?: $Enums.googleTrafficSource[];
     name?: string;
     domain?: string;
     safePage?: string;
-    offerPage?: string;
+    safePageMethod?: $Enums.safePageMethods;
+    offerPage?: string[];
+    offerPageMethod?: $Enums.offerPageMethods;
     languages?: string[];
     countries?: string[];
     devices?: $Enums.campaignDevices[];
     domainStatus?: $Enums.domainStatus;
     manualReview?: boolean;
+    pageType?: $Enums.pageTypes;
+    disclaimer?: string;
+    companyName?: string;
+    address?: string;
+    vat?: string;
+    supportPhone?: string;
+    supportEmail?: string;
   };
 }
 export namespace IDeleteDTO {
