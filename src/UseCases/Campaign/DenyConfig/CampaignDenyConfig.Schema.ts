@@ -4,7 +4,7 @@ import { z } from 'zod';
 export const CampaignDenyConfigSchema = z.object({
   id: z.string({ required_error: 'enviar id', invalid_type_error: 'enviar id como string !' }).trim(),
 
-  antiSpy: z.nativeEnum($Enums.CampaignAntiSpy, { invalid_type_error: 'enviar campo antiSpy como array de string' }).array(),
+  antiSpy: z.nativeEnum($Enums.campaignAntiSpy, { invalid_type_error: 'enviar campo antiSpy como array de string' }).array(),
 
   denyLanguages: z.string({ invalid_type_error: 'enviar campo denyLanguages como array de string' }).trim().array().optional(),
 

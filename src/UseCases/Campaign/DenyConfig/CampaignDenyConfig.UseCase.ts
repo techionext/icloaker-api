@@ -1,5 +1,5 @@
-import { IRepositoryCampaigns } from 'Repositories/Campaigns/IRepositoryCampaigns';
-import { IRepositoryUsers } from 'Repositories/User/IRepositoryUser';
+import { IRepositoryCampaign } from 'Repositories/Campaign/IRepositoryCampaign';
+import { IRepositoryUser } from 'Repositories/User/IRepositoryUser';
 import { inject, injectable } from 'tsyringe';
 
 import { AppError } from '@shared/Util/AppError/AppError';
@@ -12,8 +12,8 @@ import { ICampaignDenyConfigDTO } from './DTO/ICampaignDenyConfigDTO';
 @injectable()
 export class CampaignDenyConfigUseCase {
   constructor(
-    @inject('RepositoryUsers') private RepositoryUsers: IRepositoryUsers,
-    @inject('RepositoryCampaigns') private RepositoryCampaigns: IRepositoryCampaigns,
+    @inject('RepositoryUser') private RepositoryUser: IRepositoryUser,
+    @inject('RepositoryCampaign') private RepositoryCampaign: IRepositoryCampaign,
   ) {}
 
   async execute(request: ICampaignDenyConfigDTO.Params) {
@@ -22,14 +22,13 @@ export class CampaignDenyConfigUseCase {
       data: request,
     });
 
-    const { data: dataUser } = await this.RepositoryUsers.FindUserById({ id: token.id });
-    if (!dataUser) throw new AppError(ErrorDictionary.USER.dataNotFound.message, 401, ErrorDictionary.USER.dataNotFound.codeIntern);
+    const { data: dataUser } = await this.RepositoryUser.GetById({ id: token.id });
+    if (!dataUser) throw new AppError(ErrorDictionary.USER.dataNotFound, 401);
 
-    const { isExists: isExistsCampaign } = await this.RepositoryCampaigns.FindById({ id, userId: dataUser.id });
-    if (!isExistsCampaign)
-      throw new AppError(ErrorDictionary.CAMPAIGN.campaignNotFoundWithId.message, 400, ErrorDictionary.CAMPAIGN.campaignNotFoundWithId.codeIntern);
+    const { isExists: isExistsCampaign } = await this.RepositoryCampaign.FindById({ id, userId: dataUser.id });
+    if (!isExistsCampaign) throw new AppError(ErrorDictionary.CAMPAIGN.campaignNotFoundWithId, 400);
 
-    await this.RepositoryCampaigns.UpdateDenyConfig({
+    await this.RepositoryCampaign.UpdateDenyConfig({
       id,
       denyIps,
       antiSpy,

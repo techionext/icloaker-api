@@ -1,5 +1,5 @@
-import { IRepositoryDomains } from 'Repositories/Domains/IRepositoryDomains';
-import { IRepositoryUsers } from 'Repositories/User/IRepositoryUser';
+import { IRepositoryDomain } from 'Repositories/Domain/IRepositoryDomain';
+import { IRepositoryUser } from 'Repositories/User/IRepositoryUser';
 import { inject, injectable } from 'tsyringe';
 
 import { AppError } from '@shared/Util/AppError/AppError';
@@ -12,8 +12,8 @@ import { IDomainGetByIdDTO } from './DTO/IDomainGetByIdDTO';
 @injectable()
 export class DomainGetByIdUseCase {
   constructor(
-    @inject('RepositoryUsers') private RepositoryUsers: IRepositoryUsers,
-    @inject('RepositoryDomains') private RepositoryDomains: IRepositoryDomains,
+    @inject('RepositoryUser') private RepositoryUser: IRepositoryUser,
+    @inject('RepositoryDomain') private RepositoryDomain: IRepositoryDomain,
   ) {}
 
   async execute(request: IDomainGetByIdDTO.Params) {
@@ -22,10 +22,10 @@ export class DomainGetByIdUseCase {
       data: request,
     });
 
-    const { data: dataUser } = await this.RepositoryUsers.FindUserById({ id: token.id });
-    if (!dataUser) throw new AppError(ErrorDictionary.USER.dataNotFound.message, 401, ErrorDictionary.USER.dataNotFound.codeIntern);
+    const { data: dataUser } = await this.RepositoryUser.GetById({ id: token.id });
+    if (!dataUser) throw new AppError(ErrorDictionary.USER.dataNotFound, 401);
 
-    const { data } = await this.RepositoryDomains.GetById({ id, userId: dataUser.id });
+    const { data } = await this.RepositoryDomain.GetById({ id, userId: dataUser.id });
 
     const returnResponse = { data };
 

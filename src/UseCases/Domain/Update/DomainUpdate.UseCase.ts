@@ -1,5 +1,5 @@
-import { IRepositoryDomains } from 'Repositories/Domains/IRepositoryDomains';
-import { IRepositoryUsers } from 'Repositories/User/IRepositoryUser';
+import { IRepositoryDomain } from 'Repositories/Domain/IRepositoryDomain';
+import { IRepositoryUser } from 'Repositories/User/IRepositoryUser';
 import { inject, injectable } from 'tsyringe';
 
 import { AppError } from '@shared/Util/AppError/AppError';
@@ -12,8 +12,8 @@ import { IDomainUpdateDTO } from './DTO/IDomainUpdateDTO';
 @injectable()
 export class DomainUpdateUseCase {
   constructor(
-    @inject('RepositoryUsers') private RepositoryUsers: IRepositoryUsers,
-    @inject('RepositoryDomains') private RepositoryDomains: IRepositoryDomains,
+    @inject('RepositoryUser') private RepositoryUser: IRepositoryUser,
+    @inject('RepositoryDomain') private RepositoryDomain: IRepositoryDomain,
   ) {}
 
   async execute(request: IDomainUpdateDTO.Params) {
@@ -22,17 +22,15 @@ export class DomainUpdateUseCase {
       data: request,
     });
 
-    const { data: dataUser } = await this.RepositoryUsers.FindUserById({ id: token.id });
-    if (!dataUser) throw new AppError(ErrorDictionary.USER.dataNotFound.message, 401, ErrorDictionary.USER.dataNotFound.codeIntern);
+    const { data: dataUser } = await this.RepositoryUser.GetById({ id: token.id });
+    if (!dataUser) throw new AppError(ErrorDictionary.USER.dataNotFound, 401);
 
-    const { isExists: isExistsDomain, data: dataDomain } = await this.RepositoryDomains.GetById({ id, userId: dataUser.id });
-    if (!isExistsDomain)
-      throw new AppError(ErrorDictionary.DOMAINS.domainNotFoundWithUrl.message, 400, ErrorDictionary.DOMAINS.domainNotFoundWithUrl.codeIntern);
+    const { isExists: isExistsDomain, data: dataDomain } = await this.RepositoryDomain.GetById({ id, userId: dataUser.id });
+    if (!isExistsDomain) throw new AppError(ErrorDictionary.DOMAINS.domainNotFoundWithUrl, 400);
 
-    if (dataDomain?.status === 'ACTIVE')
-      throw new AppError(ErrorDictionary.DOMAINS.domainAlreadyActivated.message, 400, ErrorDictionary.DOMAINS.domainAlreadyActivated.codeIntern);
+    if (dataDomain?.status === 'ACTIVE') throw new AppError(ErrorDictionary.DOMAINS.domainAlreadyActivated, 400);
 
-    await this.RepositoryDomains.Update({ id, url });
+    await this.RepositoryDomain.Update({ id, url });
 
     const returnResponse = {
       ...ErrorDictionary.DOMAINS.domainUpdatedSuccessfully,

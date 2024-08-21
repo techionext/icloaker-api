@@ -1,4 +1,4 @@
-import { recoverPassword } from '@prisma/client';
+import { RecoverPassword } from '@prisma/client';
 
 export namespace ICreateDTO {
   export type Params = {
@@ -8,25 +8,25 @@ export namespace ICreateDTO {
   };
 }
 
-export namespace IFindByIdDTO {
+export namespace IGetByIdDTO {
   export type Params = {
     id: string;
   };
 
   export type Result = {
     isExists: boolean;
-    data: recoverPassword | null;
+    data: RecoverPassword | null;
   };
 }
 
-export namespace IFindByUserIdDTO {
+export namespace IGetByUserIdDTO {
   export type Params = {
     userId: string;
   };
 
   export type Result = {
     isExists: boolean;
-    data: recoverPassword | null;
+    data: RecoverPassword | null;
   };
 }
 
@@ -39,9 +39,9 @@ export namespace IDeleteByIdDTO {
 export interface IRepositoryRecoverPassword {
   Create(data: ICreateDTO.Params): Promise<void>;
 
-  FindById(data: IFindByIdDTO.Params): Promise<IFindByIdDTO.Result>;
+  GetById(data: IGetByIdDTO.Params): Promise<IGetByIdDTO.Result>;
 
-  FindByUserId(data: IFindByUserIdDTO.Params): Promise<IFindByUserIdDTO.Result>;
+  GetByUserId(data: IGetByUserIdDTO.Params): Promise<IGetByUserIdDTO.Result>;
 
   DeleteById(data: IDeleteByIdDTO.Params): Promise<void>;
 }

@@ -5,12 +5,12 @@ import { logger } from '@shared/Util/configLogger';
 import { env } from '@shared/Util/Env/Env';
 
 export const transporter = nodemailer.createTransport({
-  host: env.EMAIL_HOST,
-  port: Number(env.EMAIL_HOST),
+  host: env.EMAIL.HOST,
+  port: Number(env.EMAIL.PORT),
   secure: false,
   auth: {
-    user: env.EMAIL_USER,
-    pass: env.EMAIL_PASS,
+    user: env.EMAIL.USER,
+    pass: env.EMAIL.PASS,
   },
   tls: { rejectUnauthorized: false },
 });

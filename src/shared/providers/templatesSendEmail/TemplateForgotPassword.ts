@@ -22,7 +22,7 @@ export const TemplateForgotPassword = ({ id, name }: IForgotPassword) => `
       </div>  
 
       <div>
-        <a target="_blank" href=${env.LINK_RECOVER_PASSWORD}${id}>
+        <a target="_blank" href=${env.REDIRECT_LINKS.RECOVER_PASSWORD}${id}>
           <button style="
                 background-color: #3980f5;
                 color: white;

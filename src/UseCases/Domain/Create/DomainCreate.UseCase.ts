@@ -1,5 +1,5 @@
-import { IRepositoryDomains } from 'Repositories/Domains/IRepositoryDomains';
-import { IRepositoryUsers } from 'Repositories/User/IRepositoryUser';
+import { IRepositoryDomain } from 'Repositories/Domain/IRepositoryDomain';
+import { IRepositoryUser } from 'Repositories/User/IRepositoryUser';
 import { inject, injectable } from 'tsyringe';
 
 import { handleGenerateUuid } from '@shared/features/handleGenerateUuid/handleGenerateUuid';
@@ -13,8 +13,8 @@ import { IDomainCreateDTO } from './DTO/IDomainCreateDTO';
 @injectable()
 export class DomainCreateUseCase {
   constructor(
-    @inject('RepositoryUsers') private RepositoryUsers: IRepositoryUsers,
-    @inject('RepositoryDomains') private RepositoryDomains: IRepositoryDomains,
+    @inject('RepositoryUser') private RepositoryUser: IRepositoryUser,
+    @inject('RepositoryDomain') private RepositoryDomain: IRepositoryDomain,
   ) {}
 
   async execute(request: IDomainCreateDTO.Params) {
@@ -23,16 +23,15 @@ export class DomainCreateUseCase {
       data: request,
     });
 
-    const { data: dataUser } = await this.RepositoryUsers.FindUserById({ id: token.id });
-    if (!dataUser) throw new AppError(ErrorDictionary.USER.dataNotFound.message, 401, ErrorDictionary.USER.dataNotFound.codeIntern);
+    const { data: dataUser } = await this.RepositoryUser.GetById({ id: token.id });
+    if (!dataUser) throw new AppError(ErrorDictionary.USER.dataNotFound, 401);
 
-    const { isExists: isExistsDomain } = await this.RepositoryDomains.FindByUrl({ url, userId: dataUser.id });
-    if (isExistsDomain)
-      throw new AppError(ErrorDictionary.DOMAINS.domainAlreadyRegistered.message, 400, ErrorDictionary.DOMAINS.domainAlreadyRegistered.codeIntern);
+    const { isExists: isExistsDomain } = await this.RepositoryDomain.FindByUrl({ url, userId: dataUser.id });
+    if (isExistsDomain) throw new AppError(ErrorDictionary.DOMAINS.domainAlreadyRegistered, 400);
 
     const id = handleGenerateUuid();
 
-    await this.RepositoryDomains.Create({
+    await this.RepositoryDomain.Create({
       id,
       url,
       userId: dataUser.id,

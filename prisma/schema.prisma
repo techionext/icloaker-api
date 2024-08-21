@@ -19,38 +19,46 @@ enum profileProviders {
   GOOGLE
 }
 
-model Profiles {
+model Profile {
   id            String           @id @default(uuid())
   userId        String
   provider      profileProviders
   providerId    String
   providerEmail String
 
-  user Users @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerId])
+  @@map("Profiles")
 }
 
-model Users {
+model User {
   id        String   @id
+  avatar    String?
+  avatarKey String?
   name      String
   phone     String?
   email     String?  @unique
   password  String?
   active    Boolean  @default(true)
   createdAt DateTime @default(now())
+  role      userRole @default(USER)
 
-  role     userRole   @default(USER)
-  profiles Profiles[]
-  domains  Domains[]
-  Campaign Campaign[]
+  recoverPassword RecoverPassword[]
+  profiles        Profile[]
+  Domain          Domain[]
+  Campaign        Campaign[]
+
+  @@map("Users")
 }
 
-model recoverPassword {
+model RecoverPassword {
   id           String   @id
   userId       String
   createdAt    DateTime @default(now())
   expirationAt DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 enum domainStatus {
@@ -59,7 +67,7 @@ enum domainStatus {
   INACTIVE
 }
 
-model Domains {
+model Domain {
   id     String       @id
   url    String
   status domainStatus @default(INACTIVE)
@@ -67,10 +75,12 @@ model Domains {
 
   createdAt DateTime @default(now())
 
-  user Users @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("Domains")
 }
 
-enum CampaignDevices {
+enum campaignDevices {
   IPHONE
   ANDROID
   WINDOWS
@@ -78,7 +88,7 @@ enum CampaignDevices {
   LINUX
 }
 
-enum CampaignAntiSpy {
+enum campaignAntiSpy {
   VPN
   PROXY
   TOR
@@ -86,21 +96,67 @@ enum CampaignAntiSpy {
   BOT
 }
 
+enum safePageMethods {
+  EXTERNAL
+  INTERNAL
+}
+
+enum offerPageMethods {
+  SINGLE
+  AB
+}
+
+enum pageTypes {
+  PHISIC
+  MIDIA
+}
+
+enum origins {
+  FACEBOOK
+  GOOGLE
+  TIKTOK
+  KWAI
+  MGID
+  OUTBRAIN
+  TABOOLA
+}
+
+enum googleTrafficSource {
+  YOUTUBE
+  SEARCH
+  DISPLAY_NETWORK
+  P_MAX
+  DEMAND
+}
+
 model Campaign {
   id     String @id
+  slug   String
   userId String
 
   // basic infos
-  origin       String[]
-  name         String
-  domain       String
-  safePage     String?
-  offerPage    String?
-  languages    String[]
-  countries    String[]
-  devices      CampaignDevices[]
-  domainStatus domainStatus      @default(PENDING)
-  manualReview Boolean           @default(false)
+  origin          origins[]
+  googleSources   googleTrafficSource[]
+  name            String
+  domain          String
+  safePage        String?
+  safePageMethod  safePageMethods
+  offerPage       String[]
+  offerPageMethod offerPageMethods
+  languages       String[]
+  countries       String[]
+  devices         campaignDevices[]
+  domainStatus    domainStatus          @default(PENDING)
+  manualReview    Boolean               @default(false)
+  pageType        pageTypes
+  disclaimer      String
+  companyName     String
+  address         String
+  vat             String // CNPJ
+  supportPhone    String
+  supportEmail    String
+  logo            String?
+  logoKey         String?
 
   // allow list
   allowIsps           String[]
@@ -109,7 +165,7 @@ model Campaign {
   allowIps            String[]
 
   // deny list
-  antiSpy            CampaignAntiSpy[]
+  antiSpy            campaignAntiSpy[]
   denyLanguages      String[]
   denyCountries      String[]
   denyIps            String[]
@@ -120,10 +176,12 @@ model Campaign {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
 
-  user Users         @relation(fields: [userId], references: [id])
+  user User          @relation(fields: [userId], references: [id])
   log  CampaignLog[]
 
   @@index([userId])
+  @@index([slug])
+  @@map("Campaigns")
 }
 
 model CampaignLog {

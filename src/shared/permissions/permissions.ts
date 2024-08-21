@@ -19,7 +19,7 @@ export const permissions: Record<Roles, PermissionsByRole> = {
     can('create', 'User', { role: { $ne: 'ROOT' } });
 
     cannot(['update', 'delete'], ['User']);
-    can(['update', 'delete'], 'User', { role: { $ne: 'ROOT' }, id: { $eq: user.id } });
+    can(['update', 'delete'], 'User', { role: { $ne: 'ROOT' }, tenantId: { $eq: user.tenantId } });
   },
   COLLABORATOR: (user, { can, cannot }) => {
     can('manage', 'all');

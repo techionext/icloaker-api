@@ -1,6 +1,6 @@
-import { IRepositoryCampaignLogs } from 'Repositories/CampaignLogs/IRepositoryCampaignLogs';
-import { IRepositoryCampaigns } from 'Repositories/Campaigns/IRepositoryCampaigns';
-import { IRepositoryUsers } from 'Repositories/User/IRepositoryUser';
+import { IRepositoryCampaign } from 'Repositories/Campaign/IRepositoryCampaign';
+import { IRepositoryCampaignLog } from 'Repositories/CampaignLog/IRepositoryCampaignLog';
+import { IRepositoryUser } from 'Repositories/User/IRepositoryUser';
 import { inject, injectable } from 'tsyringe';
 
 import { AppError } from '@shared/Util/AppError/AppError';
@@ -13,9 +13,9 @@ import { ICampaignLogGetDTO } from './DTO/ICampaignLogGetDTO';
 @injectable()
 export class CampaignLogGetUseCase {
   constructor(
-    @inject('RepositoryUsers') private RepositoryUsers: IRepositoryUsers,
-    @inject('RepositoryCampaigns') private RepositoryCampaigns: IRepositoryCampaigns,
-    @inject('RepositoryCampaignLogs') private RepositoryCampaignLogs: IRepositoryCampaignLogs,
+    @inject('RepositoryUser') private RepositoryUser: IRepositoryUser,
+    @inject('RepositoryCampaign') private RepositoryCampaign: IRepositoryCampaign,
+    @inject('RepositoryCampaignLog') private RepositoryCampaignLog: IRepositoryCampaignLog,
   ) {}
 
   async execute(request: ICampaignLogGetDTO.Params) {
@@ -24,14 +24,13 @@ export class CampaignLogGetUseCase {
       data: request,
     });
 
-    const { data: dataUser } = await this.RepositoryUsers.FindUserById({ id: token.id });
-    if (!dataUser) throw new AppError(ErrorDictionary.USER.dataNotFound.message, 401, ErrorDictionary.USER.dataNotFound.codeIntern);
+    const { data: dataUser } = await this.RepositoryUser.GetById({ id: token.id });
+    if (!dataUser) throw new AppError(ErrorDictionary.USER.dataNotFound, 401);
 
-    const { isExists } = await this.RepositoryCampaigns.FindById({ id: campaignId, userId: dataUser.id });
-    if (!isExists)
-      throw new AppError(ErrorDictionary.CAMPAIGN.campaignNotFoundWithId.message, 400, ErrorDictionary.CAMPAIGN.campaignNotFoundWithId.codeIntern);
+    const { isExists } = await this.RepositoryCampaign.FindById({ id: campaignId, userId: dataUser.id });
+    if (!isExists) throw new AppError(ErrorDictionary.CAMPAIGN.campaignNotFoundWithId, 400);
 
-    const { data, meta } = await this.RepositoryCampaignLogs.Get({ campaignId, page, pageSize });
+    const { data, meta } = await this.RepositoryCampaignLog.Get({ campaignId, page, pageSize });
 
     const returnResponse = {
       data: data.map((item) => ({

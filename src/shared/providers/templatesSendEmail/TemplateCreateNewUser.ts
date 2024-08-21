@@ -24,7 +24,7 @@ export const TemplateCreateNewUser = ({ name, email, password }: ICreateNewUser)
 </div>
 
 <div>
-  <a target="_blank" href=${env.LINK_LOGIN}>
+  <a target="_blank" href=${env.REDIRECT_LINKS.LOGIN}>
     <button style="
           background-color: #3980f5;
           color: white;

@@ -1,5 +1,5 @@
-import { IRepositoryCampaigns } from 'Repositories/Campaigns/IRepositoryCampaigns';
-import { IRepositoryUsers } from 'Repositories/User/IRepositoryUser';
+import { IRepositoryCampaign } from 'Repositories/Campaign/IRepositoryCampaign';
+import { IRepositoryUser } from 'Repositories/User/IRepositoryUser';
 import { inject, injectable } from 'tsyringe';
 
 import { AppError } from '@shared/Util/AppError/AppError';
@@ -12,31 +12,44 @@ import { ICampaignUpdateDTO } from './DTO/ICampaignUpdateDTO';
 @injectable()
 export class CampaignUpdateUseCase {
   constructor(
-    @inject('RepositoryUsers') private RepositoryUsers: IRepositoryUsers,
-    @inject('RepositoryCampaigns') private RepositoryCampaigns: IRepositoryCampaigns,
+    @inject('RepositoryUser') private RepositoryUser: IRepositoryUser,
+    @inject('RepositoryCampaign') private RepositoryCampaign: IRepositoryCampaign,
   ) {}
 
   async execute(request: ICampaignUpdateDTO.Params) {
-    const { token, id, countries, devices, domain, languages, manualReview, name, offerPage, origin, safePage } = ZODVerifyParse({
+    const data = ZODVerifyParse({
       schema: CampaignUpdateSchema,
       data: request,
     });
 
-    const { data: dataUser } = await this.RepositoryUsers.FindUserById({ id: token.id });
-    if (!dataUser) throw new AppError(ErrorDictionary.USER.dataNotFound.message, 401, ErrorDictionary.USER.dataNotFound.codeIntern);
+    const { data: dataUser } = await this.RepositoryUser.GetById({ id: data.token.id });
+    if (!dataUser) throw new AppError(ErrorDictionary.USER.dataNotFound, 401);
 
-    const { isExists: isExistsCampaign, data: dataCampaign } = await this.RepositoryCampaigns.GetById({ id, userId: dataUser.id });
-    if (!isExistsCampaign)
-      throw new AppError(ErrorDictionary.CAMPAIGN.campaignNotFoundWithId.message, 400, ErrorDictionary.CAMPAIGN.campaignNotFoundWithId.codeIntern);
+    const { isExists: isExistsCampaign } = await this.RepositoryCampaign.GetById({ id: data.id, userId: dataUser.id });
+    if (!isExistsCampaign) throw new AppError(ErrorDictionary.CAMPAIGN.campaignNotFoundWithId, 400);
 
-    if (dataCampaign?.domainStatus === 'ACTIVE' && domain)
-      throw new AppError(
-        ErrorDictionary.CAMPAIGN.domainCannotBeUpdatedAfterActivation.message,
-        400,
-        ErrorDictionary.CAMPAIGN.domainCannotBeUpdatedAfterActivation.codeIntern,
-      );
-
-    await this.RepositoryCampaigns.Update({ id, countries, devices, domain, languages, manualReview, name, offerPage, origin, safePage });
+    await this.RepositoryCampaign.Update({
+      id: data.id,
+      origin: data.origin,
+      googleSources: data.googleSources,
+      name: data.name,
+      domain: data.domain,
+      safePage: data.safePage,
+      safePageMethod: data.safePageMethod,
+      offerPage: data.offerPage,
+      offerPageMethod: data.offerPageMethod,
+      languages: data.languages,
+      countries: data.countries,
+      devices: data.devices,
+      manualReview: data.manualReview,
+      pageType: data.pageType,
+      disclaimer: data.disclaimer,
+      companyName: data.companyName,
+      address: data.address,
+      vat: data.vat,
+      supportPhone: data.supportPhone,
+      supportEmail: data.supportEmail,
+    });
 
     const returnResponse = {
       ...ErrorDictionary.CAMPAIGN.campaignUpdatedSuccessfully,

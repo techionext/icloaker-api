@@ -1,5 +1,5 @@
-import { IRepositoryCampaignLogs } from 'Repositories/CampaignLogs/IRepositoryCampaignLogs';
-import { IRepositoryCampaigns } from 'Repositories/Campaigns/IRepositoryCampaigns';
+import { IRepositoryCampaign } from 'Repositories/Campaign/IRepositoryCampaign';
+import { IRepositoryCampaignLog } from 'Repositories/CampaignLog/IRepositoryCampaignLog';
 import { inject, injectable } from 'tsyringe';
 
 import { AppError } from '@shared/Util/AppError/AppError';
@@ -12,8 +12,8 @@ import { ICampaignLogCreateDTO } from './DTO/ICampaignLogCreateDTO';
 @injectable()
 export class CampaignLogCreateUseCase {
   constructor(
-    @inject('RepositoryCampaigns') private RepositoryCampaigns: IRepositoryCampaigns,
-    @inject('RepositoryCampaignLogs') private RepositoryCampaignLogs: IRepositoryCampaignLogs,
+    @inject('RepositoryCampaign') private RepositoryCampaign: IRepositoryCampaign,
+    @inject('RepositoryCampaignLog') private RepositoryCampaignLog: IRepositoryCampaignLog,
   ) {}
 
   async execute(request: ICampaignLogCreateDTO.Params) {
@@ -22,11 +22,10 @@ export class CampaignLogCreateUseCase {
       data: request,
     });
 
-    const { isExists } = await this.RepositoryCampaigns.FindById({ id: campaignId });
-    if (!isExists)
-      throw new AppError(ErrorDictionary.CAMPAIGN.campaignNotFoundWithId.message, 400, ErrorDictionary.CAMPAIGN.campaignNotFoundWithId.codeIntern);
+    const { isExists } = await this.RepositoryCampaign.FindById({ id: campaignId });
+    if (!isExists) throw new AppError(ErrorDictionary.CAMPAIGN.campaignNotFoundWithId, 400);
 
-    await this.RepositoryCampaignLogs.Create({
+    await this.RepositoryCampaignLog.Create({
       ip,
       page,
       referer,

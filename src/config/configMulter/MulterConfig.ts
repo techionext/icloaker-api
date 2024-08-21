@@ -13,7 +13,7 @@ const handleGetLocalStorage = () => {
     s3: MulterS3Config,
   };
 
-  const localUpload = env.LOCAL_UPLOAD_FILES;
+  const localUpload = env.AWS.LOCAL_UPLOAD_FILES;
 
   switch (localUpload) {
     case 'S3': {

@@ -11,6 +11,6 @@ export type IGenerateToken = {
 export const generateToken = ({ email, id }: IGenerateToken) =>
   jwt.sign(
     { email, id },
-    String(env.SECRET_TOKEN),
+    String(env.JWT.SECRET),
     { expiresIn: 60 * 60 * 24 }, // 24h
   );

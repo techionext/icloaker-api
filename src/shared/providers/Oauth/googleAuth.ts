@@ -1,80 +1,101 @@
+import { prisma } from '@config/DataBase/Prisma/Index';
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
-import { RepositoryUsers } from 'Repositories/User/Postgres/RepositoryUsers';
 
 import { handleGenerateUuid } from '@shared/features/handleGenerateUuid/handleGenerateUuid';
 import { AppError } from '@shared/Util/AppError/AppError';
 import { generateToken } from '@shared/Util/configToken/generateToken';
 import { env } from '@shared/Util/Env/Env';
-import { ErrorDictionary } from '@shared/Util/ErrorDictionary';
 
 const googleConfig = {
-  clientID: env.GOOGLE_CLIENT_ID,
-  clientSecret: env.GOOGLE_CLIENT_SECRET,
-  prompt: 'none',
+  clientID: env.OAUTH.GOOGLE.CLIENT_ID,
+  clientSecret: env.OAUTH.GOOGLE.CLIENT_SECRET,
 };
 
-const repositoryUsers = new RepositoryUsers();
-
 passport.use(
-  new GoogleStrategy({ ...googleConfig, callbackURL: env.GOOGLE_CALLBACK_URL_LOGIN }, async (token, tokenSecret, profile, done) => {
-    try {
-      const { data: dataUser } = await repositoryUsers.GetUserByProvider({ provider: 'GOOGLE', providerId: profile.id });
-
-      const id = handleGenerateUuid();
-      if (!dataUser) {
-        const { data: dataUserCreated } = await repositoryUsers.CreateWithProvider({
-          id,
-          provider: 'GOOGLE',
-          providerId: profile.id,
-          name: profile.displayName,
-          providerEmail: profile.emails![0].value,
+  new GoogleStrategy(
+    {
+      ...googleConfig,
+      callbackURL: env.OAUTH.GOOGLE.LINKS.LOGIN.CALLBACK,
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      try {
+        let user = await prisma.user.findFirst({
+          where: {
+            profiles: {
+              some: {
+                provider: 'GOOGLE',
+                providerId: profile.id,
+              },
+            },
+          },
         });
 
-        const jwtToken = generateToken({ email: dataUserCreated.email, id: dataUserCreated.id });
-        return done(null, { user: dataUser, token: jwtToken });
-      }
+        if (!user) {
+          user = await prisma.user.create({
+            data: {
+              id: handleGenerateUuid(),
+              name: profile.displayName,
+              avatar: profile._json.picture,
+              profiles: {
+                create: {
+                  provider: 'GOOGLE',
+                  providerId: profile.id,
+                  providerEmail: profile.emails![0].value,
+                },
+              },
+            },
+          });
+        }
 
-      const jwtToken = generateToken({ email: dataUser.email, id: dataUser.id });
-      return done(null, { user: dataUser, token: jwtToken });
-    } catch (error) {
-      return done(error, false);
-    }
-  }),
+        const token = generateToken({ email: user.email, id: user.id });
+        return done(null, { user, token });
+      } catch (err) {
+        return done(err, false);
+      }
+    },
+  ),
 );
 
 passport.use(
-  'google-link',
+  'google-sync',
   new GoogleStrategy(
-    { ...googleConfig, callbackURL: env.GOOGLE_CALLBACK_URL_LINK, passReqToCallback: true },
+    { ...googleConfig, callbackURL: env.OAUTH.GOOGLE.LINKS.SYNC.CALLBACK, passReqToCallback: true },
     async (req, accessToken, refreshToken, profile, done) => {
       try {
-        const userId = req.query.state as string;
-        const { data: user } = await repositoryUsers.GetWithProfiles({ id: userId });
+        const id = req.query.state as string;
+        const user = await prisma.user.findFirst({
+          where: { id },
+          include: {
+            profiles: true,
+          },
+        });
 
         if (!user) {
-          ErrorDictionary.GOOGLE.userNotFound.message, 400, ErrorDictionary.GOOGLE.userNotFound.codeIntern;
+          throw new AppError({ message: 'not found', codeIntern: '1' });
         }
 
         if (user && user.profiles.some((profile) => profile.provider === 'GOOGLE')) {
-          throw new AppError(ErrorDictionary.GOOGLE.accountAlreadyLinked.message, 400, ErrorDictionary.GOOGLE.accountAlreadyLinked.codeIntern);
+          throw new AppError({ message: 'not found', codeIntern: '2' });
         }
 
         if (user) {
-          await repositoryUsers.CreateProvider({
-            id: user.id,
-            provider: 'GOOGLE',
-            providerId: profile.id,
-            providerEmail: profile.emails![0].value,
+          await prisma.profile.create({
+            data: {
+              userId: user.id,
+              provider: 'GOOGLE',
+              providerId: profile.id,
+              providerEmail: profile.emails![0].value,
+            },
           });
         }
 
         return done(null, profile);
       } catch (error) {
         if (error instanceof AppError) {
-          return done(error, false, { message: error.message });
+          return done(error, false, { message: error.content.message });
         }
-        return done(error, false, { message: ErrorDictionary.GOOGLE.errorLinkingAccount.message });
+        return done(error, false, { message: 'deu algum erro ao linkar as contas' });
       }
     },
   ),
