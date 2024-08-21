@@ -1,11 +1,14 @@
-export class AppError {
-  public readonly message: string;
-  public readonly statusCode: number;
-  public readonly codeIntern: string;
+interface IAppErrorContent {
+  message: string;
+  codeIntern: string;
+}
 
-  constructor(message: string, statusCode = 400, codeIntern: string = '') {
-    this.message = message;
+export class AppError {
+  public readonly statusCode: number;
+  public readonly content: IAppErrorContent;
+
+  constructor(content: IAppErrorContent, statusCode = 400) {
+    this.content = content;
     this.statusCode = statusCode;
-    this.codeIntern = codeIntern;
   }
 }

@@ -27,18 +27,18 @@ app.use(cors());
 
 app.use(routerIndex);
 
-if (env.NODE_ENV === 'PRODUCTION') {
+if (env.ENVIRONMENT.NODE_ENV === 'PRODUCTION') {
   process.on('uncaughtException', (error) => logger.error(error));
 }
 
 app.use(async (err: Error, request: Request, response: Response, next: NextFunction) => {
-  // logger.error(err);
-
   if (err instanceof AppError) {
-    return response.status(err.statusCode).json({ message: err.message, codeIntern: err.codeIntern });
+    return response.status(err.statusCode).json({ message: err.content.message, codeIntern: err.content.codeIntern });
   }
 
-  response.status(500).json({ message: ErrorDictionary.SYSTEM.unknownError.message, codeIntern: ErrorDictionary.SYSTEM.unknownError.codeIntern });
+  console.error(err);
+
+  response.status(500).json(ErrorDictionary.SYSTEM.unknownError);
   return next();
 });
 

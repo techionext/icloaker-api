@@ -6,11 +6,15 @@ import { env } from '@shared/Util/Env/Env';
 import { handleCreateHashImg } from '../../../shared/features/handleCreateHashImg';
 import { ConfigS3 } from '../../AWS/S3/BucketS3';
 
-const { AWS_NAME_BUCKET } = env;
+const {
+  AWS: {
+    S3: { NAME_BUCKET },
+  },
+} = env;
 
 export const MulterS3Config = MulterS3({
   s3: ConfigS3,
-  bucket: AWS_NAME_BUCKET,
+  bucket: NAME_BUCKET,
   contentType: MulterS3.AUTO_CONTENT_TYPE,
   acl: 'public-read',
 
@@ -27,7 +31,7 @@ interface IAwsS3DeleteObject {
 export class DeleteImagesService {
   async execute({ key }: IAwsS3DeleteObject) {
     const params = {
-      Bucket: AWS_NAME_BUCKET,
+      Bucket: NAME_BUCKET,
       Key: key,
     };
 

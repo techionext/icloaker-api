@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "Unilead",
-    "description": "Está api tem objetivo de informar como utilizar este servidor.",
+    "title": "API ICLOAKER",
+    "description": "Swagger das rotas da api icloaker",
     "version": "1.0.0",
     "contact": {
       "email": ""
@@ -15,13 +15,436 @@
     }
   ],
   "paths": {
-    "/users/create": {
+    "/auth/login": {
       "post": {
+        "summary": "Login do usuário",
+        "description": "Esta rota é responsável pelo login do usuário no sistema.",
         "tags": [
-          "User"
+          "auth"
         ],
-        "summary": "Criação de usuário",
-        "description": "Endpoint para criar um novo usuário",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "Email do usuário"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "Senha do usuário"
+                  }
+                },
+                "required": [
+                  "email",
+                  "password"
+                ]
+              },
+              "examples": {
+                "Exemplo de login": {
+                  "value": {
+                    "email": "usuario@exemplo.com",
+                    "password": "senha123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login bem-sucedido",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": "1b2fccfe-c9ae-4033-b870-cc36dc63e48e",
+                  "name": "João Silva",
+                  "phone": "11987654321",
+                  "email": "joao.silva@example.com",
+                  "active": true,
+                  "createdAt": "2024-08-20T22:44:56.432Z",
+                  "role": "USER",
+                  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvYW8uc2lsdmFAZXhhbXBsZS5jb20iLCJpZCI6IjFiMmZjY2ZlLWM5YWUtNDAzMy1iODcwLWNjMzZkYzYzZTQ4ZSIsImlhdCI6MTcyNDE5MzkxNywiZXhwIjoxNzI0MjgwMzE3fQ.qukbOXudKbqBNaGqVB7uBMfL4EylBRD0PMh980PSKvI"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/session": {
+      "post": {
+        "summary": "Criar sessão de login",
+        "description": "Esta rota cria uma nova sessão de login para o usuário.",
+        "tags": [
+          "auth"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sessão criada com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": "1b2fccfe-c9ae-4033-b870-cc36dc63e48e",
+                  "name": "João Silva",
+                  "phone": "11987654321",
+                  "email": "joao.silva@example.com",
+                  "active": true,
+                  "createdAt": "2024-08-20T22:44:56.432Z",
+                  "role": "USER",
+                  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvYW8uc2lsdmFAZXhhbXBsZS5jb20iLCJpZCI6IjFiMmZjY2ZlLWM5YWUtNDAzMy1iODcwLWNjMzZkYzYzZTQ4ZSIsImlhdCI6MTcyNDE5Mzk2MCwiZXhwIjoxNzI0MjgwMzYwfQ.cmYVSzqXX-z90FzPSWLjeeQlcVAtqIakVmPcnPVQ7FM"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users": {
+      "post": {
+        "summary": "Cria um novo usuário",
+        "tags": [
+          "users"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Nome do usuário",
+                    "example": "João Silva"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "description": "Número de telefone do usuário",
+                    "example": "11987654321"
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "Email do usuário",
+                    "example": "joao.silva@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "Senha do usuário",
+                    "example": "Senha1234!"
+                  }
+                },
+                "required": [
+                  "name",
+                  "email",
+                  "password"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Usuário criado com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "codeIntern": "USR002",
+                  "message": "User created successfully!"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/forgot-password": {
+      "post": {
+        "summary": "Enviar link para recuperação de senha",
+        "description": "Esta rota envia um link para recuperação de senha para o e-mail do usuário.",
+        "tags": [
+          "users"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "E-mail do usuário para o qual o link de recuperação de senha será enviado."
+                  }
+                },
+                "required": [
+                  "email"
+                ]
+              },
+              "examples": {
+                "Exemplo de envio de recuperação de senha": {
+                  "value": {
+                    "email": "usuario@exemplo.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "E-mail enviado com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "codeIntern": "RP001",
+                  "message": "An email has been sent to you to recover your password!"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/forgot-password/{id}": {
+      "get": {
+        "summary": "Validar código de recuperação de senha",
+        "description": "Esta rota valida o código de recuperação de senha enviado pelo usuário.",
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "ID do usuário"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Código de recuperação de senha válido",
+            "content": {
+              "application/json": {
+                "example": {
+                  "isValid": true,
+                  "codeIntern": "RP003",
+                  "message": "Link valid!"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/redefine-password/{id}": {
+      "post": {
+        "summary": "Redefinir senha do usuário",
+        "description": "Esta rota permite ao usuário redefinir sua senha.",
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "ID do usuário"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "password": {
+                    "type": "string",
+                    "description": "Nova senha do usuário",
+                    "minLength": 8,
+                    "pattern": "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$"
+                  },
+                  "verifyPassword": {
+                    "type": "string",
+                    "description": "Confirmação da nova senha"
+                  }
+                },
+                "required": [
+                  "password",
+                  "verifyPassword"
+                ]
+              },
+              "examples": {
+                "Exemplo de redefinição de senha": {
+                  "value": {
+                    "password": "NovaSenha123",
+                    "verifyPassword": "NovaSenha123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Senha redefinida com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "isValid": true,
+                  "codeIntern": "RP002",
+                  "message": "Password changed successfully!"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/credentials": {
+      "post": {
+        "summary": "Criar credenciais de usuário | para usuários que se registraram por OAuth",
+        "description": "Esta rota cria credenciais para um usuário com o email e a senha fornecidos.",
+        "tags": [
+          "users"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "Email do usuário"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "Senha do usuário"
+                  }
+                },
+                "required": [
+                  "email",
+                  "password"
+                ]
+              },
+              "examples": {
+                "Exemplo de criação de credenciais": {
+                  "value": {
+                    "email": "usuario@exemplo.com",
+                    "password": "Senha123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Credenciais criadas com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "codeIntern": "USR006",
+                  "message": "Login credentials provided successfully!"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "summary": "Obter detalhes do usuário",
+        "description": "Esta rota retorna os detalhes de um usuário específico com base no ID fornecido.",
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do usuário"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalhes do usuário obtidos com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "id": "389de104-e398-490a-8d94-5ed0e11376c9",
+                    "avatar": null,
+                    "avatarKey": null,
+                    "name": "john doe",
+                    "phone": null,
+                    "email": "johndoe@gmail.com",
+                    "active": true,
+                    "createdAt": "2024-08-21T16:21:45.764Z",
+                    "role": "USER"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualizar detalhes do usuário",
+        "description": "Esta rota atualiza os detalhes de um usuário específico com base no ID fornecido.",
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do usuário"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -31,78 +454,45 @@
                 "properties": {
                   "name": {
                     "type": "string",
-                    "example": "josé victor"
-                  },
-                  "email": {
-                    "type": "string",
-                    "example": "johndoe2@gmail.com"
-                  },
-                  "password": {
-                    "type": "string",
-                    "example": "aA123456"
+                    "description": "Nome do usuário"
                   },
                   "phone": {
                     "type": "string",
-                    "example": "5521979022754"
+                    "description": "Número de telefone do usuário, com pelo menos 8 dígitos"
                   }
-                },
-                "required": [
-                  "name",
-                  "email",
-                  "password",
-                  "phone"
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Usuário criado com sucesso"
-          }
-        }
-      }
-    },
-    "/auth/forgot-password": {
-      "post": {
-        "tags": [
-          "User"
-        ],
-        "summary": "Recuperação de senha",
-        "description": "Endpoint para solicitar a recuperação de senha",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "example": "johndoe@acme.com"
+                }
+              },
+              "examples": {
+                "Exemplo de atualização": {
+                  "value": {
+                    "name": "Novo Nome do Usuário",
+                    "phone": "12345678"
                   }
-                },
-                "required": [
-                  "email"
-                ]
+                }
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Foi enviado um email para você recuperar sua senha!"
+            "description": "Detalhes do usuário atualizados com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "codeIntern": "USR011",
+                  "message": "User avatar updated successfully!"
+                }
+              }
+            }
           }
         }
-      }
-    },
-    "/auth/redefine-password/{id}": {
-      "post": {
+      },
+      "patch": {
+        "summary": "Atualizar avatar do usuário",
+        "description": "Atualiza o avatar do usuário identificado pelo ID.",
         "tags": [
-          "User"
+          "users"
         ],
-        "summary": "Redefinição de senha",
-        "description": "Endpoint para redefinir a senha de um usuário",
         "parameters": [
           {
             "name": "id",
@@ -117,134 +507,23 @@
         "requestBody": {
           "required": true,
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
-                  "password": {
+                  "avatar": {
                     "type": "string",
-                    "example": "aA123456"
-                  },
-                  "verifyPassword": {
-                    "type": "string",
-                    "example": "aA123456"
+                    "format": "binary",
+                    "description": "Arquivo de imagem para o avatar"
                   }
                 },
                 "required": [
-                  "password",
-                  "verifyPassword"
+                  "avatar"
                 ]
               }
             }
           }
         },
-        "responses": {
-          "200": {
-            "description": "Senha redefinida com sucesso"
-          }
-        }
-      }
-    },
-    "/auth/validate-forgot-password/{id}": {
-      "get": {
-        "tags": [
-          "User"
-        ],
-        "summary": "Validação de link de recuperação de senha",
-        "description": "Endpoint para validar o link de recuperação de senha",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": "ID do link de recuperação"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Link de recuperação de senha válido",
-            "content": {
-              "application/json": {
-                "example": {
-                  "isValid": true,
-                  "message": "Link Válido !"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/auth/login": {
-      "post": {
-        "tags": [
-          "Auth"
-        ],
-        "summary": "Login de usuário",
-        "description": "Endpoint para realizar login de um usuário",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "example": "johndoe2@gmail.com"
-                  },
-                  "password": {
-                    "type": "string",
-                    "example": "aA123456"
-                  }
-                },
-                "required": [
-                  "email",
-                  "password"
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Login realizado com sucesso",
-            "content": {
-              "application/json": {
-                "example": {
-                  "id": "9c82df71-0d9e-4c41-8de4-18089866fdf1",
-                  "name": "josé victor",
-                  "phone": "5521979022754",
-                  "email": "johndoe2@gmail.com",
-                  "active": true,
-                  "createdAt": "2024-07-15T19:08:51.205Z",
-                  "tenantId": "empty",
-                  "members": [
-                    {
-                      "tenant": {
-                        "companyName": "acme inc 44",
-                        "id": "9e7a31f9-120c-4221-bf9d-f1c640934b8f"
-                      }
-                    }
-                  ],
-                  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5kb2UyQGdtYWlsLmNvbSIsImlkIjoiOWM4MmRmNzEtMGQ5ZS00YzQxLThkZTQtMTgwODk4NjZmZGYxIiwidGVuYW50IjoiZW1wdHkiLCJpYXQiOjE3MjEwNzA1ODMsImV4cCI6MTcyMTE1Njk4M30.Untm0syNotZpDERUD0_eQT3U-AJjI-ZQshrcbrGLvgU"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/auth/sessions": {
-      "post": {
-        "tags": [
-          "Auth"
-        ],
-        "summary": "Obter informações da sessão",
-        "description": "Endpoint para obter informações sobre a sessão do usuário autenticado",
         "security": [
           {
             "bearerAuth": []
@@ -252,26 +531,47 @@
         ],
         "responses": {
           "200": {
-            "description": "Informações da sessão retornadas com sucesso",
+            "description": "Avatar atualizado com sucesso",
             "content": {
               "application/json": {
                 "example": {
-                  "id": "8e054844-d063-4c7b-b602-06ea515db97c",
-                  "name": "josé victor",
-                  "phone": "5521979022754",
-                  "email": "johndoe2@gmail.com",
-                  "active": true,
-                  "createdAt": "2024-07-16T02:05:43.241Z",
-                  "tenantId": "3c59a491-6140-45cd-a545-b7c7d28aac56",
-                  "members": [
-                    {
-                      "tenant": {
-                        "companyName": "acme inc 44",
-                        "id": "3c59a491-6140-45cd-a545-b7c7d28aac56"
-                      }
-                    }
-                  ],
-                  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5kb2UyQGdtYWlsLmNvbSIsImlkIjoiOGUwNTQ4NDQtZDA2My00YzdiLWI2MDItMDZlYTUxNWRiOTdjIiwidGVuYW50IjoiM2M1OWE0OTEtNjE0MC00NWNkLWE1NDUtYjdjN2QyOGFhYzU2IiwiaWF0IjoxNzIxMDk3OTQwLCJleHAiOjE3MjExODQzNDB9.J9yXbInVBx9Kf-Cd5BToOT3sslGuMeWVbsZO9LzoBGY"
+                  "message": "Avatar atualizado com sucesso"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete avatar",
+        "description": "Esta rota deleta o avatar do usuário.",
+        "tags": [
+          "users"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID do Usuário",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Avatar deletado com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "codeIntern": "SR013",
+                  "message": "ser avatar deleted successfully!"
                 }
               }
             }
@@ -281,11 +581,11 @@
     },
     "/collaborators": {
       "post": {
+        "summary": "Criar um colaborador",
+        "description": "Esta rota cria um novo colaborador com base nas informações fornecidas.",
         "tags": [
           "collaborators"
         ],
-        "summary": "Criar colaborador",
-        "description": "Endpoint para criar um novo colaborador",
         "requestBody": {
           "required": true,
           "content": {
@@ -295,22 +595,31 @@
                 "properties": {
                   "name": {
                     "type": "string",
-                    "example": "jane doe"
+                    "description": "Nome do colaborador"
                   },
                   "email": {
                     "type": "string",
-                    "example": "giwox83913@cutxsew.com"
+                    "format": "email",
+                    "description": "Email do colaborador"
                   },
                   "phone": {
                     "type": "string",
-                    "example": "552199787654321"
+                    "description": "Número de telefone do colaborador"
                   }
                 },
                 "required": [
                   "name",
-                  "email",
-                  "phone"
+                  "email"
                 ]
+              },
+              "examples": {
+                "Exemplo de criação de colaborador": {
+                  "value": {
+                    "name": "João da Silva",
+                    "email": "joao.silva@exemplo.com",
+                    "phone": "12345678"
+                  }
+                }
               }
             }
           }
@@ -326,7 +635,8 @@
             "content": {
               "application/json": {
                 "example": {
-                  "message": "Colaborador criado com sucesso !"
+                  "codeIntern": "COL003",
+                  "message": "Collaborator created successfully!"
                 }
               }
             }
@@ -334,11 +644,11 @@
         }
       },
       "get": {
+        "summary": "Listar colaboradores",
+        "description": "Esta rota lista os colaboradores com base nos parâmetros de paginação e filtro fornecidos.",
         "tags": [
           "collaborators"
         ],
-        "summary": "Obter lista de colaboradores",
-        "description": "Endpoint para obter uma lista de colaboradores com suporte a paginação e filtragem",
         "parameters": [
           {
             "name": "page",
@@ -346,9 +656,9 @@
             "required": false,
             "schema": {
               "type": "integer",
-              "default": 1,
-              "description": "Número da página para paginação (padrão: 1)"
-            }
+              "default": 1
+            },
+            "description": "Número da página para paginação"
           },
           {
             "name": "pageSize",
@@ -356,18 +666,18 @@
             "required": false,
             "schema": {
               "type": "integer",
-              "default": 10,
-              "description": "Número de itens por página (padrão: 10)"
-            }
+              "default": 10
+            },
+            "description": "Número de itens por página"
           },
           {
             "name": "filter",
             "in": "query",
             "required": false,
             "schema": {
-              "type": "string",
-              "description": "Filtro para busca de colaboradores"
-            }
+              "type": "string"
+            },
+            "description": "Filtro para buscar colaboradores"
           }
         ],
         "security": [
@@ -377,17 +687,17 @@
         ],
         "responses": {
           "200": {
-            "description": "Lista de colaboradores retornada com sucesso",
+            "description": "Colaboradores listados com sucesso",
             "content": {
               "application/json": {
                 "example": {
                   "data": [
                     {
-                      "userId": "00f1b340-2d27-446e-8c39-b44225518003",
+                      "userId": "c401a1a0-6aff-46cb-a7e9-e3d867462477",
                       "role": "COLLABORATOR",
                       "user": {
-                        "name": "jane doe",
-                        "email": "giwox83913@cutxsew.com"
+                        "name": "João da Silva",
+                        "email": "joao.silva@exemplo.com"
                       }
                     }
                   ],
@@ -406,11 +716,11 @@
     },
     "/collaborators/{id}": {
       "put": {
+        "summary": "Atualizar colaborador",
+        "description": "Esta rota atualiza as informações do colaborador com o ID fornecido.",
         "tags": [
           "collaborators"
         ],
-        "summary": "Atualizar colaborador",
-        "description": "Endpoint para atualizar as informações de um colaborador existente",
         "parameters": [
           {
             "name": "id",
@@ -423,25 +733,31 @@
           }
         ],
         "requestBody": {
-          "required": true,
+          "required": false,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
-                  "name": {
+                  "role": {
                     "type": "string",
-                    "example": "john doe"
-                  },
-                  "email": {
-                    "type": "string",
-                    "example": "joh@doe.com"
+                    "enum": [
+                      "USER",
+                      "COLLABORATOR",
+                      "ADMIN",
+                      "ROOT"
+                    ],
+                    "description": "Novo papel do colaborador"
                   }
                 },
-                "required": [
-                  "name",
-                  "email"
-                ]
+                "description": "Dados para atualizar o colaborador"
+              },
+              "examples": {
+                "Exemplo de atualização de colaborador": {
+                  "value": {
+                    "role": "ADMIN"
+                  }
+                }
               }
             }
           }
@@ -457,7 +773,8 @@
             "content": {
               "application/json": {
                 "example": {
-                  "message": "Colaborador atualizado com sucesso !"
+                  "codeIntern": "COL010",
+                  "message": "Collaborator updated successfully!"
                 }
               }
             }
@@ -465,11 +782,11 @@
         }
       },
       "delete": {
+        "summary": "Deletar colaborador",
+        "description": "Esta rota remove o colaborador com o ID fornecido.",
         "tags": [
           "collaborators"
         ],
-        "summary": "Deletar colaborador",
-        "description": "Endpoint para deletar um colaborador existente",
         "parameters": [
           {
             "name": "id",
@@ -478,7 +795,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "ID do colaborador a ser deletado"
+            "description": "ID do colaborador a ser removido"
           }
         ],
         "security": [
@@ -487,8 +804,1230 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "Colaborador deletado com sucesso"
+          "200": {
+            "description": "Colaborador removido com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "codeIntern": "COL006",
+                  "message": "This user is no longer part of the company!"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/domains": {
+      "post": {
+        "summary": "Criar um novo domínio",
+        "description": "Esta rota é responsável por criar um novo domínio.",
+        "tags": [
+          "domains"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "example": "https://example.com"
+                  }
+                },
+                "required": [
+                  "url"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Domínio criado com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": "17dc28d8-9e1b-43e5-9194-91d91f626c7f",
+                  "codeIntern": "DOM002",
+                  "message": "Domain registered successfully"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Listar domínios",
+        "description": "Esta rota é responsável por listar os domínios com paginação e filtros opcionais.",
+        "tags": [
+          "domains"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            },
+            "description": "Número da página para a listagem."
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 10
+            },
+            "description": "Número de itens por página."
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "example"
+            },
+            "description": "Filtro de pesquisa para domínios."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Listagem de domínios realizada com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": [
+                    {
+                      "id": "17dc28d8-9e1b-43e5-9194-91d91f626c7f",
+                      "url": "https://example.com",
+                      "status": "INACTIVE",
+                      "userId": "f6ab34c0-bfc1-4bfd-9fa8-f80517a1d0f0",
+                      "createdAt": "2024-08-16T21:42:03.919Z"
+                    }
+                  ],
+                  "meta": {
+                    "page": 1,
+                    "pageSize": 10,
+                    "total": 1,
+                    "totalPages": 1
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/domains/{id}": {
+      "put": {
+        "summary": "Atualizar domínio",
+        "description": "Esta rota é responsável por atualizar o domínio pelo seu ID.",
+        "tags": [
+          "domains"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do domínio a ser atualizado."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "example": "https://example.com"
+                  }
+                },
+                "required": [
+                  "url"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Domínio atualizado com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "codeIntern": "DOM005",
+                  "message": "Domain updated successfully"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletar domínio",
+        "description": "Esta rota é responsável por deletar um domínio pelo seu ID.",
+        "tags": [
+          "domains"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do domínio a ser deletado."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Domínio deletado com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "codeIntern": "DOM007",
+                  "message": "The domain was deleted successfully"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Obter domínio por ID",
+        "description": "Esta rota é responsável por recuperar as informações de um domínio pelo seu ID.",
+        "tags": [
+          "domains"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID do domínio a ser recuperado."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Domínio recuperado com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "id": "17dc28d8-9e1b-43e5-9194-91d91f626c7f",
+                    "url": "https://example.com",
+                    "status": "INACTIVE",
+                    "userId": "f6ab34c0-bfc1-4bfd-9fa8-f80517a1d0f0",
+                    "createdAt": "2024-08-16T21:42:03.919Z"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/campaigns": {
+      "post": {
+        "summary": "Criar nova campanha",
+        "description": "Esta rota é responsável por criar uma nova campanha.",
+        "tags": [
+          "campaign"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "origin": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "domain": {
+                    "type": "string",
+                    "format": "url"
+                  },
+                  "safePage": {
+                    "type": "string",
+                    "format": "url"
+                  },
+                  "offerPage": {
+                    "type": "string",
+                    "format": "url"
+                  },
+                  "languages": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "countries": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "devices": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "manualReview": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "origin",
+                  "name",
+                  "domain",
+                  "devices"
+                ]
+              },
+              "examples": {
+                "Nova campanha": {
+                  "value": {
+                    "origin": [
+                      "FACEBOOK",
+                      "INSTAGRAM"
+                    ],
+                    "name": "Campanha de exemplo",
+                    "domain": "https://exemplo.com",
+                    "safePage": "https://exemplo.com/safe",
+                    "offerPage": "https://exemplo.com/offer",
+                    "languages": [
+                      "pt",
+                      "en"
+                    ],
+                    "countries": [
+                      "BR",
+                      "US"
+                    ],
+                    "devices": [
+                      "IPHONE",
+                      "ANDROID"
+                    ],
+                    "manualReview": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Campanha criada com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": "037e419b-2677-4eed-ad9d-02306f01d2c5",
+                  "codeIntern": "CMP001",
+                  "message": "Campaign created successfully"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Listar campanhas",
+        "description": "Esta rota é responsável por listar campanhas com paginação e filtros opcionais.",
+        "tags": [
+          "campaign"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "minimum": 1
+            },
+            "description": "Número da página para paginação (por padrão 1)."
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "minimum": 1
+            },
+            "description": "Quantidade de itens por página (por padrão 10)."
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filtro opcional para busca de campanhas."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de campanhas retornada com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": [
+                    {
+                      "id": "037e419b-2677-4eed-ad9d-02306f01d2c5",
+                      "userId": "8e562b91-4d67-44b4-ad22-b9e307c0cf7e",
+                      "origin": [
+                        "FACEBOOK"
+                      ],
+                      "name": "campanha de teste",
+                      "domain": "https://teste.online",
+                      "safePage": "https://example.com",
+                      "offerPage": "https://example.com/offer",
+                      "languages": [],
+                      "countries": [
+                        "EUA",
+                        "BR",
+                        "CH"
+                      ],
+                      "devices": [
+                        "MACBOOK",
+                        "ANDROID",
+                        "WINDOWS"
+                      ],
+                      "domainStatus": "PENDING",
+                      "manualReview": true,
+                      "allowIsps": [
+                        "AS15169 Google LLC"
+                      ],
+                      "allowRefererOrigins": [
+                        "FACEBOOK",
+                        "GOOGLE"
+                      ],
+                      "allowQueries": [
+                        "facebook",
+                        "google"
+                      ],
+                      "allowIps": [
+                        "187.103.119.205",
+                        "18.206.2.213",
+                        "94.14.117.131"
+                      ],
+                      "antiSpy": [
+                        "VPN"
+                      ],
+                      "denyLanguages": [
+                        "FR",
+                        "CZ"
+                      ],
+                      "denyCountries": [
+                        "IR"
+                      ],
+                      "denyIps": [
+                        "45.123.456.123"
+                      ],
+                      "denyIsps": [],
+                      "denyQueries": [
+                        "youtube"
+                      ],
+                      "denyRefererOrigins": [
+                        "YOUTUBE"
+                      ],
+                      "createdAt": "2024-08-19T15:35:38.628Z",
+                      "updatedAt": "2024-08-19T16:31:08.203Z"
+                    },
+                    {
+                      "id": "612cde41-85d0-4a53-85d6-c09584915569",
+                      "userId": "8e562b91-4d67-44b4-ad22-b9e307c0cf7e",
+                      "origin": [],
+                      "name": "campanha de teste",
+                      "domain": "https://teste.online",
+                      "safePage": "https://example.com",
+                      "offerPage": "https://example.com/offer",
+                      "languages": [],
+                      "countries": [],
+                      "devices": [
+                        "MACBOOK",
+                        "ANDROID",
+                        "WINDOWS"
+                      ],
+                      "domainStatus": "PENDING",
+                      "manualReview": true,
+                      "allowIsps": [],
+                      "allowRefererOrigins": [],
+                      "allowQueries": [],
+                      "allowIps": [],
+                      "antiSpy": [],
+                      "denyLanguages": [],
+                      "denyCountries": [],
+                      "denyIps": [],
+                      "denyIsps": [],
+                      "denyQueries": [],
+                      "denyRefererOrigins": [],
+                      "createdAt": "2024-08-18T00:03:35.245Z",
+                      "updatedAt": "2024-08-18T00:03:35.245Z"
+                    }
+                  ],
+                  "meta": {
+                    "page": 1,
+                    "pageSize": 2,
+                    "total": 5,
+                    "totalPages": 3
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/campaigns/{id}": {
+      "put": {
+        "summary": "Atualizar campanha",
+        "description": "Esta rota é responsável por atualizar os dados de uma campanha existente.",
+        "tags": [
+          "campaign"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID da campanha a ser atualizada"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "origin": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "domain": {
+                    "type": "string",
+                    "format": "url"
+                  },
+                  "safePage": {
+                    "type": "string",
+                    "format": "url"
+                  },
+                  "offerPage": {
+                    "type": "string",
+                    "format": "url"
+                  },
+                  "languages": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "countries": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "devices": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "manualReview": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "examples": {
+                "Atualizar campanha": {
+                  "value": {
+                    "origin": [
+                      "https://exemplo.com",
+                      "https://outroexemplo.com"
+                    ],
+                    "name": "Campanha Atualizada",
+                    "domain": "https://dominioatualizado.com",
+                    "safePage": "https://pagina-segura.com",
+                    "offerPage": "https://pagina-oferta.com",
+                    "languages": [
+                      "pt",
+                      "en"
+                    ],
+                    "countries": [
+                      "BR",
+                      "US"
+                    ],
+                    "devices": [
+                      "IPHONE",
+                      "ANDROID"
+                    ],
+                    "manualReview": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Campanha atualizada com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "codeIntern": "CMP007",
+                  "message": "Campaign updated successfully"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Obter detalhes da campanha",
+        "description": "Esta rota é responsável por obter os detalhes de uma campanha específica pelo ID.",
+        "tags": [
+          "campaign"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID da campanha a ser obtida"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalhes da campanha obtidos com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "id": "037e419b-2677-4eed-ad9d-02306f01d2c5",
+                    "userId": "8e562b91-4d67-44b4-ad22-b9e307c0cf7e",
+                    "origin": [
+                      "FACEBOOK"
+                    ],
+                    "name": "campanha de teste",
+                    "domain": "https://teste.online",
+                    "safePage": "https://example.com",
+                    "offerPage": "https://example.com/offer",
+                    "languages": [],
+                    "countries": [
+                      "EUA",
+                      "BR",
+                      "CH"
+                    ],
+                    "devices": [
+                      "MACBOOK",
+                      "ANDROID",
+                      "WINDOWS"
+                    ],
+                    "domainStatus": "PENDING",
+                    "manualReview": true,
+                    "allowIsps": [
+                      "AS15169 Google LLC"
+                    ],
+                    "allowRefererOrigins": [
+                      "FACEBOOK",
+                      "GOOGLE"
+                    ],
+                    "allowQueries": [
+                      "facebook",
+                      "google"
+                    ],
+                    "allowIps": [
+                      "187.103.119.205",
+                      "18.206.2.213",
+                      "94.14.117.131"
+                    ],
+                    "antiSpy": [
+                      "VPN"
+                    ],
+                    "denyLanguages": [
+                      "FR",
+                      "CZ"
+                    ],
+                    "denyCountries": [
+                      "IR",
+                      ""
+                    ],
+                    "denyIps": [
+                      "45.123.456.123"
+                    ],
+                    "denyIsps": [],
+                    "denyQueries": [
+                      "youtube"
+                    ],
+                    "denyRefererOrigins": [
+                      "YOUTUBE"
+                    ],
+                    "createdAt": "2024-08-19T15:35:38.628Z",
+                    "updatedAt": "2024-08-19T16:31:08.203Z"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletar campanha",
+        "description": "Esta rota é responsável por deletar uma campanha específica pelo ID.",
+        "tags": [
+          "campaign"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID da campanha a ser deletada"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Campanha deletada com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "codeIntern": "CMP004",
+                  "message": "Campaign deleted successfully"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/campaigns/allow/{id}": {
+      "put": {
+        "summary": "Atualizar permissões da campanha",
+        "description": "Esta rota é responsável por atualizar as permissões de ISPs, origens de referenciadores, consultas e IPs permitidos de uma campanha específica pelo ID.",
+        "tags": [
+          "campaign"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID da campanha a ser atualizada"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "allowIsps": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "allowRefererOrigins": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "allowQueries": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "allowIps": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "ipv4 or ipv6"
+                    }
+                  }
+                }
+              },
+              "example": {
+                "allowIsps": [
+                  "isp1",
+                  "isp2"
+                ],
+                "allowRefererOrigins": [
+                  "https://example.com"
+                ],
+                "allowQueries": [
+                  "query1",
+                  "query2"
+                ],
+                "allowIps": [
+                  "192.168.1.1",
+                  "2001:db8::ff00:42:8329"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Permissões da campanha atualizadas com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "codeIntern": "CMP003",
+                  "message": "Campaign allow settings updated successfully"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/campaigns/deny/{id}": {
+      "put": {
+        "summary": "Atualizar restrições da campanha",
+        "description": "Esta rota é responsável por atualizar as restrições anti-spy, linguagens, países, IPs, ISPs, consultas e origens de referenciadores negados de uma campanha específica pelo ID.",
+        "tags": [
+          "campaign"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID da campanha a ser atualizada"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "antiSpy": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "denyLanguages": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "denyCountries": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "denyIps": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "ipv4 or ipv6"
+                    }
+                  },
+                  "denyIsps": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "denyQueries": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "denyRefererOrigins": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "example": {
+                "antiSpy": [
+                  "METHOD_A",
+                  "METHOD_B"
+                ],
+                "denyLanguages": [
+                  "en",
+                  "es"
+                ],
+                "denyCountries": [
+                  "US",
+                  "CA"
+                ],
+                "denyIps": [
+                  "192.168.1.100",
+                  "2001:db8::ff00:42:8329"
+                ],
+                "denyIsps": [
+                  "isp1",
+                  "isp2"
+                ],
+                "denyQueries": [
+                  "query1",
+                  "query2"
+                ],
+                "denyRefererOrigins": [
+                  "https://example1.com",
+                  "https://example2.com"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Restrições da campanha atualizadas com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "codeIntern": "CMP005",
+                  "message": "Campaign deny settings updated successfully"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/campaignLogs": {
+      "post": {
+        "summary": "Criar log de campanha",
+        "description": "Esta rota permite criar um log para uma campanha específica.",
+        "tags": [
+          "campaignLogs"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "campaignId": {
+                    "type": "string",
+                    "description": "ID da campanha"
+                  },
+                  "ip": {
+                    "type": "string",
+                    "description": "Endereço IP do usuário"
+                  },
+                  "redirectTo": {
+                    "type": "string",
+                    "description": "URL de redirecionamento"
+                  },
+                  "page": {
+                    "type": "string",
+                    "description": "Página acessada"
+                  },
+                  "referer": {
+                    "type": "string",
+                    "description": "Referência da página anterior"
+                  },
+                  "userAgent": {
+                    "type": "string",
+                    "description": "Agente do usuário"
+                  },
+                  "language": {
+                    "type": "string",
+                    "description": "Idioma do navegador"
+                  },
+                  "ipInfo": {
+                    "type": "object",
+                    "description": "Informações adicionais sobre o IP"
+                  },
+                  "deviceInfo": {
+                    "type": "object",
+                    "description": "Informações sobre o dispositivo"
+                  },
+                  "apiResponse": {
+                    "type": "string",
+                    "description": "Resposta da API"
+                  }
+                }
+              },
+              "example": {
+                "campaignId": "abc123",
+                "ip": "192.168.0.1",
+                "redirectTo": "https://exemplo.com/destino",
+                "page": "/oferta",
+                "referer": "https://google.com",
+                "userAgent": "Mozilla/5.0",
+                "language": "pt-BR",
+                "ipInfo": {
+                  "country": "Brazil",
+                  "city": "São Paulo"
+                },
+                "deviceInfo": {
+                  "type": "Mobile",
+                  "os": "Android"
+                },
+                "apiResponse": "200 OK"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Log de campanha criado com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "codeIntern": "CMP008",
+                  "message": "Campaign log created successfully"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/campaignLogs/{campaignId}": {
+      "get": {
+        "summary": "Listar logs de campanha",
+        "description": "Esta rota permite listar os logs de uma campanha específica, com paginação.",
+        "tags": [
+          "campaignLogs"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "campaignId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID da campanha"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "description": "Número da página"
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "description": "Quantidade de logs por página"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de logs de campanha",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": [
+                    {
+                      "id": "67b0c0f1-af03-480b-a00e-48dc3703cd4b",
+                      "campaignId": "a76802ed-31d9-43d7-8b21-a191c380a65e",
+                      "ip": "192.168.0.1",
+                      "redirectTo": "https://exemplo.com/destino",
+                      "page": "/oferta",
+                      "referer": "https://google.com",
+                      "userAgent": "Mozilla/5.0",
+                      "language": "pt-BR",
+                      "ipInfo": {
+                        "country": "Brazil",
+                        "city": "São Paulo"
+                      },
+                      "deviceInfo": {
+                        "type": "Mobile",
+                        "os": "Android"
+                      },
+                      "apiResponse": "200 OK",
+                      "createdAt": "2024-08-20T16:52:31.070Z"
+                    },
+                    {
+                      "id": "58d2fa00-7abc-42f4-8dfe-db2120022f07",
+                      "campaignId": "a76802ed-31d9-43d7-8b21-a191c380a65e",
+                      "ip": "192.168.0.1",
+                      "redirectTo": "https://exemplo.com/destino",
+                      "page": "/oferta",
+                      "referer": "https://google.com",
+                      "userAgent": "Mozilla/5.0",
+                      "language": "pt-BR",
+                      "ipInfo": {
+                        "country": "Brazil",
+                        "city": "São Paulo"
+                      },
+                      "deviceInfo": {
+                        "type": "Mobile",
+                        "os": "Android"
+                      },
+                      "apiResponse": "200 OK",
+                      "createdAt": "2024-08-20T16:52:27.573Z"
+                    },
+                    {
+                      "id": "9dc73328-62ed-45a6-b067-961960132bd4",
+                      "campaignId": "a76802ed-31d9-43d7-8b21-a191c380a65e",
+                      "ip": null,
+                      "redirectTo": null,
+                      "page": null,
+                      "referer": null,
+                      "userAgent": null,
+                      "language": null,
+                      "ipInfo": null,
+                      "deviceInfo": null,
+                      "apiResponse": null,
+                      "createdAt": "2024-08-20T16:48:08.054Z"
+                    },
+                    {
+                      "id": "778b4094-45cf-4ba4-b592-1349e1729d46",
+                      "campaignId": "a76802ed-31d9-43d7-8b21-a191c380a65e",
+                      "ip": null,
+                      "redirectTo": null,
+                      "page": null,
+                      "referer": null,
+                      "userAgent": null,
+                      "language": null,
+                      "ipInfo": null,
+                      "deviceInfo": null,
+                      "apiResponse": null,
+                      "createdAt": "2024-08-20T16:47:41.697Z"
+                    }
+                  ],
+                  "meta": {
+                    "page": 1,
+                    "pageSize": 10,
+                    "total": 4,
+                    "totalPages": 1
+                  }
+                }
+              }
+            }
           }
         }
       }
