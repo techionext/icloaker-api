@@ -7,7 +7,6 @@ interface IHandleGeneratePassword {
  * @param limit: 8 -> akl12mnA
  * @returns returns a new password
  */
-
 export const handleGeneratePassword = ({ limit }: IHandleGeneratePassword) => {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let password = '';

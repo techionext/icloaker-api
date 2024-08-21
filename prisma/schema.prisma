@@ -15,21 +15,144 @@ enum userRole {
   ROOT
 }
 
-model Users {
-  id        String   @id
-  name      String
-  phone     String
-  email     String   @unique
-  password  String
-  active    Boolean  @default(true)
-  createdAt DateTime @default(now())
-
-  role userRole @default(USER)
+enum profileProviders {
+  GOOGLE
 }
 
-model recoverPassword {
+model Profile {
+  id            String           @id @default(uuid())
+  userId        String
+  provider      profileProviders
+  providerId    String
+  providerEmail String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerId])
+  @@map("Profiles")
+}
+
+model User {
+  id        String   @id
+  avatar    String?
+  avatarKey String?
+  name      String
+  phone     String?
+  email     String?  @unique
+  password  String?
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  role      userRole @default(USER)
+
+  recoverPassword RecoverPassword[]
+  profiles        Profile[]
+  Domain          Domain[]
+  Campaign        Campaign[]
+
+  @@map("Users")
+}
+
+model RecoverPassword {
   id           String   @id
   userId       String
   createdAt    DateTime @default(now())
   expirationAt DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum domainStatus {
+  PENDING
+  ACTIVE
+  INACTIVE
+}
+
+model Domain {
+  id     String       @id
+  url    String
+  status domainStatus @default(INACTIVE)
+  userId String
+
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("Domains")
+}
+
+enum campaignDevices {
+  IPHONE
+  ANDROID
+  WINDOWS
+  MACBOOK
+  LINUX
+}
+
+enum campaignAntiSpy {
+  VPN
+  PROXY
+  TOR
+  RELAY
+  BOT
+}
+
+model Campaign {
+  id     String @id
+  userId String
+
+  // basic infos
+  origin       String[]
+  name         String
+  domain       String
+  safePage     String?
+  offerPage    String?
+  languages    String[]
+  countries    String[]
+  devices      campaignDevices[]
+  domainStatus domainStatus      @default(PENDING)
+  manualReview Boolean           @default(false)
+
+  // allow list
+  allowIsps           String[]
+  allowRefererOrigins String[]
+  allowQueries        String[]
+  allowIps            String[]
+
+  // deny list
+  antiSpy            campaignAntiSpy[]
+  denyLanguages      String[]
+  denyCountries      String[]
+  denyIps            String[]
+  denyIsps           String[]
+  denyQueries        String[]
+  denyRefererOrigins String[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+
+  user User          @relation(fields: [userId], references: [id])
+  log  CampaignLog[]
+
+  @@index([userId])
+  @@map("Campaigns")
+}
+
+model CampaignLog {
+  id         String @id @unique @default(uuid())
+  campaignId String
+
+  ip          String?
+  redirectTo  String?
+  page        String?
+  referer     String?
+  userAgent   String?
+  language    String?
+  ipInfo      Json?
+  deviceInfo  Json?
+  apiResponse String?
+  createdAt   DateTime @default(now())
+  campaign    Campaign @relation(fields: [campaignId], references: [id])
+
+  @@index([campaignId])
+  @@map("CampaignLogs")
 }

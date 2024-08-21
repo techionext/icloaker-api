@@ -1,6 +1,6 @@
 import { prisma } from '@config/DataBase/Prisma/Index';
 
-import { ICreateDTO, IDeleteByIdDTO, IFindByIdDTO, IFindByUserIdDTO, IRepositoryRecoverPassword } from '../IRepositoryRecoverPassword';
+import { ICreateDTO, IDeleteByIdDTO, IGetByIdDTO, IGetByUserIdDTO, IRepositoryRecoverPassword } from '../IRepositoryRecoverPassword';
 
 export class RepositoryRecoverPassword implements IRepositoryRecoverPassword {
   async Create({ id, userId, expirationAt }: ICreateDTO.Params) {
@@ -13,7 +13,7 @@ export class RepositoryRecoverPassword implements IRepositoryRecoverPassword {
     });
   }
 
-  async FindById({ id }: IFindByIdDTO.Params) {
+  async GetById({ id }: IGetByIdDTO.Params) {
     const dataRecoverPassword = await prisma.recoverPassword.findFirst({
       where: {
         id,
@@ -26,7 +26,7 @@ export class RepositoryRecoverPassword implements IRepositoryRecoverPassword {
     };
   }
 
-  async FindByUserId({ userId }: IFindByUserIdDTO.Params) {
+  async GetByUserId({ userId }: IGetByUserIdDTO.Params) {
     const dataRecoverPassword = await prisma.recoverPassword.findFirst({
       where: {
         userId,
