@@ -14,6 +14,6 @@ export const ZODVerifyParse = <T extends z.ZodTypeAny>({ schema, data }: IZODVer
   } catch (error: any) {
     const { message: messageError } = JSON.parse(error.message)[0];
 
-    throw new AppError(messageError, 422);
+    throw new AppError({ codeIntern: 'SYS002', message: messageError }, 422);
   }
 };

@@ -1092,76 +1092,188 @@
                     "type": "array",
                     "items": {
                       "type": "string"
-                    }
+                    },
+                    "description": "Origem da campanha.",
+                    "example": [
+                      "ORIGIN_A",
+                      "ORIGIN_B"
+                    ]
+                  },
+                  "googleSources": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Fontes de tráfego do Google.",
+                    "example": [
+                      "SOURCE_1",
+                      "SOURCE_2"
+                    ]
                   },
                   "name": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Nome da campanha.",
+                    "example": "Campanha de Teste"
                   },
                   "domain": {
                     "type": "string",
-                    "format": "url"
+                    "description": "Domínio da campanha.",
+                    "format": "url",
+                    "example": "https://www.example.com"
                   },
                   "safePage": {
                     "type": "string",
-                    "format": "url"
+                    "description": "URL da página segura.",
+                    "format": "url",
+                    "example": "https://www.safe-page.com"
+                  },
+                  "safePageMethod": {
+                    "type": "string",
+                    "description": "Método da página segura.",
+                    "example": "POST"
                   },
                   "offerPage": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "URLs das páginas de oferta.",
+                    "example": [
+                      "https://www.offer1.com",
+                      "https://www.offer2.com"
+                    ]
+                  },
+                  "offerPageMethod": {
                     "type": "string",
-                    "format": "url"
+                    "description": "Método da página de oferta.",
+                    "example": "GET"
                   },
                   "languages": {
                     "type": "array",
                     "items": {
                       "type": "string"
-                    }
+                    },
+                    "description": "Idiomas da campanha.",
+                    "example": [
+                      "en",
+                      "pt"
+                    ]
                   },
                   "countries": {
                     "type": "array",
                     "items": {
                       "type": "string"
-                    }
+                    },
+                    "description": "Países alvo da campanha.",
+                    "example": [
+                      "BR",
+                      "US"
+                    ]
                   },
                   "devices": {
                     "type": "array",
                     "items": {
                       "type": "string"
-                    }
+                    },
+                    "description": "Dispositivos alvo da campanha.",
+                    "example": [
+                      "MOBILE",
+                      "DESKTOP"
+                    ]
                   },
                   "manualReview": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Indica se a campanha requer revisão manual.",
+                    "example": true
+                  },
+                  "pageType": {
+                    "type": "string",
+                    "description": "Tipo de página da campanha.",
+                    "example": "LANDING"
+                  },
+                  "disclaimer": {
+                    "type": "string",
+                    "description": "Texto do disclaimer.",
+                    "example": "Este é um disclaimer obrigatório com no mínimo 80 caracteres."
+                  },
+                  "companyName": {
+                    "type": "string",
+                    "description": "Nome da empresa.",
+                    "example": "Empresa Exemplo"
+                  },
+                  "address": {
+                    "type": "string",
+                    "description": "Endereço da empresa.",
+                    "example": "Rua Exemplo, 123"
+                  },
+                  "vat": {
+                    "type": "string",
+                    "description": "Número VAT da empresa.",
+                    "example": "BR123456789"
+                  },
+                  "supportPhone": {
+                    "type": "string",
+                    "description": "Telefone de suporte da empresa.",
+                    "example": "+5511999999999"
+                  },
+                  "supportEmail": {
+                    "type": "string",
+                    "description": "Email de suporte da empresa.",
+                    "example": "suporte@empresaexemplo.com"
                   }
                 },
                 "required": [
                   "origin",
                   "name",
                   "domain",
-                  "devices"
+                  "safePageMethod",
+                  "offerPage",
+                  "offerPageMethod",
+                  "disclaimer",
+                  "companyName",
+                  "address",
+                  "vat",
+                  "supportPhone",
+                  "supportEmail"
                 ]
               },
               "examples": {
-                "Nova campanha": {
+                "Exemplo de atualização de campanha": {
                   "value": {
                     "origin": [
                       "FACEBOOK",
-                      "INSTAGRAM"
+                      "TIKTOK"
                     ],
-                    "name": "Campanha de exemplo",
-                    "domain": "https://exemplo.com",
-                    "safePage": "https://exemplo.com/safe",
-                    "offerPage": "https://exemplo.com/offer",
+                    "googleSources": [],
+                    "name": "Campanha de Teste",
+                    "domain": "https://www.example.com",
+                    "safePage": "https://www.safe-page.com",
+                    "safePageMethod": "EXTERNAL",
+                    "offerPage": [
+                      "https://www.offer1.com",
+                      "https://www.offer2.com"
+                    ],
+                    "offerPageMethod": "AB",
                     "languages": [
-                      "pt",
-                      "en"
+                      "EN",
+                      "PT"
                     ],
                     "countries": [
                       "BR",
                       "US"
                     ],
                     "devices": [
-                      "IPHONE",
-                      "ANDROID"
+                      "ANDROID",
+                      "WINDOWS"
                     ],
-                    "manualReview": true
+                    "manualReview": true,
+                    "pageType": "MIDIA",
+                    "disclaimer": "Este é um disclaimer obrigatório com no mínimo 80 caracteres.",
+                    "companyName": "Empresa Exemplo",
+                    "address": "Rua Exemplo, 123",
+                    "vat": "36.966.539/0001-47",
+                    "supportPhone": "+5511999999999",
+                    "supportEmail": "suporte@empresaexemplo.com"
                   }
                 }
               }
@@ -1235,16 +1347,30 @@
                 "example": {
                   "data": [
                     {
-                      "id": "037e419b-2677-4eed-ad9d-02306f01d2c5",
-                      "userId": "8e562b91-4d67-44b4-ad22-b9e307c0cf7e",
+                      "id": "728a1f3c-1632-4b94-b7d6-2030eebb2820",
+                      "slug": "b6f32838b2",
+                      "userId": "4c872387-b516-4f1b-8e67-ccaeaa86c734",
                       "origin": [
-                        "FACEBOOK"
+                        "FACEBOOK",
+                        "GOOGLE"
+                      ],
+                      "googleSources": [
+                        "YOUTUBE"
                       ],
                       "name": "campanha de teste",
                       "domain": "https://teste.online",
                       "safePage": "https://example.com",
-                      "offerPage": "https://example.com/offer",
-                      "languages": [],
+                      "safePageMethod": "EXTERNAL",
+                      "offerPage": [
+                        "https://example.com/offer",
+                        "https://example.com/offer"
+                      ],
+                      "offerPageMethod": "AB",
+                      "languages": [
+                        "PT-BR",
+                        "US",
+                        "ES"
+                      ],
                       "countries": [
                         "EUA",
                         "BR",
@@ -1257,6 +1383,15 @@
                       ],
                       "domainStatus": "PENDING",
                       "manualReview": true,
+                      "pageType": "MIDIA",
+                      "disclaimer": "descriçao dasouahsodiahsodiah iodhaos hdaios hdoaijd oiasjdoia sjdioajsdoi dasipdjasidja idjsidjais dijasidjasidais dasd",
+                      "companyName": "",
+                      "address": "",
+                      "vat": "",
+                      "supportPhone": "",
+                      "supportEmail": "",
+                      "logo": null,
+                      "logoKey": null,
                       "allowIsps": [
                         "AS15169 Google LLC"
                       ],
@@ -1284,7 +1419,7 @@
                         "IR"
                       ],
                       "denyIps": [
-                        "45.123.456.123"
+                        "45.123.255.123"
                       ],
                       "denyIsps": [],
                       "denyQueries": [
@@ -1293,46 +1428,15 @@
                       "denyRefererOrigins": [
                         "YOUTUBE"
                       ],
-                      "createdAt": "2024-08-19T15:35:38.628Z",
-                      "updatedAt": "2024-08-19T16:31:08.203Z"
-                    },
-                    {
-                      "id": "612cde41-85d0-4a53-85d6-c09584915569",
-                      "userId": "8e562b91-4d67-44b4-ad22-b9e307c0cf7e",
-                      "origin": [],
-                      "name": "campanha de teste",
-                      "domain": "https://teste.online",
-                      "safePage": "https://example.com",
-                      "offerPage": "https://example.com/offer",
-                      "languages": [],
-                      "countries": [],
-                      "devices": [
-                        "MACBOOK",
-                        "ANDROID",
-                        "WINDOWS"
-                      ],
-                      "domainStatus": "PENDING",
-                      "manualReview": true,
-                      "allowIsps": [],
-                      "allowRefererOrigins": [],
-                      "allowQueries": [],
-                      "allowIps": [],
-                      "antiSpy": [],
-                      "denyLanguages": [],
-                      "denyCountries": [],
-                      "denyIps": [],
-                      "denyIsps": [],
-                      "denyQueries": [],
-                      "denyRefererOrigins": [],
-                      "createdAt": "2024-08-18T00:03:35.245Z",
-                      "updatedAt": "2024-08-18T00:03:35.245Z"
+                      "createdAt": "2024-08-21T21:22:55.432Z",
+                      "updatedAt": "2024-08-21T21:23:32.834Z"
                     }
                   ],
                   "meta": {
                     "page": 1,
-                    "pageSize": 2,
-                    "total": 5,
-                    "totalPages": 3
+                    "pageSize": 10,
+                    "total": 1,
+                    "totalPages": 1
                   }
                 }
               }
@@ -1365,7 +1469,7 @@
           }
         ],
         "requestBody": {
-          "required": true,
+          "required": false,
           "content": {
             "application/json": {
               "schema": {
@@ -1375,71 +1479,173 @@
                     "type": "array",
                     "items": {
                       "type": "string"
-                    }
+                    },
+                    "description": "Origem da campanha.",
+                    "example": [
+                      "ORIGIN_A",
+                      "ORIGIN_B"
+                    ]
+                  },
+                  "googleSources": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Fontes de tráfego do Google.",
+                    "example": [
+                      "SOURCE_1",
+                      "SOURCE_2"
+                    ]
                   },
                   "name": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Nome da campanha.",
+                    "example": "Campanha de Teste"
                   },
                   "domain": {
                     "type": "string",
-                    "format": "url"
+                    "description": "Domínio da campanha.",
+                    "format": "url",
+                    "example": "https://www.example.com"
                   },
                   "safePage": {
                     "type": "string",
-                    "format": "url"
+                    "description": "URL da página segura.",
+                    "format": "url",
+                    "example": "https://www.safe-page.com"
+                  },
+                  "safePageMethod": {
+                    "type": "string",
+                    "description": "Método da página segura.",
+                    "example": "POST"
                   },
                   "offerPage": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "URLs das páginas de oferta.",
+                    "example": [
+                      "https://www.offer1.com",
+                      "https://www.offer2.com"
+                    ]
+                  },
+                  "offerPageMethod": {
                     "type": "string",
-                    "format": "url"
+                    "description": "Método da página de oferta.",
+                    "example": "GET"
                   },
                   "languages": {
                     "type": "array",
                     "items": {
                       "type": "string"
-                    }
+                    },
+                    "description": "Idiomas da campanha.",
+                    "example": [
+                      "en",
+                      "pt"
+                    ]
                   },
                   "countries": {
                     "type": "array",
                     "items": {
                       "type": "string"
-                    }
+                    },
+                    "description": "Países alvo da campanha.",
+                    "example": [
+                      "BR",
+                      "US"
+                    ]
                   },
                   "devices": {
                     "type": "array",
                     "items": {
                       "type": "string"
-                    }
+                    },
+                    "description": "Dispositivos alvo da campanha.",
+                    "example": [
+                      "MOBILE",
+                      "DESKTOP"
+                    ]
                   },
                   "manualReview": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Indica se a campanha requer revisão manual.",
+                    "example": true
+                  },
+                  "pageType": {
+                    "type": "string",
+                    "description": "Tipo de página da campanha.",
+                    "example": "LANDING"
+                  },
+                  "disclaimer": {
+                    "type": "string",
+                    "description": "Texto do disclaimer.",
+                    "example": "Este é um disclaimer obrigatório com no mínimo 80 caracteres."
+                  },
+                  "companyName": {
+                    "type": "string",
+                    "description": "Nome da empresa.",
+                    "example": "Empresa Exemplo"
+                  },
+                  "address": {
+                    "type": "string",
+                    "description": "Endereço da empresa.",
+                    "example": "Rua Exemplo, 123"
+                  },
+                  "vat": {
+                    "type": "string",
+                    "description": "Número VAT da empresa.",
+                    "example": "BR123456789"
+                  },
+                  "supportPhone": {
+                    "type": "string",
+                    "description": "Telefone de suporte da empresa.",
+                    "example": "+5511999999999"
+                  },
+                  "supportEmail": {
+                    "type": "string",
+                    "description": "Email de suporte da empresa.",
+                    "example": "suporte@empresaexemplo.com"
                   }
-                }
-              },
-              "examples": {
-                "Atualizar campanha": {
-                  "value": {
-                    "origin": [
-                      "https://exemplo.com",
-                      "https://outroexemplo.com"
-                    ],
-                    "name": "Campanha Atualizada",
-                    "domain": "https://dominioatualizado.com",
-                    "safePage": "https://pagina-segura.com",
-                    "offerPage": "https://pagina-oferta.com",
-                    "languages": [
-                      "pt",
-                      "en"
-                    ],
-                    "countries": [
-                      "BR",
-                      "US"
-                    ],
-                    "devices": [
-                      "IPHONE",
-                      "ANDROID"
-                    ],
-                    "manualReview": true
-                  }
+                },
+                "example": {
+                  "origin": [
+                    "GOOGLE",
+                    "OUTBRAIN"
+                  ],
+                  "googleSources": [
+                    "YOUTUBE",
+                    "SEARCH"
+                  ],
+                  "name": "Campanha de Teste",
+                  "domain": "https://www.example.com",
+                  "safePage": "https://www.safe-page.com",
+                  "safePageMethod": "INTERNAL",
+                  "offerPage": [
+                    "https://www.offer1.com"
+                  ],
+                  "offerPageMethod": "SINGLE",
+                  "languages": [
+                    "EN",
+                    "PT"
+                  ],
+                  "countries": [
+                    "BR",
+                    "US"
+                  ],
+                  "devices": [
+                    "IPHONE",
+                    "LINUX"
+                  ],
+                  "manualReview": true,
+                  "pageType": "PHISIC",
+                  "disclaimer": "Este é um disclaimer obrigatório com no mínimo 80 caracteres.",
+                  "companyName": "Empresa Exemplo",
+                  "address": "Rua Exemplo, 123",
+                  "vat": "87.713.544/0001-89",
+                  "supportPhone": "+5511999999999",
+                  "supportEmail": "suporte@empresaexemplo.com"
                 }
               }
             }

@@ -61,12 +61,33 @@ export class RepositoryCampaign implements IRepositoryCampaign {
       isExists: !!data,
     };
   }
-  async Update({ id, countries, devices, domain, domainStatus, languages, manualReview, name, offerPage, origin, safePage }: IUpdateDTO.Params) {
+  async Update(data: IUpdateDTO.Params) {
     await prisma.campaign.update({
       where: {
-        id,
+        id: data.id,
       },
-      data: { countries, devices, domain, domainStatus, languages, manualReview, name, offerPage, origin, safePage },
+      data: {
+        origin: data.origin,
+        googleSources: data.googleSources,
+        name: data.name,
+        domain: data.domain,
+        safePage: data.safePage,
+        safePageMethod: data.safePageMethod,
+        offerPage: data.offerPage,
+        offerPageMethod: data.offerPageMethod,
+        languages: data.languages,
+        countries: data.countries,
+        devices: data.devices,
+        domainStatus: data.domainStatus,
+        manualReview: data.manualReview,
+        pageType: data.pageType,
+        disclaimer: data.disclaimer,
+        companyName: data.companyName,
+        address: data.address,
+        vat: data.vat,
+        supportPhone: data.supportPhone,
+        supportEmail: data.supportEmail,
+      },
     });
   }
   async UpdateDenyConfig({
@@ -125,34 +146,33 @@ export class RepositoryCampaign implements IRepositoryCampaign {
       isExists: !!data,
     };
   }
-  async Create({
-    id,
-    devices,
-    domain,
-    name,
-    origin,
-    countries,
-    domainStatus,
-    languages,
-    manualReview,
-    offerPage,
-    safePage,
-    userId,
-  }: ICreateDTO.Params) {
+  async Create(data: ICreateDTO.Params) {
     await prisma.campaign.create({
       data: {
-        id,
-        name,
-        domain,
-        userId,
-        origin,
-        devices,
-        safePage,
-        languages,
-        countries,
-        offerPage,
-        domainStatus,
-        manualReview,
+        id: data.id,
+        vat: data.vat,
+        logo: data.logo,
+        name: data.name,
+        slug: data.slug,
+        domain: data.domain,
+        userId: data.userId,
+        origin: data.origin,
+        address: data.address,
+        devices: data.devices,
+        pageType: data.pageType,
+        safePage: data.safePage,
+        languages: data.languages,
+        countries: data.countries,
+        offerPage: data.offerPage,
+        disclaimer: data.disclaimer,
+        companyName: data.companyName,
+        supportPhone: data.supportPhone,
+        supportEmail: data.supportEmail,
+        domainStatus: data.domainStatus,
+        manualReview: data.manualReview,
+        safePageMethod: data.safePageMethod,
+        offerPageMethod: data.offerPageMethod,
+        googleSources: data.googleSources,
       },
     });
   }
