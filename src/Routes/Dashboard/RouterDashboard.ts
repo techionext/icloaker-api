@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { DashboardMetricsControllerIndex } from 'UseCases/Dashboard';
+import { DashboardMetricsControllerIndex } from 'UseCases/Dashboard/Metric';
 
 export const routerDashboard = Router();
 
