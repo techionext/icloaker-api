@@ -188,17 +188,15 @@ model CampaignLog {
   id         String @id @unique @default(uuid())
   campaignId String
 
-  ip          String?
   redirectTo  String?
-  page        String?
-  referer     String?
-  userAgent   String?
-  language    String?
+  pageUrl     String?
+  refererPage String?
+  requestInfo Json?
   ipInfo      Json?
-  deviceInfo  Json?
   apiResponse String?
   createdAt   DateTime @default(now())
-  campaign    Campaign @relation(fields: [campaignId], references: [id])
+
+  campaign Campaign @relation(fields: [campaignId], references: [id])
 
   @@index([campaignId])
   @@map("CampaignLogs")

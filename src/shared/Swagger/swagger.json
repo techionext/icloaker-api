@@ -2237,6 +2237,77 @@
           }
         }
       }
+    },
+    "/dashboard/metrics": {
+      "get": {
+        "summary": "Obter métricas do dashboard",
+        "description": "Esta rota permite obter as métricas do dashboard para um intervalo de datas específico.",
+        "tags": [
+          "dashboard"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "startDate",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "example": "2024-08-01"
+            },
+            "description": "Data de início do intervalo. Formato: yyyy-mm-dd. Exemplo: 2024-08-01."
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "example": "2024-08-31"
+            },
+            "description": "Data de término do intervalo. Formato: yyyy-mm-dd. Exemplo: 2024-08-31."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Métricas obtidas com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "days": {
+                      "2024-08-21": {
+                        "bots": 38,
+                        "safePage": 0,
+                        "offerPage": 0,
+                        "totalRequests": 79
+                      },
+                      "2024-08-22": {
+                        "bots": 0,
+                        "safePage": 0,
+                        "offerPage": 0,
+                        "totalRequests": 1
+                      }
+                    },
+                    "range": {
+                      "bots": 38,
+                      "safePage": 0,
+                      "offerPage": 0,
+                      "totalRequests": 80
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {

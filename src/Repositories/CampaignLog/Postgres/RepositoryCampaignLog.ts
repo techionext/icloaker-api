@@ -32,19 +32,16 @@ export class RepositoryCampaignLog implements IRepositoryCampaignLog {
       },
     };
   }
-  async Create({ ip, page, ipInfo, referer, language, userAgent, redirectTo, deviceInfo, campaignId, apiResponse }: ICreateDTO.Params) {
+  async Create({ campaignId, apiResponse, ipInfo, pageUrl, redirectTo, refererPage, requestInfo }: ICreateDTO.Params) {
     await prisma.campaignLog.create({
       data: {
-        ip,
-        page,
-        ipInfo,
-        referer,
-        language,
-        userAgent,
-        redirectTo,
-        deviceInfo,
         campaignId,
         apiResponse,
+        ipInfo,
+        pageUrl,
+        redirectTo,
+        refererPage,
+        requestInfo,
       },
     });
   }

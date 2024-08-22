@@ -17,7 +17,7 @@ export class CampaignLogCreateUseCase {
   ) {}
 
   async execute(request: ICampaignLogCreateDTO.Params) {
-    const { campaignId, apiResponse, deviceInfo, ip, ipInfo, language, page, redirectTo, referer, userAgent } = ZODVerifyParse({
+    const { campaignId, apiResponse, ipInfo, pageUrl, redirectTo, refererPage, requestInfo } = ZODVerifyParse({
       schema: CampaignLogCreateSchema,
       data: request,
     });
@@ -26,16 +26,13 @@ export class CampaignLogCreateUseCase {
     if (!isExists) throw new AppError(ErrorDictionary.CAMPAIGN.campaignNotFoundWithId, 400);
 
     await this.RepositoryCampaignLog.Create({
-      ip,
-      page,
-      referer,
-      language,
-      userAgent,
-      redirectTo,
+      pageUrl,
       campaignId,
+      redirectTo,
+      refererPage,
       apiResponse,
       ipInfo: JSON.stringify(ipInfo),
-      deviceInfo: JSON.stringify(deviceInfo),
+      requestInfo: JSON.stringify(requestInfo),
     });
 
     const returnResponse = {
