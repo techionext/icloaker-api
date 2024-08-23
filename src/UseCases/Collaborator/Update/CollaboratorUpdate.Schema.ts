@@ -1,5 +1,6 @@
-import { $Enums } from '@prisma/client';
 import { z } from 'zod';
+
+const filteredUserRoles = ['USER', 'COLLABORATOR', 'ADMIN'] as const;
 
 export const CollaboratorUpdateSchema = z.object({
   id: z.string({
@@ -7,11 +8,9 @@ export const CollaboratorUpdateSchema = z.object({
     invalid_type_error: 'enviar id como string !',
   }),
 
-  role: z
-    .nativeEnum($Enums.userRole, {
-      invalid_type_error: `Valor inválido para role. Opções válidas: ${Object.values($Enums.userRole).join(', ')}.`,
-    })
-    .optional(),
+  role: z.enum(filteredUserRoles, {
+    errorMap: () => ({ message: `role deve ser um dos seguintes valores: ${filteredUserRoles.join(', ')}.` }),
+  }),
 
   token: z.object(
     {

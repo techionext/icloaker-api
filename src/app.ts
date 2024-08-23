@@ -42,4 +42,6 @@ app.use(async (err: Error, request: Request, response: Response, next: NextFunct
   return next();
 });
 
+// import '../faker/campaignLog';
+
 export { serverHttp };

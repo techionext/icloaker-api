@@ -42,14 +42,6 @@ const envSchema = z.object({
     errorMap: (data) => ({ message: `LOCAL_UPLOAD_FILES must be one of the following values: S3, local. Received: ${data}` }),
   }),
 
-  EMAIL_HOST: z.string({ required_error: 'Please provide EMAIL_HOST environment variable' }),
-
-  EMAIL_PORT: z.string({ required_error: 'Please provide EMAIL_PORT environment variable' }),
-
-  EMAIL_USER: z.string({ required_error: 'Please provide EMAIL_USER environment variable' }),
-
-  EMAIL_PASS: z.string({ required_error: 'Please provide EMAIL_PASS environment variable' }),
-
   GOOGLE_CLIENT_ID: z.string({ required_error: 'Please provide GOOGLE_CLIENT_ID environment variable' }),
 
   GOOGLE_CLIENT_SECRET: z.string({ required_error: 'Please provide GOOGLE_CLIENT_SECRET environment variable' }),
@@ -73,6 +65,12 @@ const envSchema = z.object({
   AWS_PRODUCER_QUEUES_ACCESS_KEY_ID: z.string({ required_error: 'Please provide AWS_PRODUCER_QUEUES_ACCESS_KEY_ID environment variable' }),
 
   FRONT_END_BASE_URL: z.string({ required_error: 'Please provide FRONT_END_BASE_URL environment variable' }),
+
+  AWS_SES_ACCESS_KEY_ID: z.string({ required_error: 'Please provide AWS_SES_ACCESS_KEY_ID environment variable' }),
+
+  AWS_SES_SECRET_ACCESS_KEY: z.string({ required_error: 'Please provide AWS_SES_SECRET_ACCESS_KEY environment variable' }),
+
+  AWS_SES_REGION: z.string({ required_error: 'Please provide AWS_SES_REGION environment variable' }),
 });
 
 const envZod = envSchema.safeParse(process.env);
@@ -102,6 +100,11 @@ export const env = {
         DEFAULT_REGION: envZod.data.AWS_PRODUCER_QUEUES_DEFAULT_REGION,
       },
     },
+    SES: {
+      ACCESS_KEY_ID: envZod.data.AWS_SES_ACCESS_KEY_ID,
+      SECRET_ACCESS_KEY: envZod.data.AWS_SES_SECRET_ACCESS_KEY,
+      DEFAULT_REGION: envZod.data.AWS_SES_REGION,
+    },
   },
   JWT: {
     SECRET: envZod.data.SECRET_TOKEN,
@@ -119,12 +122,6 @@ export const env = {
   },
   RECOVER_PASSWORD_SETTINGS: {
     EXPIRATION_TIME_MINUTES: envZod.data.RECOVERY_PASSWORD_EXPIRATION_LIMIT_IN_MINUTES,
-  },
-  EMAIL: {
-    HOST: envZod.data.EMAIL_HOST,
-    PORT: envZod.data.EMAIL_PORT,
-    USER: envZod.data.EMAIL_USER,
-    PASS: envZod.data.EMAIL_PASS,
   },
   OAUTH: {
     GOOGLE: {

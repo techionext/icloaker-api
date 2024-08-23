@@ -15,9 +15,81 @@ import {
   IGetAvatarDTO,
   IDeleteAvatarDTO,
   IUpdateAvatarDTO,
+  IGetCollaboratorInviteByEmailDTO,
+  ICreateCollaboratorInviteDTO,
+  IDeleteCollaboratorInviteDTO,
+  IChangeRoleDTO,
+  ICreateMagicLinkDTO,
+  IDeleteMagicLinkDTO,
+  IGetMagicLinkByIdDTO,
+  IGetCollaboratorInviteByIdDTO,
 } from '../IRepositoryUser';
 
 export class RepositoryUser implements IRepositoryUser {
+  async GetCollaboratorInviteById({ id }: IGetCollaboratorInviteByIdDTO.Params) {
+    const data = await prisma.collaboratorInvite.findUnique({ where: { id } });
+
+    return {
+      data,
+      isExists: !!data,
+    };
+  }
+
+  async CreateMagicLink({ userId, id }: ICreateMagicLinkDTO.Params) {
+    await prisma.magicLink.create({
+      data: {
+        id,
+        userId,
+      },
+    });
+  }
+
+  async GetMagicLinkById({ id }: IGetMagicLinkByIdDTO.Params) {
+    const data = await prisma.magicLink.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    return {
+      isExists: !!data,
+      data,
+    };
+  }
+
+  async DeleteMagicLink({ id }: IDeleteMagicLinkDTO.Params) {
+    await prisma.magicLink.delete({ where: { id } });
+  }
+
+  async ChangeRole({ id, role }: IChangeRoleDTO.Params) {
+    await prisma.user.update({
+      where: { id },
+      data: { role },
+    });
+  }
+
+  async DeleteCollaboratorInvite({ id }: IDeleteCollaboratorInviteDTO.Params) {
+    await prisma.collaboratorInvite.delete({ where: { id } });
+  }
+
+  async CreateCollaboratorInvite({ email, id }: ICreateCollaboratorInviteDTO.Params) {
+    await prisma.collaboratorInvite.create({
+      data: {
+        id,
+        email,
+      },
+    });
+  }
+
+  async GetCollaboratorInviteByEmail({ email }: IGetCollaboratorInviteByEmailDTO.Params) {
+    const data = await prisma.collaboratorInvite.findFirst({ where: { email } });
+
+    return {
+      data,
+      isExists: !!data,
+    };
+  }
+
   async UpdateAvatar({ avatar, avatarKey, id }: IUpdateAvatarDTO.Params) {
     await prisma.user.update({
       where: {

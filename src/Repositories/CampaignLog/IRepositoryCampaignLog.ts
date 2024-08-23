@@ -4,14 +4,11 @@ export namespace ICreateDTO {
   export type Params = {
     campaignId: string;
     apiResponse?: string;
-    deviceInfo?: string;
-    ip?: string;
+    requestInfo?: string;
     ipInfo?: string;
-    language?: string;
-    page?: string;
+    pageUrl?: string;
     redirectTo?: string;
-    referer?: string;
-    userAgent?: string;
+    refererPage?: string;
   };
 }
 

@@ -48,6 +48,7 @@ model User {
   profiles        Profile[]
   Domain          Domain[]
   Campaign        Campaign[]
+  MagicLink       MagicLink?
 
   @@map("Users")
 }
@@ -86,6 +87,7 @@ enum campaignDevices {
   WINDOWS
   MACBOOK
   LINUX
+  UNKNOWN
 }
 
 enum campaignAntiSpy {
@@ -181,6 +183,7 @@ model Campaign {
 
   @@index([userId])
   @@index([slug])
+  @@index([id, userId])
   @@map("Campaigns")
 }
 
@@ -188,18 +191,34 @@ model CampaignLog {
   id         String @id @unique @default(uuid())
   campaignId String
 
-  ip          String?
   redirectTo  String?
-  page        String?
-  referer     String?
-  userAgent   String?
-  language    String?
+  pageUrl     String?
+  refererPage String?
+  requestInfo Json?
   ipInfo      Json?
-  deviceInfo  Json?
   apiResponse String?
   createdAt   DateTime @default(now())
-  campaign    Campaign @relation(fields: [campaignId], references: [id])
+
+  campaign Campaign @relation(fields: [campaignId], references: [id])
 
   @@index([campaignId])
   @@map("CampaignLogs")
+}
+
+model CollaboratorInvite {
+  id        String   @id
+  email     String
+  createdAt DateTime @default(now())
+
+  @@map("CollaboratorsInvites")
+}
+
+model MagicLink {
+  id        String   @id
+  userId    String   @unique
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("MagicLinks")
 }

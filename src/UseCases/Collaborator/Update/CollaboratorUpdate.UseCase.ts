@@ -33,7 +33,7 @@ export class CollaboratorUpdateUseCase {
 
     if (role === 'ADMIN' && dataAuth.role !== 'ADMIN') throw new AppError(ErrorDictionary.COLLABORATOR.noPermissionToUpdateToAdmin);
 
-    await this.RepositoryUser.Update({ id: dataUserUpdate.id, role });
+    await this.RepositoryUser.ChangeRole({ id: dataUserUpdate.id, role });
 
     const returnResponse = {
       ...ErrorDictionary.COLLABORATOR.updated,
