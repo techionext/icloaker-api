@@ -2308,6 +2308,594 @@
           }
         }
       }
+    },
+    "/dashboard/{campaignId}": {
+      "get": {
+        "summary": "Obter dados do dashboard por campanha",
+        "description": "Esta rota permite obter os dados do dashboard para uma campanha específica em um intervalo de datas.",
+        "tags": [
+          "dashboard"
+        ],
+        "parameters": [
+          {
+            "name": "campaignId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "001be9e0-3033-4d0d-a611-e2d79080c79d"
+            },
+            "description": "ID da campanha para obter os dados."
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "example": "2024-01-01"
+            },
+            "description": "Data de início do intervalo. Formato: yyyy-mm-dd. Exemplo: 2024-01-01."
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "example": "2024-01-31"
+            },
+            "description": "Data de término do intervalo. Formato: yyyy-mm-dd. Exemplo: 2024-01-31."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Dados do dashboard obtidos com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "totalAccesses": 2991,
+                    "deniedAccesses": 196,
+                    "allowedAccesses": 380,
+                    "devices": {
+                      "ANDROID": 517,
+                      "IPHONE": 490,
+                      "LINUX": 491,
+                      "MACBOOK": 489,
+                      "WINDOWS": 528,
+                      "UNKNOWN": 476
+                    },
+                    "browsers": {
+                      "Internet Explorer": 595,
+                      "Mozilla Firefox": 595,
+                      "Google Chrome": 584,
+                      "Safari": 652,
+                      "Opera": 565
+                    },
+                    "recent": {
+                      "2024-08-01": {
+                        "bots": 39,
+                        "safePage": 7,
+                        "offerPage": 9,
+                        "totalRequests": 91
+                      },
+                      "2024-08-02": {
+                        "bots": 47,
+                        "safePage": 9,
+                        "offerPage": 10,
+                        "totalRequests": 110
+                      },
+                      "2024-08-03": {
+                        "bots": 59,
+                        "safePage": 9,
+                        "offerPage": 15,
+                        "totalRequests": 99
+                      },
+                      "2024-08-04": {
+                        "bots": 48,
+                        "safePage": 6,
+                        "offerPage": 13,
+                        "totalRequests": 102
+                      },
+                      "2024-08-05": {
+                        "bots": 62,
+                        "safePage": 5,
+                        "offerPage": 14,
+                        "totalRequests": 109
+                      },
+                      "2024-08-06": {
+                        "bots": 35,
+                        "safePage": 5,
+                        "offerPage": 13,
+                        "totalRequests": 92
+                      },
+                      "2024-08-07": {
+                        "bots": 48,
+                        "safePage": 7,
+                        "offerPage": 12,
+                        "totalRequests": 99
+                      },
+                      "2024-08-08": {
+                        "bots": 60,
+                        "safePage": 8,
+                        "offerPage": 18,
+                        "totalRequests": 119
+                      },
+                      "2024-08-09": {
+                        "bots": 39,
+                        "safePage": 7,
+                        "offerPage": 10,
+                        "totalRequests": 89
+                      },
+                      "2024-08-10": {
+                        "bots": 49,
+                        "safePage": 7,
+                        "offerPage": 10,
+                        "totalRequests": 105
+                      },
+                      "2024-08-11": {
+                        "bots": 41,
+                        "safePage": 4,
+                        "offerPage": 15,
+                        "totalRequests": 90
+                      },
+                      "2024-08-12": {
+                        "bots": 52,
+                        "safePage": 8,
+                        "offerPage": 21,
+                        "totalRequests": 103
+                      },
+                      "2024-08-13": {
+                        "bots": 43,
+                        "safePage": 2,
+                        "offerPage": 8,
+                        "totalRequests": 98
+                      },
+                      "2024-08-14": {
+                        "bots": 55,
+                        "safePage": 11,
+                        "offerPage": 10,
+                        "totalRequests": 102
+                      },
+                      "2024-08-15": {
+                        "bots": 58,
+                        "safePage": 9,
+                        "offerPage": 16,
+                        "totalRequests": 102
+                      },
+                      "2024-08-16": {
+                        "bots": 67,
+                        "safePage": 5,
+                        "offerPage": 16,
+                        "totalRequests": 116
+                      },
+                      "2024-08-17": {
+                        "bots": 54,
+                        "safePage": 6,
+                        "offerPage": 6,
+                        "totalRequests": 109
+                      },
+                      "2024-08-18": {
+                        "bots": 57,
+                        "safePage": 9,
+                        "offerPage": 15,
+                        "totalRequests": 98
+                      },
+                      "2024-08-19": {
+                        "bots": 50,
+                        "safePage": 1,
+                        "offerPage": 18,
+                        "totalRequests": 105
+                      },
+                      "2024-08-20": {
+                        "bots": 44,
+                        "safePage": 7,
+                        "offerPage": 14,
+                        "totalRequests": 93
+                      },
+                      "2024-08-21": {
+                        "bots": 54,
+                        "safePage": 7,
+                        "offerPage": 12,
+                        "totalRequests": 109
+                      },
+                      "2024-08-22": {
+                        "bots": 45,
+                        "safePage": 6,
+                        "offerPage": 17,
+                        "totalRequests": 96
+                      },
+                      "2024-08-23": {
+                        "bots": 62,
+                        "safePage": 10,
+                        "offerPage": 11,
+                        "totalRequests": 111
+                      },
+                      "2024-08-24": {
+                        "bots": 63,
+                        "safePage": 9,
+                        "offerPage": 10,
+                        "totalRequests": 111
+                      },
+                      "2024-08-25": {
+                        "bots": 54,
+                        "safePage": 2,
+                        "offerPage": 22,
+                        "totalRequests": 112
+                      },
+                      "2024-08-26": {
+                        "bots": 53,
+                        "safePage": 10,
+                        "offerPage": 11,
+                        "totalRequests": 106
+                      },
+                      "2024-08-27": {
+                        "bots": 51,
+                        "safePage": 3,
+                        "offerPage": 13,
+                        "totalRequests": 104
+                      },
+                      "2024-08-28": {
+                        "bots": 54,
+                        "safePage": 9,
+                        "offerPage": 13,
+                        "totalRequests": 114
+                      },
+                      "2024-08-29": {
+                        "bots": 53,
+                        "safePage": 8,
+                        "offerPage": 8,
+                        "totalRequests": 97
+                      }
+                    },
+                    "countries": {
+                      "GER": {
+                        "allowedAccesses": 59,
+                        "deniedAccesses": 35,
+                        "totalAccesses": 569,
+                        "browsers": {
+                          "Internet Explorer": 107,
+                          "Mozilla Firefox": 116,
+                          "Google Chrome": 119,
+                          "Opera": 105,
+                          "Safari": 122
+                        },
+                        "devices": {
+                          "ANDROID": 100,
+                          "IPHONE": 90,
+                          "LINUX": 93,
+                          "MACBOOK": 101,
+                          "WINDOWS": 102,
+                          "UNKNOWN": 83
+                        }
+                      },
+                      "USA": {
+                        "allowedAccesses": 75,
+                        "deniedAccesses": 47,
+                        "totalAccesses": 583,
+                        "browsers": {
+                          "Google Chrome": 110,
+                          "Internet Explorer": 113,
+                          "Safari": 135,
+                          "Mozilla Firefox": 112,
+                          "Opera": 113
+                        },
+                        "devices": {
+                          "ANDROID": 103,
+                          "IPHONE": 109,
+                          "LINUX": 102,
+                          "MACBOOK": 89,
+                          "WINDOWS": 81,
+                          "UNKNOWN": 99
+                        }
+                      },
+                      "CAN": {
+                        "allowedAccesses": 78,
+                        "deniedAccesses": 29,
+                        "totalAccesses": 580,
+                        "browsers": {
+                          "Google Chrome": 114,
+                          "Mozilla Firefox": 116,
+                          "Internet Explorer": 104,
+                          "Safari": 125,
+                          "Opera": 121
+                        },
+                        "devices": {
+                          "ANDROID": 89,
+                          "IPHONE": 86,
+                          "LINUX": 102,
+                          "MACBOOK": 98,
+                          "WINDOWS": 111,
+                          "UNKNOWN": 94
+                        }
+                      },
+                      "BRA": {
+                        "allowedAccesses": 93,
+                        "deniedAccesses": 46,
+                        "totalAccesses": 638,
+                        "browsers": {
+                          "Safari": 142,
+                          "Opera": 104,
+                          "Mozilla Firefox": 135,
+                          "Google Chrome": 130,
+                          "Internet Explorer": 127
+                        },
+                        "devices": {
+                          "ANDROID": 115,
+                          "IPHONE": 108,
+                          "LINUX": 86,
+                          "MACBOOK": 104,
+                          "WINDOWS": 122,
+                          "UNKNOWN": 103
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/dashboard/country/{campaignId}": {
+      "get": {
+        "summary": "Obter dados do dashboard por campanha e país",
+        "description": "Esta rota permite obter os dados do dashboard para uma campanha específica em um intervalo de datas e para um país específico.",
+        "tags": [
+          "dashboard"
+        ],
+        "parameters": [
+          {
+            "name": "campaignId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "85e3d0f3-aa8e-4ad0-9de0-4f75a8c3e9fe"
+            },
+            "description": "ID da campanha para obter os dados."
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "example": "2024-01-01"
+            },
+            "description": "Data de início do intervalo. Formato: yyyy-mm-dd. Exemplo: 2024-01-01."
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "example": "2024-01-31"
+            },
+            "description": "Data de término do intervalo. Formato: yyyy-mm-dd. Exemplo: 2024-01-31."
+          },
+          {
+            "name": "countryCode",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "BRA"
+            },
+            "description": "Código do país. Deve ser uma string com 3 letras maiúsculas, como 'BRA' para Brasil."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Dados do dashboard por país obtidos com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "allRegions": {
+                      "allowedAccesses": 93,
+                      "browsers": {
+                        "Safari": 142,
+                        "Opera": 104,
+                        "Mozilla Firefox": 135,
+                        "Google Chrome": 130,
+                        "Internet Explorer": 127
+                      },
+                      "deniedAccesses": 46,
+                      "devices": {
+                        "IPHONE": 108,
+                        "ANDROID": 115,
+                        "WINDOWS": 122,
+                        "MACBOOK": 104,
+                        "LINUX": 86,
+                        "UNKNOWN": 103
+                      },
+                      "totalAccesses": 638
+                    },
+                    "CE": {
+                      "allowedAccesses": 6,
+                      "deniedAccesses": 3,
+                      "totalAccesses": 49,
+                      "browsers": {
+                        "Opera": 5,
+                        "Safari": 15,
+                        "Mozilla Firefox": 12,
+                        "Google Chrome": 9,
+                        "Internet Explorer": 8
+                      },
+                      "devices": {
+                        "ANDROID": 12,
+                        "IPHONE": 3,
+                        "LINUX": 10,
+                        "MACBOOK": 10,
+                        "WINDOWS": 10,
+                        "UNKNOWN": 4
+                      }
+                    },
+                    "AL": {
+                      "allowedAccesses": 8,
+                      "deniedAccesses": 7,
+                      "totalAccesses": 70,
+                      "browsers": {
+                        "Mozilla Firefox": 13,
+                        "Safari": 16,
+                        "Opera": 8,
+                        "Google Chrome": 19,
+                        "Internet Explorer": 14
+                      },
+                      "devices": {
+                        "ANDROID": 15,
+                        "IPHONE": 17,
+                        "LINUX": 6,
+                        "MACBOOK": 10,
+                        "WINDOWS": 13,
+                        "UNKNOWN": 9
+                      }
+                    },
+                    "BA": {
+                      "allowedAccesses": 8,
+                      "deniedAccesses": 3,
+                      "totalAccesses": 67,
+                      "browsers": {
+                        "Google Chrome": 11,
+                        "Mozilla Firefox": 17,
+                        "Safari": 19,
+                        "Opera": 6,
+                        "Internet Explorer": 14
+                      },
+                      "devices": {
+                        "ANDROID": 11,
+                        "IPHONE": 12,
+                        "LINUX": 9,
+                        "MACBOOK": 11,
+                        "WINDOWS": 17,
+                        "UNKNOWN": 7
+                      }
+                    },
+                    "DF": {
+                      "allowedAccesses": 5,
+                      "deniedAccesses": 4,
+                      "totalAccesses": 55,
+                      "browsers": {
+                        "Opera": 9,
+                        "Mozilla Firefox": 11,
+                        "Internet Explorer": 15,
+                        "Safari": 11,
+                        "Google Chrome": 9
+                      },
+                      "devices": {
+                        "ANDROID": 14,
+                        "IPHONE": 9,
+                        "LINUX": 7,
+                        "MACBOOK": 7,
+                        "WINDOWS": 9,
+                        "UNKNOWN": 9
+                      }
+                    },
+                    "AM": {
+                      "allowedAccesses": 8,
+                      "deniedAccesses": 11,
+                      "totalAccesses": 64,
+                      "browsers": {
+                        "Safari": 11,
+                        "Opera": 14,
+                        "Google Chrome": 14,
+                        "Mozilla Firefox": 17,
+                        "Internet Explorer": 8
+                      },
+                      "devices": {
+                        "ANDROID": 7,
+                        "IPHONE": 11,
+                        "LINUX": 8,
+                        "MACBOOK": 13,
+                        "WINDOWS": 14,
+                        "UNKNOWN": 11
+                      }
+                    },
+                    "ES": {
+                      "allowedAccesses": 10,
+                      "deniedAccesses": 3,
+                      "totalAccesses": 64,
+                      "browsers": {
+                        "Opera": 11,
+                        "Safari": 18,
+                        "Internet Explorer": 12,
+                        "Google Chrome": 9,
+                        "Mozilla Firefox": 14
+                      },
+                      "devices": {
+                        "ANDROID": 10,
+                        "IPHONE": 7,
+                        "LINUX": 10,
+                        "MACBOOK": 14,
+                        "WINDOWS": 12,
+                        "UNKNOWN": 11
+                      }
+                    },
+                    "AC": {
+                      "allowedAccesses": 7,
+                      "deniedAccesses": 1,
+                      "totalAccesses": 73,
+                      "browsers": {
+                        "Mozilla Firefox": 15,
+                        "Safari": 12,
+                        "Internet Explorer": 20,
+                        "Opera": 12,
+                        "Google Chrome": 14
+                      },
+                      "devices": {
+                        "ANDROID": 15,
+                        "IPHONE": 11,
+                        "LINUX": 10,
+                        "MACBOOK": 14,
+                        "WINDOWS": 14,
+                        "UNKNOWN": 9
+                      }
+                    },
+                    "AP": {
+                      "allowedAccesses": 11,
+                      "deniedAccesses": 5,
+                      "totalAccesses": 70,
+                      "browsers": {
+                        "Mozilla Firefox": 13,
+                        "Safari": 14,
+                        "Opera": 19,
+                        "Google Chrome": 15,
+                        "Internet Explorer": 9
+                      },
+                      "devices": {
+                        "ANDROID": 14,
+                        "IPHONE": 11,
+                        "LINUX": 8,
+                        "MACBOOK": 9,
+                        "WINDOWS": 12,
+                        "UNKNOWN": 16
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
     }
   },
   "components": {

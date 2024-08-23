@@ -1,3 +1,5 @@
+import { $Enums } from '@prisma/client';
+
 export type RequestInfo = {
   browser: {
     name: string;
@@ -16,7 +18,7 @@ export type RequestInfo = {
   };
 
   device: {
-    type: string;
+    type: $Enums.campaignDevices;
     brand: string | null;
     model: string | null;
   };
