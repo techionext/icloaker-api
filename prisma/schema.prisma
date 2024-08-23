@@ -48,6 +48,7 @@ model User {
   profiles        Profile[]
   Domain          Domain[]
   Campaign        Campaign[]
+  MagicLink       MagicLink?
 
   @@map("Users")
 }
@@ -202,4 +203,22 @@ model CampaignLog {
 
   @@index([campaignId])
   @@map("CampaignLogs")
+}
+
+model CollaboratorInvite {
+  id        String   @id
+  email     String
+  createdAt DateTime @default(now())
+
+  @@map("CollaboratorsInvites")
+}
+
+model MagicLink {
+  id        String   @id
+  userId    String   @unique
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("MagicLinks")
 }

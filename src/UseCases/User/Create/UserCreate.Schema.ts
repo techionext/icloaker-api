@@ -1,6 +1,8 @@
 import { z } from 'zod';
 
 export const UserCreateSchema = z.object({
+  inviteId: z.string({ invalid_type_error: 'Enviar inviteId como string !' }).trim().optional(),
+
   name: z
     .string({
       required_error: 'Enviar o campo name !',

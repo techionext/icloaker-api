@@ -52,6 +52,38 @@ export const ErrorDictionary = {
       codeIntern: 'USR013',
       message: 'User avatar deleted successfully!',
     },
+    noInviteWithId: {
+      codeIntern: 'USR014',
+      message: 'No invite exists with this ID!',
+    },
+    inviteEmailMismatch: {
+      codeIntern: 'USR015',
+      message: 'The invite email does not match the one used for user creation!',
+    },
+    inviteExpired: {
+      codeIntern: 'USR016',
+      message: 'The invite has expired!',
+    },
+    noEmailRegistration: {
+      codeIntern: 'USR017',
+      message: 'The user did not register using the email on the platform!',
+    },
+    inviteNotFoundOrExpired: {
+      codeIntern: 'USR018',
+      message: 'The invite does not exist or has expired!',
+    },
+    roleChangedToCollaborator: {
+      codeIntern: 'USR019',
+      message: 'Role changed to collaborator successfully!',
+    },
+    loginValidationFailed: {
+      codeIntern: 'USR020',
+      message: 'Unable to validate login!',
+    },
+    loginSuccessful: {
+      codeIntern: 'USR021',
+      message: 'Login successful!',
+    },
   },
 
   RECOVER_PASSWORD: {
