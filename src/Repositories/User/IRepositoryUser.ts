@@ -1,4 +1,4 @@
-import { $Enums, User } from '@prisma/client';
+import { $Enums, User, MagicLink, CollaboratorInvite } from '@prisma/client';
 
 export namespace IGetByEmailDTO {
   export type Params = {
@@ -127,6 +127,69 @@ export namespace IDeleteAvatarDTO {
   };
 }
 
+export namespace ICreateCollaboratorInviteDTO {
+  export type Params = {
+    id: string;
+    email: string;
+  };
+}
+
+export namespace IGetCollaboratorInviteByEmailDTO {
+  export type Params = {
+    email: string;
+  };
+  export type Result = {
+    isExists: boolean;
+    data: CollaboratorInvite | null;
+  };
+}
+
+export namespace IGetCollaboratorInviteByIdDTO {
+  export type Params = {
+    id: string;
+  };
+  export type Result = {
+    isExists: boolean;
+    data: CollaboratorInvite | null;
+  };
+}
+
+export namespace IDeleteCollaboratorInviteDTO {
+  export type Params = {
+    id: string;
+  };
+}
+
+export namespace IChangeRoleDTO {
+  export type Params = {
+    id: string;
+    role: Exclude<$Enums.userRole, 'ROOT'>;
+  };
+}
+
+export namespace ICreateMagicLinkDTO {
+  export type Params = {
+    id: string;
+    userId: string;
+  };
+}
+
+export namespace IGetMagicLinkByIdDTO {
+  export type Params = {
+    id: string;
+  };
+  export type Result = {
+    isExists: boolean;
+    data: MagicLink | null;
+  };
+}
+
+export namespace IDeleteMagicLinkDTO {
+  export type Params = {
+    id: string;
+  };
+}
+
 export interface IRepositoryUser {
   Create(data: ICreateUserDTO.Params): Promise<void>;
   GetByEmail(data: IGetByEmailDTO.Params): Promise<IGetByEmailDTO.Result>;
@@ -141,4 +204,14 @@ export interface IRepositoryUser {
   GetAvatar(data: IGetAvatarDTO.Params): Promise<IGetAvatarDTO.Result>;
   UpdateAvatar(data: IUpdateAvatarDTO.Params): Promise<void>;
   DeleteAvatar(data: IDeleteAvatarDTO.Params): Promise<void>;
+  ChangeRole(data: IChangeRoleDTO.Params): Promise<void>;
+
+  CreateCollaboratorInvite(data: ICreateCollaboratorInviteDTO.Params): Promise<void>;
+  GetCollaboratorInviteByEmail(data: IGetCollaboratorInviteByEmailDTO.Params): Promise<IGetCollaboratorInviteByEmailDTO.Result>;
+  GetCollaboratorInviteById(data: IGetCollaboratorInviteByIdDTO.Params): Promise<IGetCollaboratorInviteByIdDTO.Result>;
+  DeleteCollaboratorInvite(data: IDeleteCollaboratorInviteDTO.Params): Promise<void>;
+
+  CreateMagicLink(data: ICreateMagicLinkDTO.Params): Promise<void>;
+  GetMagicLinkById(data: IGetMagicLinkByIdDTO.Params): Promise<IGetMagicLinkByIdDTO.Result>;
+  DeleteMagicLink(data: IDeleteMagicLinkDTO.Params): Promise<void>;
 }

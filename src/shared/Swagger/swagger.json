@@ -109,6 +109,41 @@
         }
       }
     },
+    "/auth/magic-link/{id}": {
+      "post": {
+        "summary": "Enviar link mágico para autenticação",
+        "description": "Envia um link mágico para o usuário com base no ID fornecido.",
+        "tags": [
+          "auth"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "UUID do link mágico"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Link mágico enviado com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Impvc2V2aWN0b3JtenBmQGdtYWlsLmNvbSIsImlkIjoiZmQ0ZTQ1ZGItOWIxZi00NzNhLTk3NGMtNzlmYzJlMTBjNTI4IiwiaWF0IjoxNzI0NDQxODU3LCJleHAiOjE3MjQ1MjgyNTd9.Y636wYYnViE-OfR8pTfJgLNOBDZi2xe11P-5tVfeDaw",
+                  "codeIntern": "USR021",
+                  "message": "Login successful!"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/users": {
       "post": {
         "summary": "Cria um novo usuário",
@@ -121,6 +156,11 @@
               "schema": {
                 "type": "object",
                 "properties": {
+                  "inviteId": {
+                    "type": "string",
+                    "description": "convite de colaborador",
+                    "example": "e1dc4c9a-7f4f-4a91-bd14-ea803b956e4a"
+                  },
                   "name": {
                     "type": "string",
                     "description": "Nome do usuário",
@@ -580,69 +620,6 @@
       }
     },
     "/collaborators": {
-      "post": {
-        "summary": "Criar um colaborador",
-        "description": "Esta rota cria um novo colaborador com base nas informações fornecidas.",
-        "tags": [
-          "collaborators"
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "description": "Nome do colaborador"
-                  },
-                  "email": {
-                    "type": "string",
-                    "format": "email",
-                    "description": "Email do colaborador"
-                  },
-                  "phone": {
-                    "type": "string",
-                    "description": "Número de telefone do colaborador"
-                  }
-                },
-                "required": [
-                  "name",
-                  "email"
-                ]
-              },
-              "examples": {
-                "Exemplo de criação de colaborador": {
-                  "value": {
-                    "name": "João da Silva",
-                    "email": "joao.silva@exemplo.com",
-                    "phone": "12345678"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Colaborador criado com sucesso",
-            "content": {
-              "application/json": {
-                "example": {
-                  "codeIntern": "COL003",
-                  "message": "Collaborator created successfully!"
-                }
-              }
-            }
-          }
-        }
-      },
       "get": {
         "summary": "Listar colaboradores",
         "description": "Esta rota lista os colaboradores com base nos parâmetros de paginação e filtro fornecidos.",
@@ -811,6 +788,91 @@
                 "example": {
                   "codeIntern": "COL006",
                   "message": "This user is no longer part of the company!"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/collaborators/send-invite": {
+      "post": {
+        "summary": "Enviar convite para colaborador",
+        "description": "Envia um convite para o colaborador com o e-mail fornecido.",
+        "tags": [
+          "collaborators"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "E-mail do colaborador para enviar o convite",
+                    "example": "colaborador@exemplo.com"
+                  }
+                },
+                "required": [
+                  "email"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Convite enviado com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "codeIntern": "COL003",
+                  "message": "The invitation to the company was successfully sent"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/collaborators/accept-invite/{inviteId}": {
+      "post": {
+        "summary": "Aceitar convite de colaborador",
+        "description": "Aceita o convite de colaborador utilizando o ID do convite fornecido.",
+        "tags": [
+          "collaborators"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "inviteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "ID do convite a ser aceito",
+              "example": "abc123"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Convite aceito com sucesso",
+            "content": {
+              "application/json": {
+                "example": {
+                  "codeIntern": "USR019",
+                  "message": "Role changed to collaborator successfully!"
                 }
               }
             }

@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { userSchema } from '../models/user';
 
 export const userSubject = z.tuple([
-  z.union([z.literal('create'), z.literal('get'), z.literal('update'), z.literal('delete'), z.literal('manage')]),
+  z.union([z.literal('create'), z.literal('get'), z.literal('update'), z.literal('delete'), z.literal('invite'), z.literal('manage')]),
   z.union([z.literal('User'), userSchema]),
 ]);
 
