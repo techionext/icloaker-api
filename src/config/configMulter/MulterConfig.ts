@@ -21,7 +21,7 @@ export const handleGetMulterConfig = ({ fileSize, allowedMimes }: IHandleGetMult
       if (allowedMimes.includes(file.mimetype)) {
         cb(null, true);
       } else {
-        cb(new AppError('Tipo de arquivo invalido!'));
+        cb(new AppError({ codeIntern: 'NONE', message: 'Tipo de arquivo invalido!' }));
       }
     },
   };

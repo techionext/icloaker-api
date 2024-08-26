@@ -5,6 +5,7 @@ import { env } from '@shared/Util/Env/Env';
 
 import { handleCreateHashImg } from '../../../shared/features/handleCreateHashImg';
 import { ConfigS3 } from '../../AWS/S3/BucketS3';
+import { IS3Service } from './IS3Config';
 
 const {
   AWS: {
@@ -24,12 +25,8 @@ export const MulterS3Config = MulterS3({
   },
 });
 
-interface IAwsS3DeleteObject {
-  key: string;
-}
-
-export class DeleteImagesService {
-  async execute({ key }: IAwsS3DeleteObject) {
+export class S3Service implements IS3Service {
+  async DeleteImage({ key }: { key: string }) {
     const params = {
       Bucket: NAME_BUCKET,
       Key: key,
