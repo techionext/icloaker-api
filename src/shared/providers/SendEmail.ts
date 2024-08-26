@@ -1,8 +1,8 @@
 import { AWS_SES } from '@config/AWS/SES';
 import nodemailer from 'nodemailer';
 
-import { AppError } from '@shared/Util/Errors/AppError';
 import { logger } from '@shared/Util/configLogger';
+import { AppError } from '@shared/Util/Errors/AppError';
 
 import { TemplateCardCore } from './templatesSendEmail/TemplateCardCore';
 
