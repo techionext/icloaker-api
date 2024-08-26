@@ -14,7 +14,7 @@ export const ZODVerifyParse = <T extends z.ZodTypeAny>({ schema, data }: IZODVer
     const resultParse = schema.parse(data);
     return resultParse;
   } catch (error: any) {
-    console.error(error);
+    // console.error(error);
 
     if (error instanceof ZodError) {
       const errorMessages = error.errors.map((issue) => {
