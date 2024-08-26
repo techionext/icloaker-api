@@ -7,9 +7,11 @@ export const AuthSessionSchema = z.object({
         required_error: 'id token não encontrado !',
       }),
 
-      email: z.string({
-        required_error: 'email token não encontrado !',
-      }),
+      email: z
+        .string({
+          required_error: 'email token não encontrado !',
+        })
+        .nullable(),
     },
     { required_error: 'token não enviado !' },
   ),
