@@ -33,7 +33,7 @@ routerAuth.get('/google/sync', verifyToken, (req, res, next) => {
 });
 
 routerAuth.get(
-  '/google/callback/sync',
+  '/google/sync/callback',
   passport.authenticate('google-sync', {
     session: false,
     failureRedirect: '/oauth/error',
