@@ -2,7 +2,7 @@ import { IRepositoryUser } from 'Repositories/User/IRepositoryUser';
 import { inject, injectable } from 'tsyringe';
 
 import { getUserPermissions } from '@shared/permissions/getUserPermissions';
-import { AppError } from '@shared/Util/AppError/AppError';
+import { AppError } from '@shared/Util/Errors/AppError';
 import { ErrorDictionary } from '@shared/Util/ErrorDictionary';
 import { ZODVerifyParse } from '@shared/Util/ZOD/zod';
 

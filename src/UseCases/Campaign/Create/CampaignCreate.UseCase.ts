@@ -4,8 +4,8 @@ import { inject, injectable } from 'tsyringe';
 
 import { handleCreateSlug } from '@shared/features/createSlug/handleCreateSlug';
 import { handleGenerateUuid } from '@shared/features/handleGenerateUuid/handleGenerateUuid';
-import { AppError } from '@shared/Util/AppError/AppError';
 import { ErrorDictionary } from '@shared/Util/ErrorDictionary';
+import { AppError } from '@shared/Util/Errors/AppError';
 import { ZODVerifyParse } from '@shared/Util/ZOD/zod';
 
 import { CampaignCreateSchema } from './CampaignCreate.Schema';

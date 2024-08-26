@@ -2,32 +2,9 @@ import { Request } from 'express';
 
 import 'dotenv/config';
 
-import { AppError } from '@shared/Util/AppError/AppError';
-import { env } from '@shared/Util/Env/Env';
+import { AppError } from '@shared/Util/Errors/AppError';
 
-import { MulterLocalConfig, MulterS3Config, pathsLocalFiles } from './Local';
-
-const handleGetLocalStorage = () => {
-  const storageTypes = {
-    local: MulterLocalConfig,
-    s3: MulterS3Config,
-  };
-
-  const localUpload = env.AWS.LOCAL_UPLOAD_FILES;
-
-  switch (localUpload) {
-    case 'S3': {
-      return storageTypes.s3;
-    }
-    case 'local': {
-      return storageTypes.local;
-    }
-
-    default: {
-      throw new AppError('Nenhum método encontrado para fazer upload, entrar em contato com o suporte');
-    }
-  }
-};
+import { MulterS3Config } from './Local';
 
 interface IHandleGetMulterConfig {
   fileSize: number;
@@ -36,9 +13,7 @@ interface IHandleGetMulterConfig {
 
 export const handleGetMulterConfig = ({ fileSize, allowedMimes }: IHandleGetMulterConfig) => {
   const multerConfig = {
-    dest: pathsLocalFiles,
-
-    storage: handleGetLocalStorage(),
+    storage: MulterS3Config,
 
     limits: { fileSize }, // 5.2MB
 

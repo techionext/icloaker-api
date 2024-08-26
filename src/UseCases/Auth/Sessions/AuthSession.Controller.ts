@@ -8,8 +8,6 @@ export class AuthSessionController {
   async handle(request: Request, response: Response): Promise<Response> {
     const { token } = request.body;
 
-    console.log('bateu');
-
     const result = await this.AuthSessionUseCase.execute({ token });
 
     return response.status(200).json(result);

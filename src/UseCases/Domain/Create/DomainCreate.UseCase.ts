@@ -3,7 +3,7 @@ import { IRepositoryUser } from 'Repositories/User/IRepositoryUser';
 import { inject, injectable } from 'tsyringe';
 
 import { handleGenerateUuid } from '@shared/features/handleGenerateUuid/handleGenerateUuid';
-import { AppError } from '@shared/Util/AppError/AppError';
+import { AppError } from '@shared/Util/Errors/AppError';
 import { ErrorDictionary } from '@shared/Util/ErrorDictionary';
 import { ZODVerifyParse } from '@shared/Util/ZOD/zod';
 

@@ -2,7 +2,7 @@ import { IRepositoryDashboard } from 'Repositories/Dashboard/IRepositoryDashboar
 import { IRepositoryUser } from 'Repositories/User/IRepositoryUser';
 import { inject, injectable } from 'tsyringe';
 
-import { AppError } from '@shared/Util/AppError/AppError';
+import { AppError } from '@shared/Util/Errors/AppError';
 import { ErrorDictionary } from '@shared/Util/ErrorDictionary';
 import { ZODVerifyParse } from '@shared/Util/ZOD/zod';
 
@@ -26,7 +26,6 @@ export class DashboardCampaignMetricUseCase {
 
     const { data: dataUser } = await this.RepositoryUser.GetById({ id: token.id });
     if (!dataUser) throw new AppError(ErrorDictionary.USER.dataNotFound, 401);
-
     const { data } = await this.RepositoryDashboard.CampaignMetrics({ campaignId, endDate, startDate, userId: dataUser.id });
 
     const refinedData = data.reduce(

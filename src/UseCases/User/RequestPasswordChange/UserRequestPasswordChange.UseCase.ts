@@ -6,7 +6,7 @@ import { GetFutureTimestamp } from '@shared/features/GetFutureTimestamp/GetFutur
 import { handleGenerateUuid } from '@shared/features/handleGenerateUuid/handleGenerateUuid';
 import { sendMailNodemailer } from '@shared/providers/SendEmail';
 import { TemplateForgotPassword } from '@shared/providers/templatesSendEmail/TemplateForgotPassword';
-import { AppError } from '@shared/Util/AppError/AppError';
+import { AppError } from '@shared/Util/Errors/AppError';
 import { env } from '@shared/Util/Env/Env';
 import { ErrorDictionary } from '@shared/Util/ErrorDictionary';
 import { ZODVerifyParse } from '@shared/Util/ZOD/zod';
