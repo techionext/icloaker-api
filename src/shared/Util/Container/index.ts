@@ -1,3 +1,4 @@
+import { S3Service } from '@config/configMulter/Local';
 import { RepositoryCampaign } from 'Repositories/Campaign/Postgres/RepositoryCampaign';
 import { RepositoryCampaignLog } from 'Repositories/CampaignLog/Postgres/RepositoryCampaignLog';
 import { RepositoryDashboard } from 'Repositories/Dashboard/Postgres/RepositoryDashboard';
@@ -6,6 +7,7 @@ import { RepositoryRecoverPassword } from 'Repositories/RecoverPassword/Postgres
 import { RepositoryUser } from 'Repositories/User/Postgres/RepositoryUser';
 import { container } from 'tsyringe';
 
+container.registerSingleton<S3Service>('S3Service', S3Service);
 container.registerSingleton<RepositoryUser>('RepositoryUser', RepositoryUser);
 container.registerSingleton<RepositoryDomain>('RepositoryDomain', RepositoryDomain);
 container.registerSingleton<RepositoryCampaign>('RepositoryCampaign', RepositoryCampaign);

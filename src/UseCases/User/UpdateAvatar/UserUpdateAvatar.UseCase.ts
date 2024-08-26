@@ -1,8 +1,9 @@
+import { IS3Service } from '@config/configMulter/Local/IS3Config';
 import { IRepositoryUser } from 'Repositories/User/IRepositoryUser';
 import { inject, injectable } from 'tsyringe';
 
-import { AppError } from '@shared/Util/Errors/AppError';
 import { ErrorDictionary } from '@shared/Util/ErrorDictionary';
+import { AppError } from '@shared/Util/Errors/AppError';
 import { ZODVerifyParse } from '@shared/Util/ZOD/zod';
 
 import { IUserUpdateAvatarDTO } from './DTO/IUserUpdateAvatarDTO';
@@ -10,7 +11,7 @@ import { UserUpdateAvatarSchema } from './UserUpdateAvatar.Schema';
 
 @injectable()
 export class UserUpdateAvatarUseCase {
-  constructor(@inject('RepositoryUser') private RepositoryUser: IRepositoryUser) {}
+  constructor(@inject('RepositoryUser') private RepositoryUser: IRepositoryUser, @inject('S3Service') private S3Service: IS3Service) {}
 
   async execute(request: IUserUpdateAvatarDTO.Params) {
     const { token, avatar } = ZODVerifyParse({ schema: UserUpdateAvatarSchema, data: request });
@@ -23,8 +24,7 @@ export class UserUpdateAvatarUseCase {
       await this.RepositoryUser.UpdateAvatar({ id: dataAuth.id, avatar: avatar.location, avatarKey: avatar.key });
 
       if (dataAvatar?.avatarKey) {
-        // Deletar Imagem
-        //await this.QueueDeleteFiles.execute({ key: dataAvatar.avatarKey, nameBucket: 'localodontorichard' });
+        await this.S3Service.DeleteImage({ key: dataAvatar.avatarKey });
       }
 
       const returnResponse = {
@@ -33,8 +33,7 @@ export class UserUpdateAvatarUseCase {
 
       return returnResponse;
     } catch (error) {
-      // Deletar Imagem
-      //  await this.QueueDeleteFiles.execute({ key: avatar.key, nameBucket: 'localodontorichard' });
+      // verificar se vai ser necessário voltar as informações caso de erro quando atualizar o avatar e estourar algum erro no banco
 
       console.error(error);
       throw new AppError(ErrorDictionary.USER.avatarUploadError);

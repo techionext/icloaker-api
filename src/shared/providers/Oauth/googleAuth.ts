@@ -3,9 +3,9 @@ import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 
 import { handleGenerateUuid } from '@shared/features/handleGenerateUuid/handleGenerateUuid';
-import { AppError } from '@shared/Util/Errors/AppError';
 import { generateToken } from '@shared/Util/configToken/generateToken';
 import { env } from '@shared/Util/Env/Env';
+import { AppError } from '@shared/Util/Errors/AppError';
 
 const googleConfig = {
   clientID: env.OAUTH.GOOGLE.CLIENT_ID,
