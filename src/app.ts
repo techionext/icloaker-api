@@ -8,16 +8,17 @@ import http from 'http';
 import morgan from 'morgan';
 import swaggerUi from 'swagger-ui-express';
 
-import { AppError } from '@shared/Util/AppError/AppError';
 import { logger } from '@shared/Util/configLogger';
 import { env } from '@shared/Util/Env/Env';
 import { ErrorDictionary } from '@shared/Util/ErrorDictionary';
+import { AppError } from '@shared/Util/Errors/AppError';
+import { ZodParseError } from '@shared/Util/Errors/ZodError';
 
 import { routerIndex } from './Routes';
 import swaggerDocument from './shared/Swagger/swagger.json';
 
 const app = express();
-const serverHttp = http.createServer(app);
+export const serverHttp = http.createServer(app);
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use(express.json());
@@ -36,12 +37,14 @@ app.use(async (err: Error, request: Request, response: Response, next: NextFunct
     return response.status(err.statusCode).json({ message: err.content.message, codeIntern: err.content.codeIntern });
   }
 
-  console.error(err);
+  if (err instanceof ZodParseError) {
+    return response.status(err.statusCode).json({ message: err.content.message, codeIntern: err.content.codeIntern, errors: err.errors });
+  }
+
+  logger.fatal(err);
 
   response.status(500).json(ErrorDictionary.SYSTEM.unknownError);
   return next();
 });
 
 // import '../faker/campaignLog';
-
-export { serverHttp };

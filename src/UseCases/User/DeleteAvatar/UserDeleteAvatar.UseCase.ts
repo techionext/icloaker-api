@@ -1,8 +1,7 @@
 import { IRepositoryUser } from 'Repositories/User/IRepositoryUser';
 import { inject, injectable } from 'tsyringe';
 
-import { IQueueDeleteFiles } from '@shared/providers/Queues/DeleteFiles/DTO/IQueueFilesDelete';
-import { AppError } from '@shared/Util/AppError/AppError';
+import { AppError } from '@shared/Util/Errors/AppError';
 import { ErrorDictionary } from '@shared/Util/ErrorDictionary';
 import { ZODVerifyParse } from '@shared/Util/ZOD/zod';
 
@@ -11,10 +10,7 @@ import { UserDeleteAvatarSchema } from './UserDeleteAvatar.Schema';
 
 @injectable()
 export class UserDeleteAvatarUseCase {
-  constructor(
-    @inject('RepositoryUser') private RepositoryUser: IRepositoryUser,
-    @inject('QueueDeleteFiles') private QueueDeleteFiles: IQueueDeleteFiles,
-  ) {}
+  constructor(@inject('RepositoryUser') private RepositoryUser: IRepositoryUser) {}
 
   async execute(request: IUserDeleteAvatarDTO.Params) {
     const { token } = ZODVerifyParse({
@@ -30,7 +26,7 @@ export class UserDeleteAvatarUseCase {
 
     if (dataAvatar.avatarKey) {
       await this.RepositoryUser.DeleteAvatar({ id: dataAuth.id });
-      await this.QueueDeleteFiles.execute({ key: dataAvatar.avatarKey, nameBucket: 'localodontorichard' });
+      // await this.QueueDeleteFiles.execute({ key: dataAvatar.avatarKey, nameBucket: 'localodontorichard' });
     }
 
     const returnResponse = {

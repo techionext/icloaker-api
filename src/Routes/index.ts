@@ -10,7 +10,7 @@ import { routerDashboard } from './Dashboard/RouterDashboard';
 import { routerDomain } from './Domain/RouterDomain';
 import { routerUser } from './User/RouterUser';
 
-const routerIndex = Router();
+export const routerIndex = Router();
 
 routerIndex.use('/auth', routerAuth);
 routerIndex.use('/users', routerUser);
@@ -22,5 +22,3 @@ routerIndex.use('/collaborators', routerCollaborator);
 routerIndex.use('/domains', routerDomain);
 routerIndex.use('/campaigns', routerCampaign);
 routerIndex.use('/dashboard', routerDashboard);
-
-export { routerIndex };

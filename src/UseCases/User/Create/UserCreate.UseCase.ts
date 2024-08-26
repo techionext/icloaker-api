@@ -5,7 +5,7 @@ import { handleGenerateUuid } from '@shared/features/handleGenerateUuid/handleGe
 import { verifyNowIsAfter } from '@shared/features/verifyNowIsAfter/verifyNowIsAfter';
 import { sendMailNodemailer } from '@shared/providers/SendEmail';
 import { TemplateCreateNewUser } from '@shared/providers/templatesSendEmail/TemplateCreateNewUser';
-import { AppError } from '@shared/Util/AppError/AppError';
+import { AppError } from '@shared/Util/Errors/AppError';
 import { handleCreateHash } from '@shared/Util/configHashPassword/handleCreatehash';
 import { ErrorDictionary } from '@shared/Util/ErrorDictionary';
 import { ZODVerifyParse } from '@shared/Util/ZOD/zod';
