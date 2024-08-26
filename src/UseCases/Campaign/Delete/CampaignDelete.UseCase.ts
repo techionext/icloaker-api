@@ -2,7 +2,7 @@ import { IRepositoryCampaign } from 'Repositories/Campaign/IRepositoryCampaign';
 import { IRepositoryUser } from 'Repositories/User/IRepositoryUser';
 import { inject, injectable } from 'tsyringe';
 
-import { AppError } from '@shared/Util/AppError/AppError';
+import { AppError } from '@shared/Util/Errors/AppError';
 import { ErrorDictionary } from '@shared/Util/ErrorDictionary';
 import { ZODVerifyParse } from '@shared/Util/ZOD/zod';
 

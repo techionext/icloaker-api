@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 import { permissions } from '@shared/permissions/permissions';
 import { userSubject } from '@shared/permissions/subjects/user';
-import { AppError } from '@shared/Util/AppError/AppError';
+import { AppError } from '@shared/Util/Errors/AppError';
 
 import { User } from './models/user';
 

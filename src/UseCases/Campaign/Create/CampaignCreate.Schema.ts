@@ -1,140 +1,93 @@
 import { $Enums } from '@prisma/client';
 import { z } from 'zod';
 
+import { zodUniqueValueInArray } from '@shared/features/zod/ArrayUniqueValues';
+
 export const CampaignCreateSchema = z
   .object({
     origin: z
-      .nativeEnum($Enums.origins, {
-        errorMap: () => ({
-          message: `enviar como array e os valores possíveis para origin são: ${Object.values($Enums.origins).join(', ')}`,
-        }),
-      })
-      .array(),
+      .nativeEnum($Enums.origins)
+      .array()
+      .refine((data) => zodUniqueValueInArray(data), { message: 'Deve conter apenas valores únicos' }),
 
     googleSources: z
-      .nativeEnum($Enums.googleTrafficSource, {
-        errorMap: () => ({
-          message: `enviar como array e os valores possíveis para googleSources são: ${Object.values($Enums.googleTrafficSource).join(', ')}`,
-        }),
-      })
+      .nativeEnum($Enums.googleTrafficSource)
       .array()
+      .refine((data) => zodUniqueValueInArray(data), { message: 'Deve conter apenas valores únicos' })
       .optional(),
 
-    name: z
-      .string({
-        required_error: 'enviar campo name',
-        invalid_type_error: 'enviar campo name como string',
-      })
-      .trim(),
+    name: z.string().trim(),
 
-    domain: z
-      .string({
-        required_error: 'enviar campo domain',
-        invalid_type_error: 'enviar campo domain como string',
-      })
-      .trim()
-      .url(),
+    domain: z.string().trim().url(),
 
-    safePage: z
-      .string({
-        invalid_type_error: 'enviar campo safePage como string',
-      })
-      .trim()
-      .url()
-      .optional(),
+    safePage: z.string().trim().url().optional(),
 
-    safePageMethod: z.nativeEnum($Enums.safePageMethods, {
-      errorMap: () => ({
-        message: `os valores possíveis para safePageMethod são: ${Object.values($Enums.safePageMethods).join(', ')}`,
-      }),
-    }),
+    safePageMethod: z.nativeEnum($Enums.safePageMethods),
 
     offerPage: z
-      .string({
-        invalid_type_error: 'enviar campo offerPage como array de string',
-      })
+      .string()
       .trim()
       .url()
-      .array(),
+      .array()
+      .refine((data) => zodUniqueValueInArray(data), { message: 'Deve conter apenas valores únicos' }),
 
-    offerPageMethod: z.nativeEnum($Enums.offerPageMethods, {
-      errorMap: () => ({
-        message: `os valores possíveis para offerPageMethod são: ${Object.values($Enums.offerPageMethods).join(', ')}`,
-      }),
-    }),
+    offerPageMethod: z.nativeEnum($Enums.offerPageMethods),
 
     languages: z
-      .string({
-        invalid_type_error: 'enviar campo languages como array de string',
-      })
+      .string()
       .trim()
       .array()
+      .refine((data) => zodUniqueValueInArray(data), { message: 'Deve conter apenas valores únicos' })
       .optional(),
 
     countries: z
-      .string({
-        invalid_type_error: 'enviar campo countries como array de string',
-      })
+      .string()
       .trim()
       .array()
+      .refine((data) => zodUniqueValueInArray(data), { message: 'Deve conter apenas valores únicos' })
       .optional(),
 
     devices: z
-      .nativeEnum($Enums.campaignDevices, {
-        errorMap: () => ({
-          message: `enviar como array e os valores possíveis para devices são: ${Object.values($Enums.campaignDevices).join(', ')}`,
-        }),
-      })
-      .array(),
+      .nativeEnum($Enums.campaignDevices)
+      .array()
+      .refine((data) => zodUniqueValueInArray(data), { message: 'Deve conter apenas valores únicos' }),
 
-    manualReview: z
-      .boolean({
-        invalid_type_error: 'enviar campo manualReview como string',
-      })
-      .optional(),
+    manualReview: z.boolean().optional(),
 
-    pageType: z.nativeEnum($Enums.pageTypes, {
-      errorMap: () => ({
-        message: `os valores possíveis para pageType são: ${Object.values($Enums.pageTypes).join(', ')}`,
-      }),
+    pageType: z.nativeEnum($Enums.pageTypes),
+
+    disclaimer: z.string().trim().min(80),
+
+    companyName: z.string().trim(),
+
+    address: z.string().trim(),
+
+    vat: z.string().trim(),
+
+    supportPhone: z.string().trim(),
+
+    supportEmail: z.string().trim(),
+
+    token: z.object({
+      id: z.string(),
+
+      email: z.string().nullable(),
     }),
-
-    disclaimer: z
-      .string({ required_error: 'enviar campo disclaimer', invalid_type_error: 'enviar campo disclaimer como string' })
-      .trim()
-      .min(80, { message: 'enviar disclaimer com pelo menos 80 caracteres' }),
-
-    companyName: z.string({ required_error: 'enviar campo companyName', invalid_type_error: 'enviar campo companyName como string' }).trim(),
-
-    address: z.string({ required_error: 'enviar campo address', invalid_type_error: 'enviar campo address como string' }).trim(),
-
-    vat: z.string({ required_error: 'enviar campo vat', invalid_type_error: 'enviar campo vat como string' }).trim(),
-
-    supportPhone: z.string({ required_error: 'enviar campo supportPhone', invalid_type_error: 'enviar campo supportPhone como string' }).trim(),
-
-    supportEmail: z.string({ required_error: 'enviar campo supportEmail', invalid_type_error: 'enviar campo supportEmail como string' }).trim(),
-
-    token: z.object(
-      {
-        id: z.string({
-          required_error: 'id token não encontrado !',
-        }),
-
-        email: z
-          .string({
-            required_error: 'email token não encontrado !',
-          })
-          .nullable(),
-      },
-      { required_error: 'token não enviado !' },
-    ),
   })
-  .superRefine((data, ctx) => {
+  .superRefine((data, error) => {
     if (data.offerPageMethod === 'AB' && data.offerPage.length < 2) {
-      ctx.addIssue({ code: 'custom', message: 'se offerPageMethod for AB enviar pelo menos 2 urls em offerPage' });
+      error.addIssue({
+        code: 'custom',
+        path: ['offerPageMethod'],
+        message: 'Se offerPageMethod for AB enviar pelo menos 2 urls em offerPage',
+      });
     }
 
     if (data.origin.includes('GOOGLE') && (!data.googleSources || data.googleSources.length < 1)) {
-      ctx.addIssue({ code: 'custom', message: 'se GOOGLE for uma origin, enviar googleSources com pelo menos 1 item' });
+      error.addIssue({
+        code: 'custom',
+        path: ['googleSources'],
+        message: 'Se GOOGLE for uma origin, enviar googleSources com pelo menos 1 item',
+      });
     }
   });

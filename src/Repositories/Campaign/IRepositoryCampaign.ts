@@ -82,26 +82,26 @@ export namespace IUpdateDenyConfigDTO {
 export namespace IUpdateDTO {
   export type Params = {
     id: string;
-    origin?: $Enums.origins[];
-    googleSources?: $Enums.googleTrafficSource[];
+    vat?: string;
     name?: string;
     domain?: string;
+    address?: string;
     safePage?: string;
-    safePageMethod?: $Enums.safePageMethods;
-    offerPage?: string[];
-    offerPageMethod?: $Enums.offerPageMethods;
+    pageType?: $Enums.pageTypes;
+    disclaimer?: string;
+    companyName?: string;
+    supportPhone?: string;
+    supportEmail?: string;
+    manualReview?: boolean;
+    origin?: $Enums.origins[];
     languages?: string[];
     countries?: string[];
     devices?: $Enums.campaignDevices[];
     domainStatus?: $Enums.domainStatus;
-    manualReview?: boolean;
-    pageType?: $Enums.pageTypes;
-    disclaimer?: string;
-    companyName?: string;
-    address?: string;
-    vat?: string;
-    supportPhone?: string;
-    supportEmail?: string;
+    googleSources?: $Enums.googleTrafficSource[];
+    safePageMethod?: $Enums.safePageMethods;
+    offerPage?: string[];
+    offerPageMethod?: $Enums.offerPageMethods;
   };
 }
 export namespace IDeleteDTO {
@@ -128,13 +128,14 @@ export namespace IGetDTO {
 }
 
 export interface IRepositoryCampaign {
-  Create(data: ICreateDTO.Params): Promise<void>;
   FindDomain(data: IFindDomainDTO.Params): Promise<IFindDomainDTO.Result>;
   FindById(data: IFindByIdDTO.Params): Promise<IFindByIdDTO.Result>;
   GetById(data: IGetByIdDTO.Params): Promise<IGetByIdDTO.Result>;
+  Get(data: IGetDTO.Params): Promise<IGetDTO.Result>;
+
   UpdateAllowConfig(data: IUpdateAllowConfigDTO.Params): Promise<void>;
   UpdateDenyConfig(data: IUpdateDenyConfigDTO.Params): Promise<void>;
+  Create(data: ICreateDTO.Params): Promise<void>;
   Update(data: IUpdateDTO.Params): Promise<void>;
   Delete(data: IDeleteDTO.Params): Promise<void>;
-  Get(data: IGetDTO.Params): Promise<IGetDTO.Result>;
 }

@@ -1,7 +1,7 @@
 import { AWS_SES } from '@config/AWS/SES';
 import nodemailer from 'nodemailer';
 
-import { AppError } from '@shared/Util/AppError/AppError';
+import { AppError } from '@shared/Util/Errors/AppError';
 import { logger } from '@shared/Util/configLogger';
 
 import { TemplateCardCore } from './templatesSendEmail/TemplateCardCore';
@@ -12,14 +12,10 @@ interface ISendEmail {
   content: string;
 }
 
-export const transporter = nodemailer.createTransport({
-  SES: AWS_SES,
-});
+export const transporter = nodemailer.createTransport({ SES: AWS_SES });
 
 transporter.verify((error, success) => {
-  if (error) {
-    return logger.fatal(`Error connection Gmail ${error}`);
-  }
+  if (error) return logger.fatal(`Error connection Gmail ${error}`);
 
   logger.info('Success connected Sever Email');
   return success;

@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
 import 'dotenv/config';
-import { AppError } from '@shared/Util/AppError/AppError';
+import { AppError } from '@shared/Util/Errors/AppError';
 import { IGenerateToken, generateToken } from '@shared/Util/configToken/generateToken';
 import { env } from '@shared/Util/Env/Env';
 import { ErrorDictionary } from '@shared/Util/ErrorDictionary';

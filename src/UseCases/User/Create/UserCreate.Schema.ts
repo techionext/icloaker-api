@@ -31,7 +31,6 @@ export const UserCreateSchema = z.object({
       invalid_type_error: 'Enviar password como string !',
     })
     .trim()
-    .min(1, { message: 'Senha é obrigatório' })
     .min(8, { message: 'Senha deve conter no mínimo 8 dígitos' })
     .refine((senha) => /[a-z]/.test(senha), {
       message: 'A senha deve conter pelo menos uma letra minúscula',
